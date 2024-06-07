@@ -2,9 +2,9 @@ import '../styles/login.css';
 import { Link, useNavigate } from 'react-router-dom';
 import { FaEye, FaEyeSlash } from 'react-icons/fa';
 import { useState, useEffect, useContext } from 'react';
-import { getToken, fetchUser } from '../api.js';
-import { MainContext } from '../context.js';
-import LandingPageNavBar from './LandingPageNavBar.jsx';
+import { getToken, fetchUser } from '../api-calls/api.js';
+import { MainContext } from '../context/context.js';
+import LandingPageNavBar from '../layout/LandingPageNavBar.jsx';
 
 export default function Login() {
   const { main } = useContext(MainContext);
