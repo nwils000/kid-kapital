@@ -18,6 +18,9 @@ import { initialMainState, mainReducer } from './reducers/main-reducer';
 import { MainContext } from './context/context';
 import ParentDashboard from './pages/ParentDashboard';
 import ChildDashboard from './pages/ChildDashboard';
+import Family from './pages/Family';
+import FamilyStore from './pages/FamilyStore';
+import MyResponsibilities from './pages/MyResponsibilities';
 
 function Layout() {
   return (
@@ -65,6 +68,18 @@ const router = createBrowserRouter([
       {
         path: '/child-dashboard',
         element: <ChildDashboard />,
+      },
+      {
+        path: '/family',
+        element: <Family />,
+      },
+      {
+        path: '/family-store',
+        element: <FamilyStore />,
+      },
+      {
+        path: '/my-responsibilities',
+        element: <MyResponsibilities />,
       },
       // {
       //   path: '/dashboard',

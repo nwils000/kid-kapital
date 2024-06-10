@@ -16,14 +16,14 @@
 }
 
 .nav-link {
-  color: black;
+  color: rgb(16, 16, 16);
   padding: 15px 0px;
 }
 
 .logo-text {
   font-size: 1.8rem;
   font-weight: 400;
-  color: #995722;
+  color: #36aa97;
 }
 
 .logo-text:hover {
@@ -36,13 +36,13 @@
 }
 
 .create-post {
-  color: black;
+  color: rgb(16, 16, 16);
   transition: 300ms;
 }
 
 .create-post:hover {
   cursor: pointer;
-  color: #995822aa;
+  color: #36aa97;
 }
 
 @media screen and (max-width: 1350px) {

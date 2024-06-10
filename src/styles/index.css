@@ -11,7 +11,7 @@ body {
   font-family: 'Karla', Roboto, -apple-system, BlinkMacSystemFont, 'Segoe UI',
     'Helvetica Neue', Arial, sans-serif;
   line-height: 1.6;
-  color: black;
+  color: rgb(16, 16, 16);
   background-color: #f7f7f7;
   max-width: 110rem;
   margin: auto;
@@ -39,7 +39,7 @@ p {
 }
 
 a {
-  color: #995722;
+  color: #36aa97;
   text-decoration: none;
   font-weight: 700;
   position: relative;
@@ -54,7 +54,7 @@ a::before {
 
 a:hover {
   cursor: pointer;
-  color: #99582299;
+  color: #36aa97;
 
   text-decoration: none;
 }

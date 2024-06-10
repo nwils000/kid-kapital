@@ -18,7 +18,7 @@ export default function Register() {
   const [hubInputType, setHubInputType] = useState('');
   const [newFamilyHubName, setNewFamilyHubName] = useState('');
   const [familyHubInvitationCode, setFamilyHubInvitationCode] = useState('');
-  const [parent, setParent] = useState(false);
+  const [parent, setParent] = useState();
 
   let navigate = useNavigate();
 
@@ -65,21 +65,20 @@ export default function Register() {
         <div className="signup-input-wrapper">
           <div className="label-input-wrapper" style={{ position: 'relative' }}>
             <span>
-              Creating a{' '}
+              Create a{' '}
               <button
                 onClick={() => setHubInputType('new')}
                 className="new-family-hub"
               >
                 new family hub
-              </button>
-              , or{' '}
+              </button>{' '}
+              or{' '}
               <button
                 onClick={() => setHubInputType('join')}
                 className="joining-one"
               >
-                joining one
+                join one
               </button>
-              ?
             </span>
           </div>
           {hubInputType === 'new' && (
