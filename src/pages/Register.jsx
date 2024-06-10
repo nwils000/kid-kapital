@@ -4,7 +4,7 @@ import { FaEye } from 'react-icons/fa';
 import { FaEyeSlash } from 'react-icons/fa';
 import { useState, useEffect } from 'react';
 import { createUser } from '../api-calls/api.js';
-import LandingPageNavBar from '../layout/LandingPageNavBar.jsx';
+import LandingPageNavBar from '../layout/LandingPageNavbar.jsx';
 
 export default function Register() {
   const [passwordHidden, setPasswordHidden] = useState(true);

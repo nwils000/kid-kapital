@@ -1,11 +1,11 @@
 import '../styles/navbar.css';
 import { Link } from 'react-router-dom';
 
-export default function LandingPageNavBar() {
+export default function LandingPageNavbar() {
   return (
     <div className="navbar">
       <Link to="/">
-        <span className="logo-text">Social Media</span>
+        <span className="logo-text">Family Finance</span>
       </Link>
       <div className="nav-links-wrapper">
         <Link className="nav-link" to="/register">

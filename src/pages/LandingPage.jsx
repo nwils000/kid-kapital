@@ -1,11 +1,11 @@
-import LandingPageNavBar from '../layout/LandingPageNavBar';
+import LandingPageNavbar from '../layout/LandingPageNavbar';
 import '../styles/landing-page.css';
 
 export default function LandingPage() {
   return (
     <>
-      <LandingPageNavBar />
-      <div className="landing-page">Shift Scheduler</div>
+      <LandingPageNavbar />
+      <div className="landing-page"></div>
     </>
   );
 }

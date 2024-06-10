@@ -10,7 +10,7 @@ import {
 
 import './styles/index.css';
 
-import LandingPage from './pages/LandingPage';
+import ParentDashboard from './pages/LandingPage';
 import ErrorPage from './pages/ErrorPage';
 import Login from './pages/Login';
 import Register from './pages/Register';
