@@ -49,7 +49,8 @@ export const fetchUser = async ({ accessToken, main }) => {
 };
 
 export const createUser = async ({
-  familyHubName,
+  familyHubInvitationCode,
+  newFamilyHubName,
   username,
   password,
   firstName,
@@ -60,7 +61,8 @@ export const createUser = async ({
       method: 'post',
       url: `${baseUrl}/create-user/`,
       data: {
-        family_hub_name: familyHubName,
+        family_hub_name: newFamilyHubName,
+        family_hub_invitation_code: familyHubInvitationCode,
         username,
         password: password,
         first_name: firstName,

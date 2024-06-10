@@ -1,5 +1,5 @@
 import '../styles/register.css';
-import { Link } from 'react-router-dom';
+import { Link, useNavigate } from 'react-router-dom';
 import { FaEye, FaEyeSlash } from 'react-icons/fa';
 import { useEffect, useState } from 'react';
 import { createUser } from '../api-calls/api.js';
@@ -7,26 +7,49 @@ import LandingPageNavBar from '../layout/LandingPageNavbar.jsx';
 
 export default function Register() {
   const [passwordHidden, setPasswordHidden] = useState(true);
+  const [confirmPasswordHidden, setConfirmPasswordHidden] = useState(true);
   const [passwordType, setPasswordType] = useState('password');
+  const [confirmPasswordType, setConfirmPasswordType] = useState('password');
   const [firstName, setFirstName] = useState('');
   const [lastName, setLastName] = useState('');
   const [username, setUsername] = useState('');
   const [password, setPassword] = useState('');
+  const [confirmPassword, setConfirmPassword] = useState('');
   const [hubInputType, setHubInputType] = useState('');
   const [newFamilyHubName, setNewFamilyHubName] = useState('');
   const [familyHubInvitationCode, setFamilyHubInvitationCode] = useState('');
-  const [parent, setParent] = useState(undefined);
+  const [parent, setParent] = useState(false);
+
+  let navigate = useNavigate();
 
   useEffect(() => {
     setPasswordType(passwordHidden ? 'password' : 'text');
   }, [passwordHidden]);
+
+  useEffect(() => {
+    setConfirmPasswordType(confirmPasswordHidden ? 'password' : 'text');
+  }, [confirmPasswordHidden]);
 
   const handleSubmit = () => {
     if (hubInputType === 'join' && parent === undefined) {
       alert('Please select whether you are a parent.');
       return;
     }
-    createUser({ username, password, firstName, lastName, parent });
+    if (password != confirmPassword) {
+      alert('Your passwords do not match.');
+      return;
+    }
+    createUser({
+      familyHubInvitationCode:
+        familyHubInvitationCode === '' ? null : familyHubInvitationCode,
+      newFamilyHubName: newFamilyHubName === '' ? null : newFamilyHubName,
+      username,
+      password,
+      firstName,
+      lastName,
+      parent,
+    });
+    navigate('/login');
   };
 
   return (
@@ -109,65 +132,90 @@ export default function Register() {
             </>
           )}
 
-          <div className="label-input-wrapper" style={{ position: 'relative' }}>
-            <label htmlFor="firstName">First Name</label>
-            <input
-              id="firstName"
-              type="text"
-              onChange={(e) => setFirstName(e.target.value)}
-              value={firstName}
-              placeholder="Reece"
-            />
-          </div>
-          <div className="label-input-wrapper" style={{ position: 'relative' }}>
-            <label htmlFor="lastName">Last Name</label>
-            <input
-              id="lastName"
-              type="text"
-              onChange={(e) => setLastName(e.target.value)}
-              value={lastName}
-              placeholder="Walter"
-            />
-          </div>
-          <div className="label-input-wrapper" style={{ position: 'relative' }}>
-            <label htmlFor="username">Username</label>
-            <input
-              id="username"
-              type="text"
-              onChange={(e) => setUsername(e.target.value)}
-              value={username}
-              placeholder="JDizzy-7"
-            />
-          </div>
-          <div className="label-input-wrapper" style={{ position: 'relative' }}>
-            <label htmlFor="password">Password</label>
-            <input
-              id="password"
-              type={passwordType}
-              onChange={(e) => setPassword(e.target.value)}
-              value={password}
-              placeholder="m#P52s@ap$V"
-            />
-            {passwordHidden ? (
-              <div className="eye" onClick={() => setPasswordHidden(false)}>
-                <FaEyeSlash />
+          {(hubInputType === 'join' || hubInputType === 'new') && (
+            <>
+              <div
+                className="label-input-wrapper"
+                style={{ position: 'relative' }}
+              >
+                <label htmlFor="firstName">First Name</label>
+                <input
+                  id="firstName"
+                  type="text"
+                  onChange={(e) => setFirstName(e.target.value)}
+                  value={firstName}
+                  placeholder="Reece"
+                />
               </div>
-            ) : (
-              <div className="eye" onClick={() => setPasswordHidden(true)}>
-                <FaEye />
+              <div
+                className="label-input-wrapper"
+                style={{ position: 'relative' }}
+              >
+                <label htmlFor="lastName">Last Name</label>
+                <input
+                  id="lastName"
+                  type="text"
+                  onChange={(e) => setLastName(e.target.value)}
+                  value={lastName}
+                  placeholder="Walter"
+                />
               </div>
-            )}
-          </div>
-          <Link
-            to="/login"
-            onClick={() => handleSubmit()}
-            className="signup-button"
-          >
-            Create account
-          </Link>
-          <Link to="/login" onClick={handleSubmit} className="signup-button">
-            Create account
-          </Link>
+              <div
+                className="label-input-wrapper"
+                style={{ position: 'relative' }}
+              >
+                <label htmlFor="username">Username</label>
+                <input
+                  id="username"
+                  type="text"
+                  onChange={(e) => setUsername(e.target.value)}
+                  value={username}
+                  placeholder="JDizzy-7"
+                />
+              </div>
+              <div
+                className="label-input-wrapper"
+                style={{ position: 'relative' }}
+              >
+                <label htmlFor="password">Password</label>
+                <input
+                  id="password"
+                  type={passwordType}
+                  onChange={(e) => setPassword(e.target.value)}
+                  value={password}
+                  placeholder="m#P52s@ap$V"
+                />
+
+                <div className="eye" onClick={() => setPasswordHidden(false)}>
+                  {passwordHidden ? <FaEyeSlash /> : <FaEye />}
+                </div>
+              </div>
+              <div
+                className="label-input-wrapper"
+                style={{ position: 'relative' }}
+              >
+                <label htmlFor="password">Confirm password</label>
+                <input
+                  id="confirmPassword"
+                  type={confirmPasswordType}
+                  onChange={(e) => setConfirmPassword(e.target.value)}
+                  value={confirmPassword}
+                  placeholder="m#P52s@ap$V"
+                />
+                <div
+                  className="eye"
+                  onClick={() =>
+                    setConfirmPasswordHidden(!confirmPasswordHidden)
+                  }
+                >
+                  {confirmPasswordHidden ? <FaEyeSlash /> : <FaEye />}
+                </div>
+              </div>
+              <Link onClick={handleSubmit} className="signup-button">
+                Create account
+              </Link>
+            </>
+          )}
         </div>
       </div>
     </>
