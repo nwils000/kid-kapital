@@ -1,36 +1,38 @@
 import '../styles/register.css';
 import { Link } from 'react-router-dom';
-import { FaEye } from 'react-icons/fa';
-import { FaEyeSlash } from 'react-icons/fa';
-import { useState, useEffect } from 'react';
+import { FaEye, FaEyeSlash } from 'react-icons/fa';
+import { useEffect, useState } from 'react';
 import { createUser } from '../api-calls/api.js';
 import LandingPageNavBar from '../layout/LandingPageNavbar.jsx';
 
 export default function Register() {
   const [passwordHidden, setPasswordHidden] = useState(true);
+  const [passwordType, setPasswordType] = useState('password');
   const [firstName, setFirstName] = useState('');
   const [lastName, setLastName] = useState('');
   const [username, setUsername] = useState('');
   const [password, setPassword] = useState('');
-  const [passwordType, setPasswordType] = useState('password');
+  const [hubInputType, setHubInputType] = useState('');
+  const [newFamilyHubName, setNewFamilyHubName] = useState('');
+  const [familyHubInvitationCode, setFamilyHubInvitationCode] = useState('');
+  const [parent, setParent] = useState(undefined);
 
   useEffect(() => {
-    if (passwordHidden) {
-      setPasswordType('password');
-    } else {
-      setPasswordType('text');
-    }
+    setPasswordType(passwordHidden ? 'password' : 'text');
   }, [passwordHidden]);
 
   const handleSubmit = () => {
-    createUser({ username, password, firstName, lastName });
+    if (hubInputType === 'join' && parent === undefined) {
+      alert('Please select whether you are a parent.');
+      return;
+    }
+    createUser({ username, password, firstName, lastName, parent });
   };
 
   return (
     <>
       <LandingPageNavBar />
       <div className="signup">
-        <div></div>
         <h1>
           Create account<span>.</span>
         </h1>
@@ -38,6 +40,75 @@ export default function Register() {
           Already have an account? <Link to="/login">Sign in</Link>
         </p>
         <div className="signup-input-wrapper">
+          <div className="label-input-wrapper" style={{ position: 'relative' }}>
+            <span>
+              Creating a{' '}
+              <button
+                onClick={() => setHubInputType('new')}
+                className="new-family-hub"
+              >
+                new family hub
+              </button>
+              , or{' '}
+              <button
+                onClick={() => setHubInputType('join')}
+                className="joining-one"
+              >
+                joining one
+              </button>
+              ?
+            </span>
+          </div>
+          {hubInputType === 'new' && (
+            <div
+              className="label-input-wrapper"
+              style={{ position: 'relative' }}
+            >
+              <label htmlFor="newFamilyHubName">Family Hub Name</label>
+              <input
+                id="newFamilyHubName"
+                type="text"
+                onChange={(e) => setNewFamilyHubName(e.target.value)}
+                value={newFamilyHubName}
+                placeholder="The Wilsons"
+              />
+            </div>
+          )}
+          {hubInputType === 'join' && (
+            <>
+              <div
+                className="label-input-wrapper"
+                style={{ position: 'relative' }}
+              >
+                <label htmlFor="familyHubInvitationCode">
+                  Family Hub Invitation Code
+                </label>
+                <input
+                  id="familyHubInvitationCode"
+                  type="text"
+                  onChange={(e) => setFamilyHubInvitationCode(e.target.value)}
+                  value={familyHubInvitationCode}
+                  placeholder="JOINPS22"
+                />
+              </div>
+              <div
+                className="parent-input-wrapper"
+                style={{ position: 'relative' }}
+              >
+                <label htmlFor="parent" className="parent-label">
+                  Are you a parent?
+                </label>
+                <input
+                  id="parent"
+                  className="parent-input"
+                  type="checkbox"
+                  onChange={(e) => setParent(e.target.checked)}
+                  checked={parent === true}
+                />
+              </div>
+            </>
+          )}
+
           <div className="label-input-wrapper" style={{ position: 'relative' }}>
             <label htmlFor="firstName">First Name</label>
             <input
@@ -92,6 +163,9 @@ export default function Register() {
             onClick={() => handleSubmit()}
             className="signup-button"
           >
+            Create account
+          </Link>
+          <Link to="/login" onClick={handleSubmit} className="signup-button">
             Create account
           </Link>
         </div>

@@ -19,11 +19,33 @@
   color: #333333bf;
 }
 
+.signup .parent-label {
+  font-size: 1.3rem;
+  color: #333333bf;
+  position: inherit;
+}
+
+.signup .joining-one,
+.signup .new-family-hub {
+  padding: 0.4rem 0.8rem;
+  border: none;
+  background-color: #995722;
+  color: white;
+  border-radius: 100rem;
+}
+
 .signup input {
   height: 3.2rem;
   width: 30rem;
   padding-top: 13px;
   padding-left: 8px;
+}
+
+.signup .parent-input {
+  height: 1.2rem;
+  width: 1.2rem;
+  padding-top: 0;
+  padding-left: 0;
 }
 
 .signup .eye {
@@ -59,6 +81,7 @@
   padding: 0.7rem 4rem;
   border-radius: 100rem;
   margin-top: 1rem;
+  border: none;
 }
 
 .signup-input-wrapper {
@@ -70,4 +93,12 @@
 .label-input-wrapper {
   display: flex;
   flex-direction: column;
+}
+
+.parent-input-wrapper {
+  display: flex;
+  align-items: end;
+  gap: 1.5rem;
+  position: relative;
+  bottom: 0.5rem;
 }

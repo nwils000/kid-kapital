@@ -10,12 +10,14 @@ import {
 
 import './styles/index.css';
 
-import ParentDashboard from './pages/LandingPage';
+import LandingPage from './pages/LandingPage';
 import ErrorPage from './pages/ErrorPage';
 import Login from './pages/Login';
 import Register from './pages/Register';
 import { initialMainState, mainReducer } from './reducers/main-reducer';
 import { MainContext } from './context/context';
+import ParentDashboard from './pages/ParentDashboard';
+import ChildDashboard from './pages/ChildDashboard';
 
 function Layout() {
   return (
@@ -55,6 +57,14 @@ const router = createBrowserRouter([
       {
         path: '/register',
         element: <Register />,
+      },
+      {
+        path: '/parent-dashboard',
+        element: <ParentDashboard />,
+      },
+      {
+        path: '/child-dashboard',
+        element: <ChildDashboard />,
       },
       // {
       //   path: '/dashboard',

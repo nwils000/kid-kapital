@@ -29,8 +29,10 @@ export default function Login() {
   const submit = async () => {
     try {
       const accessToken = await getToken({ main, username, password });
-      await fetchUser({ accessToken, main });
-      navigate('/dashboard');
+      const profile = await fetchUser({ accessToken, main });
+      profile.parent
+        ? navigate('/parent-dashboard')
+        : navigate('/child-dashboard');
     } catch (error) {
       console.log('Error:', error);
       navigate('/');

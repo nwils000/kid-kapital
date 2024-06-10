@@ -1,7 +1,6 @@
 import axios from 'axios';
 
-// const baseUrl = 'http://127.0.0.1:8000';
-const baseUrl = 'https://app-social-media.fly.dev';
+const baseUrl = 'http://127.0.0.1:8000';
 
 export const getToken = async ({ main, username, password }) => {
   try {
@@ -39,9 +38,10 @@ export const fetchUser = async ({ accessToken, main }) => {
       type: 'SET_PROFILE',
       profile: response.data,
     });
+    return response.data;
   } catch (error) {
     console.log('Error with fetchUser api call: ', error);
-    profile.dispatch({
+    main.dispatch({
       type: 'SET_ACCESS_TOKEN',
       accessToken: undefined,
     });
@@ -49,6 +49,7 @@ export const fetchUser = async ({ accessToken, main }) => {
 };
 
 export const createUser = async ({
+  familyHubName,
   username,
   password,
   firstName,
@@ -59,6 +60,7 @@ export const createUser = async ({
       method: 'post',
       url: `${baseUrl}/create-user/`,
       data: {
+        family_hub_name: familyHubName,
         username,
         password: password,
         first_name: firstName,
