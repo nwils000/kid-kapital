@@ -18,16 +18,24 @@
 .day-button {
   width: 40px;
   height: 40px;
-
+  text-align: center;
   border: none;
   border-radius: 50%; /* Make the buttons circular */
   background-color: lightgray;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  flex-direction: column;
   cursor: pointer;
   transition: background-color 0.3s;
 }
 
+.day-button p {
+  margin: 0;
+}
+
 .day-button.selected {
-  background-color: deepskyblue;
+  background-color: #36aa97;
   color: white;
 }
 
@@ -60,7 +68,8 @@ li:last-child {
 
 button {
   margin: 10px;
-  padding: 5px 10px;
-  border-radius: 5px;
+  padding: 10px 20px;
+  border-radius: 20rem;
   cursor: pointer;
+  border: none;
 }

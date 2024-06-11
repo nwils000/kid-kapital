@@ -2,6 +2,7 @@ import React, { useState, useContext } from 'react';
 import { MainContext } from '../context/context';
 import ParentDashboardNavbar from '../layout/ParentDashboardNavbar';
 import '../styles/my-responsibilities.css'; // Ensure you have this CSS file in the correct path
+import { createResponsibility } from '../api-calls/api';
 
 const initialResponsibilities = {
   '2024-06-12': ['Grocery Shopping', 'Read 30 pages of a book'],
@@ -57,17 +58,26 @@ function MyResponsibilities() {
     return days;
   }
 
-  function addTask() {
-    const task = prompt('Enter a new task:');
-    if (task) {
-      const formattedDate = formatDate(selectedDay);
-      const updatedTasks = responsibilities[formattedDate]
-        ? [...responsibilities[formattedDate], task]
-        : [task];
-      setResponsibilities({
-        ...responsibilities,
-        [formattedDate]: updatedTasks,
-      });
+  async function addTask() {
+    const responsibility = prompt('Enter your responsibilities title:');
+    if (responsibility) {
+      try {
+        const formattedDate = formatDate(selectedDay);
+        await createResponsibility({
+          main,
+          title: responsibility,
+          date: formattedDate,
+        });
+        const updatedResponsibilities = responsibilities[formattedDate]
+          ? [...responsibilities[formattedDate], responsibility]
+          : [responsibility];
+        setResponsibilities({
+          ...responsibilities,
+          [formattedDate]: updatedResponsibilities,
+        });
+      } catch (e) {
+        console.log(e);
+      }
     }
   }
 
@@ -99,7 +109,7 @@ function MyResponsibilities() {
         </div>
         <div className="week-days">
           {daysOfWeek.map((day, index) => (
-            <button
+            <div
               key={index}
               className={`day-button ${
                 selectedDay.toDateString() === day.toDateString()
@@ -108,8 +118,8 @@ function MyResponsibilities() {
               }`}
               onClick={() => setSelectedDay(day)}
             >
-              {day.getDate()}
-            </button>
+              <p>{day.getDate()}</p>
+            </div>
           ))}
         </div>
         <div className="selected-day-tasks">

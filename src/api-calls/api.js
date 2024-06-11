@@ -74,3 +74,23 @@ export const createUser = async ({
     console.log('Error with createUser api call: ', error);
   }
 };
+
+export const createResponsibility = async ({ main, title, date }) => {
+  console.log(main);
+  try {
+    const response = await axios({
+      method: 'post',
+      url: `${baseUrl}/create-responsibility/`,
+      headers: {
+        Authorization: `Bearer ${main.state.accessToken}`,
+      },
+      data: {
+        title,
+        date,
+      },
+    });
+    console.log('CREATE USER: ', response);
+  } catch (error) {
+    console.log('Error with createResponsibility api call: ', error);
+  }
+};
