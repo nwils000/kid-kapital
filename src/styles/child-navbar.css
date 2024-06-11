@@ -1,0 +1,9 @@
+.parent-navbar .nav-link {
+  color: #1f6357;
+  padding: 15px 0px;
+}
+
+.parent-navbar .nav-link:hover {
+  color: #36aa97;
+  padding: 15px 0px;
+}

@@ -19,7 +19,7 @@ export default function ParentDashboardNavbar() {
           <Link to="/family-store" className="nav-link">
             Family Store
           </Link>
-          <Link to="/my-responsibilities" className="nav-link">
+          <Link to="/parent-responsibilities" className="nav-link">
             My Responsibilities
           </Link>
         </div>

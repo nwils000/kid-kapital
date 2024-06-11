@@ -1,4 +1,4 @@
-import React, { useContext } from 'react';
+import React, { useContext, useEffect } from 'react';
 import { MainContext } from '../context/context';
 import '../styles/parent-dashboard.css';
 import ParentDashboardNavbar from '../layout/ParentDashboardNavbar';
@@ -19,16 +19,31 @@ export default function ParentDashboard() {
               {main.state.profile.family.invitation_code}
             </span>
           </div>
-          {main.state.profile.family.members.map((x) => {
+          {main.state.profile.family.members.map((child) => {
+            console.log(child.id);
             return (
-              <div style={{ width: '100%' }}>
-                {x.first_name}{' '}
-                {x.parent ? <span>(Parent)</span> : <span>(Child)</span>}
+              <div key={child.id} style={{ width: '100%' }}>
+                {child.first_name}{' '}
+                {child.parent ? <span>(Parent)</span> : <span>(Child)</span>}
               </div>
             );
           })}
         </div>
-        <div className="responsibilities">My Responsibilities</div>
+        <div className="responsibilities">
+          Children responsibilities to review
+          {main.state.profile.family.members.map((child) => {
+            return (
+              <div key={child.id} style={{ width: '100%' }}>
+                {child.first_name}{' '}
+                {child.responsibilities.map((responsibility) => {
+                  return (
+                    <div key={responsibility.id}>{responsibility.title}</div>
+                  );
+                })}
+              </div>
+            );
+          })}
+        </div>
         <div className="wallet">Wallet</div>
       </div>
     </>

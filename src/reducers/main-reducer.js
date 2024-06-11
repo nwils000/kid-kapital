@@ -6,24 +6,26 @@ export const initialMainState = JSONStorage ?? {
 };
 
 export const mainReducer = (state, action) => {
+  let newState;
+
   switch (action.type) {
     case 'SET_ACCESS_TOKEN':
-      localStorage.setItem(
-        'STATE',
-        JSON.stringify({ ...state, accessToken: action.accessToken })
-      );
-      return {
+      newState = {
         ...state,
         accessToken: action.accessToken,
       };
+      break;
     case 'SET_PROFILE':
-      localStorage.setItem(
-        'STATE',
-        JSON.stringify({ ...state, profile: action.profile })
-      );
-      return {
+      newState = {
         ...state,
         profile: action.profile,
       };
+      break;
+    default:
+      return state;
   }
+
+  localStorage.setItem('STATE', JSON.stringify(newState));
+
+  return newState;
 };

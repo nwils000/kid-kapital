@@ -8,7 +8,7 @@ import {
   fetchResponsibilities,
 } from '../api-calls/api';
 
-function MyResponsibilities() {
+function ParentResponsibilities() {
   const { main } = useContext(MainContext);
   const [weekStart, setWeekStart] = useState(getSunday(new Date()));
   const [selectedDay, setSelectedDay] = useState(new Date());
@@ -208,4 +208,4 @@ function MyResponsibilities() {
   );
 }
 
-export default MyResponsibilities;
+export default ParentResponsibilities;

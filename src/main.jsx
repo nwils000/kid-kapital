@@ -20,7 +20,8 @@ import ParentDashboard from './pages/ParentDashboard';
 import ChildDashboard from './pages/ChildDashboard';
 import Family from './pages/Family';
 import FamilyStore from './pages/FamilyStore';
-import MyResponsibilities from './pages/MyResponsibilities';
+import ParentResponsibilities from './pages/ParentResponsibilities';
+import ChildResponsibilities from './pages/ChildResponsibilities';
 
 function Layout() {
   return (
@@ -78,8 +79,12 @@ const router = createBrowserRouter([
         element: <FamilyStore />,
       },
       {
-        path: '/my-responsibilities',
-        element: <MyResponsibilities />,
+        path: '/parent-responsibilities',
+        element: <ParentResponsibilities />,
+      },
+      {
+        path: '/child-responsibilities',
+        element: <ChildResponsibilities />,
       },
       // {
       //   path: '/dashboard',
