@@ -2,7 +2,11 @@ import React, { useState, useContext, useEffect } from 'react';
 import { MainContext } from '../context/context';
 import ParentDashboardNavbar from '../layout/ParentDashboardNavbar';
 import '../styles/my-responsibilities.css'; // Ensure you have this CSS file in the correct path
-import { createResponsibility, fetchResponsibilities } from '../api-calls/api';
+import {
+  createResponsibility,
+  deleteResponsibilities,
+  fetchResponsibilities,
+} from '../api-calls/api';
 
 function MyResponsibilities() {
   const { main } = useContext(MainContext);
@@ -22,7 +26,10 @@ function MyResponsibilities() {
             allResponsibilities[element.date] = [];
           }
 
-          allResponsibilities[element.date].push(element.title);
+          allResponsibilities[element.date].push({
+            title: element.title,
+            id: element.id,
+          });
         });
 
         setResponsibilities(allResponsibilities);
@@ -76,19 +83,20 @@ function MyResponsibilities() {
     return days;
   }
 
-  async function addTask() {
+  async function addResponsibility() {
     const responsibility = prompt('Enter your responsibilities title:');
     if (responsibility) {
       try {
         const formattedDate = formatDate(selectedDay);
-        await createResponsibility({
+        let newResponsibility = await createResponsibility({
           main,
           title: responsibility,
           date: formattedDate,
         });
+        console.log('NEW RESPONSIBILITY', newResponsibility);
         const updatedResponsibilities = responsibilities[formattedDate]
-          ? [...responsibilities[formattedDate], responsibility]
-          : [responsibility];
+          ? [...responsibilities[formattedDate], newResponsibility]
+          : [newResponsibility];
         setResponsibilities({
           ...responsibilities,
           [formattedDate]: updatedResponsibilities,
@@ -96,6 +104,37 @@ function MyResponsibilities() {
       } catch (e) {
         console.log(e);
       }
+    }
+  }
+
+  async function handleDeleteResponsibility(id) {
+    console.log('Deleting ID:', id);
+    try {
+      const updatedResponsibilitiesData = await deleteResponsibilities({
+        main,
+        id,
+      });
+      console.log(
+        'Updated responsibilities after deletion:',
+        updatedResponsibilitiesData
+      );
+
+      let allResponsibilities = {};
+
+      updatedResponsibilitiesData.data.forEach((element) => {
+        if (!allResponsibilities[element.date]) {
+          allResponsibilities[element.date] = [];
+        }
+
+        allResponsibilities[element.date].push({
+          title: element.title,
+          id: element.id,
+        });
+      });
+
+      setResponsibilities(allResponsibilities);
+    } catch (e) {
+      console.log(e);
     }
   }
 
@@ -140,18 +179,29 @@ function MyResponsibilities() {
             </div>
           ))}
         </div>
-        <div className="selected-day-tasks">
-          <h3>Tasks for {formatDateForDisplay(selectedDay)}:</h3>
+        <div className="selected-day-responsibilities">
+          <h3>Responsibilities for {formatDateForDisplay(selectedDay)}:</h3>
           <ul>
             {responsibilities[formatDate(selectedDay)] ? (
-              responsibilities[formatDate(selectedDay)].map((task, index) => (
-                <li key={index}>{task}</li>
-              ))
+              responsibilities[formatDate(selectedDay)].map(
+                (responsibility, index) => (
+                  <li key={index}>
+                    <span>{responsibility.title}</span>{' '}
+                    <span
+                      onClick={() => {
+                        handleDeleteResponsibility(responsibility.id);
+                      }}
+                    >
+                      X
+                    </span>
+                  </li>
+                )
+              )
             ) : (
               <li>No Responsibilities</li>
             )}
           </ul>
-          <button onClick={addTask}>Add Task</button>
+          <button onClick={addResponsibility}>Add responsibility</button>
         </div>
       </div>
     </>

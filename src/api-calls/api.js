@@ -89,7 +89,7 @@ export const createResponsibility = async ({ main, title, date }) => {
         date,
       },
     });
-
+    return response.data;
     console.log('CREATE RESPONSIBILITY: ', response);
   } catch (error) {
     console.log('Error with createResponsibility api call: ', error);
@@ -97,7 +97,6 @@ export const createResponsibility = async ({ main, title, date }) => {
 };
 
 export const fetchResponsibilities = async ({ main }) => {
-  console.log(main);
   try {
     const response = await axios({
       method: 'get',
@@ -110,5 +109,24 @@ export const fetchResponsibilities = async ({ main }) => {
     return response;
   } catch (error) {
     console.log('Error with fetchResponsibility api call: ', error);
+  }
+};
+
+export const deleteResponsibilities = async ({ main, id }) => {
+  try {
+    const response = await axios({
+      method: 'delete',
+      url: `${baseUrl}/delete-responsibility/`,
+      headers: {
+        Authorization: `Bearer ${main.state.accessToken}`,
+      },
+      data: {
+        id,
+      },
+    });
+    console.log('DELETE RESPONSIBILITIES: ', response);
+    return response;
+  } catch (error) {
+    console.log('Error with deleteResponsibility api call: ', error);
   }
 };
