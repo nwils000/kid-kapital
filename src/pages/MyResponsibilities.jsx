@@ -1,21 +1,39 @@
-import React, { useState, useContext } from 'react';
+import React, { useState, useContext, useEffect } from 'react';
 import { MainContext } from '../context/context';
 import ParentDashboardNavbar from '../layout/ParentDashboardNavbar';
 import '../styles/my-responsibilities.css'; // Ensure you have this CSS file in the correct path
-import { createResponsibility } from '../api-calls/api';
-
-const initialResponsibilities = {
-  '2024-06-12': ['Grocery Shopping', 'Read 30 pages of a book'],
-  '2024-06-13': ['Yoga Session', 'Prepare Dinner'],
-};
+import { createResponsibility, fetchResponsibilities } from '../api-calls/api';
 
 function MyResponsibilities() {
   const { main } = useContext(MainContext);
   const [weekStart, setWeekStart] = useState(getSunday(new Date()));
   const [selectedDay, setSelectedDay] = useState(new Date());
-  const [responsibilities, setResponsibilities] = useState(
-    initialResponsibilities
-  );
+  const [responsibilities, setResponsibilities] = useState([]);
+
+  useEffect(() => {
+    async function getResponsibilities() {
+      try {
+        const fetchedResponsibilities = await fetchResponsibilities({ main });
+        let allResponsibilities = {};
+        console.log('fetched responsabilities', fetchedResponsibilities);
+
+        fetchedResponsibilities.data.forEach((element) => {
+          if (!allResponsibilities[element.date]) {
+            allResponsibilities[element.date] = [];
+          }
+
+          allResponsibilities[element.date].push(element.title);
+        });
+
+        setResponsibilities(allResponsibilities);
+        console.log(allResponsibilities);
+      } catch (e) {
+        console.error(e);
+      }
+    }
+
+    getResponsibilities();
+  }, []);
 
   function getSunday(d) {
     const date = new Date(d);

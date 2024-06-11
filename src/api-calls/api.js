@@ -89,8 +89,26 @@ export const createResponsibility = async ({ main, title, date }) => {
         date,
       },
     });
-    console.log('CREATE USER: ', response);
+
+    console.log('CREATE RESPONSIBILITY: ', response);
   } catch (error) {
     console.log('Error with createResponsibility api call: ', error);
+  }
+};
+
+export const fetchResponsibilities = async ({ main }) => {
+  console.log(main);
+  try {
+    const response = await axios({
+      method: 'get',
+      url: `${baseUrl}/responsibilities/`,
+      headers: {
+        Authorization: `Bearer ${main.state.accessToken}`,
+      },
+    });
+    console.log('FETCH RESPONSIBILITIES: ', response);
+    return response;
+  } catch (error) {
+    console.log('Error with fetchResponsibility api call: ', error);
   }
 };
