@@ -55,7 +55,9 @@ export const createUser = async ({
   password,
   firstName,
   lastName,
+  parent,
 }) => {
+  console.log('parenttttt', parent);
   try {
     const response = await axios({
       method: 'post',
@@ -67,6 +69,7 @@ export const createUser = async ({
         password: password,
         first_name: firstName,
         last_name: lastName,
+        parent,
       },
     });
     console.log('CREATE USER: ', response);
@@ -89,8 +92,8 @@ export const createResponsibility = async ({ main, title, date }) => {
         date,
       },
     });
-    return response.data;
     console.log('CREATE RESPONSIBILITY: ', response);
+    return response.data;
   } catch (error) {
     console.log('Error with createResponsibility api call: ', error);
   }

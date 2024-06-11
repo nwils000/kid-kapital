@@ -18,7 +18,11 @@ export default function Register() {
   const [hubInputType, setHubInputType] = useState('');
   const [newFamilyHubName, setNewFamilyHubName] = useState('');
   const [familyHubInvitationCode, setFamilyHubInvitationCode] = useState('');
-  const [parent, setParent] = useState();
+  const [parent, setParent] = useState(false);
+
+  useEffect(() => {
+    console.log(parent);
+  }, [parent]);
 
   let navigate = useNavigate();
 
@@ -47,7 +51,7 @@ export default function Register() {
       password,
       firstName,
       lastName,
-      parent,
+      parent: familyHubInvitationCode === '' ? true : parent,
     });
     navigate('/login');
   };

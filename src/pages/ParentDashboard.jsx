@@ -23,7 +23,7 @@ export default function ParentDashboard() {
             return (
               <div style={{ width: '100%' }}>
                 {x.first_name}{' '}
-                {x.parent ? <span>(Parent)</span> : <span></span>}
+                {x.parent ? <span>(Parent)</span> : <span>(Child)</span>}
               </div>
             );
           })}

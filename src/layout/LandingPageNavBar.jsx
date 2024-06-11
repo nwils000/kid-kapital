@@ -3,18 +3,21 @@ import { Link } from 'react-router-dom';
 
 export default function LandingPageNavbar() {
   return (
-    <div className="navbar">
-      <Link to="/">
-        <span className="logo-text">Family Finance</span>
-      </Link>
-      <div className="nav-links-wrapper">
-        <Link className="nav-link" to="/register">
-          Register
+    <>
+      <div className="navbar">
+        <Link to="/">
+          <span className="logo-text">Family Finance</span>
         </Link>
-        <Link to="/login" className="nav-link">
-          Sign in
-        </Link>
+        <div className="nav-links-wrapper">
+          <Link className="nav-link" to="/register">
+            Register
+          </Link>
+          <Link to="/login" className="nav-link">
+            Sign in
+          </Link>
+        </div>
       </div>
-    </div>
+      <div style={{ height: '6rem' }}></div>
+    </>
   );
 }
