@@ -82,7 +82,6 @@ function EditResponsibilityModal({
       completed,
     });
 
-    setShowEditModal(false);
     setIsEditing(false);
   };
 
