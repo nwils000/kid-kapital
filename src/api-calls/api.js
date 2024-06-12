@@ -78,7 +78,12 @@ export const createUser = async ({
   }
 };
 
-export const createResponsibility = async ({ main, title, date }) => {
+export const createResponsibility = async ({
+  main,
+  title,
+  description,
+  date,
+}) => {
   console.log(main);
   try {
     const response = await axios({
@@ -90,6 +95,7 @@ export const createResponsibility = async ({ main, title, date }) => {
       data: {
         title,
         date,
+        description,
       },
     });
     console.log('CREATE RESPONSIBILITY: ', response);
@@ -131,5 +137,84 @@ export const deleteResponsibilities = async ({ main, id }) => {
     return response;
   } catch (error) {
     console.log('Error with deleteResponsibility api call: ', error);
+  }
+};
+
+export const updateResponsibility = async ({
+  main,
+  title,
+  description,
+  difficulty,
+  completed,
+  id,
+}) => {
+  try {
+    const response = await axios({
+      method: 'put',
+      url: `${baseUrl}/update-responsibility/`,
+      headers: {
+        Authorization: `Bearer ${main.state.accessToken}`,
+      },
+      data: {
+        id,
+        title,
+        description,
+        difficulty,
+        completed,
+      },
+    });
+    fetchUser({ accessToken: main.state.accessToken, main });
+    console.log('UPDATE RESPONSIBILITIES: ', response);
+    return response;
+  } catch (error) {
+    console.log('Error with updateResponsibility api call: ', error);
+  }
+};
+
+export const approveResponsibility = async ({
+  main,
+  difficulty,
+  approved,
+  id,
+}) => {
+  try {
+    const response = await axios({
+      method: 'put',
+      url: `${baseUrl}/approve-responsibility/`,
+      headers: {
+        Authorization: `Bearer ${main.state.accessToken}`,
+      },
+      data: {
+        id,
+        difficulty,
+        verified: approved,
+      },
+    });
+    fetchUser({ accessToken: main.state.accessToken, main });
+    console.log('APPROVE RESPONSIBILITIES: ', response);
+    return response;
+  } catch (error) {
+    console.log('Error with approveResponsibility api call: ', error);
+  }
+};
+
+export const completeResponsibility = async ({ main, completed, id }) => {
+  try {
+    const response = await axios({
+      method: 'put',
+      url: `${baseUrl}/complete-responsibility/`,
+      headers: {
+        Authorization: `Bearer ${main.state.accessToken}`,
+      },
+      data: {
+        id,
+        completed,
+      },
+    });
+    fetchUser({ accessToken: main.state.accessToken, main });
+    console.log('COMPLETED RESPONSIBILITIES: ', response);
+    return response;
+  } catch (error) {
+    console.log('Error with completeResponsibility api call: ', error);
   }
 };

@@ -20,10 +20,6 @@ export default function Register() {
   const [familyHubInvitationCode, setFamilyHubInvitationCode] = useState('');
   const [parent, setParent] = useState(false);
 
-  useEffect(() => {
-    console.log(parent);
-  }, [parent]);
-
   let navigate = useNavigate();
 
   useEffect(() => {

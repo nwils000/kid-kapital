@@ -1,10 +1,21 @@
-import React, { useContext } from 'react';
+import React, { useContext, useEffect, useState } from 'react';
 import { MainContext } from '../context/context';
 import '../styles/child-dashboard.css';
 import ChildDashboardNavbar from '../layout/ChildDashboardNavbar';
+import { fetchUser } from '../api-calls/api';
+
+function formatDate(dateString) {
+  const date = new Date(dateString);
+  return `${date.getMonth() + 1}/${date.getDate()}`;
+}
 
 export default function ChildDashboard() {
   const { main } = useContext(MainContext);
+  const [selectedChildId, setSelectedChildId] = useState('all');
+
+  useEffect(() => {
+    fetchUser({ accessToken: main.state.accessToken, main });
+  }, []);
 
   return (
     <>
@@ -19,20 +30,60 @@ export default function ChildDashboard() {
               {main.state.profile.family.invitation_code}
             </span>
           </div>
-          {main.state.profile.family.members.map((x) => {
-            return (
-              <div style={{ width: '100%' }}>
-                {x.first_name}{' '}
-                {x.parent ? <span>(Parent)</span> : <span>(Child)</span>}
-              </div>
-            );
-          })}
+          <div style={{ maxWidth: '35rem', marginTop: '20px' }}>
+            <h2>Family Responsibilities</h2>
+            <h2>All Incomplete Responsibilities</h2>
+            <select
+              onChange={(e) => setSelectedChildId(e.target.value)}
+              value={selectedChildId}
+            >
+              <option value="all">Whole Family</option>
+              {main.state.profile.family.members.map((child) => (
+                <option key={child.id} value={child.id}>
+                  {child.first_name}
+                </option>
+              ))}
+            </select>
+            {selectedChildId === 'all'
+              ? main.state.profile.family.members.map((child) =>
+                  child.responsibilities
+                    .filter((responsibility) => {
+                      return responsibility.completed === false;
+                    })
+                    .map((responsibility) => (
+                      <div key={responsibility.id}>
+                        {child.first_name}: {formatDate(responsibility.date)} -{' '}
+                        {responsibility.title}
+                      </div>
+                    ))
+                )
+              : main.state.profile.family.members
+                  .filter((child) => {
+                    return child.id.toString() === selectedChildId;
+                  })
+                  .map((child) => {
+                    return child.responsibilities
+                      .filter((responsibility) => {
+                        return responsibility.completed === false;
+                      })
+                      .map((responsibility) => (
+                        <div key={responsibility.id}>
+                          {formatDate(responsibility.date)} -{' '}
+                          {responsibility.title}
+                        </div>
+                      ));
+                  })}
+          </div>
         </div>
         <div className="responsibilities">
-          My Responsibilities
-          {main.state.profile.responsibilities.map((responsibility) => {
-            return <div key={responsibility.id}>{responsibility.title}</div>;
-          })}
+          <h2>My Responsibilities</h2>
+          {main.state.profile.responsibilities
+            .filter((responsibility) => !responsibility.completed)
+            .map((responsibility, index) => (
+              <div key={index}>
+                {formatDate(responsibility.date)} - {responsibility.title}
+              </div>
+            ))}
         </div>
         <div className="wallet">Wallet</div>
       </div>

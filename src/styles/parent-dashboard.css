@@ -50,5 +50,6 @@
   margin-bottom: 0;
 }
 
-.invitation-code {
+.child-responsibility-to-approve:hover {
+  cursor: pointer;
 }

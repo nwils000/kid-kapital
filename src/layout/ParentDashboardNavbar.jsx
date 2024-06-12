@@ -7,7 +7,7 @@ export default function ParentDashboardNavbar() {
     <>
       <div className="navbar parent-navbar">
         <Link to="/">
-          <span className="logo-text">Family Finance</span>
+          <span className="logo-text">Kid Kapital</span>
         </Link>
         <div className="nav-links-wrapper">
           <Link className="nav-link" to="/parent-dashboard">
@@ -19,7 +19,7 @@ export default function ParentDashboardNavbar() {
           <Link to="/family-store" className="nav-link">
             Family Store
           </Link>
-          <Link to="/parent-responsibilities" className="nav-link">
+          <Link to="/responsibilities" className="nav-link">
             My Responsibilities
           </Link>
         </div>

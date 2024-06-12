@@ -6,7 +6,7 @@ export default function LandingPageNavbar() {
     <>
       <div className="navbar">
         <Link to="/">
-          <span className="logo-text">Family Finance</span>
+          <span className="logo-text">Kid Kapital</span>
         </Link>
         <div className="nav-links-wrapper">
           <Link className="nav-link" to="/register">

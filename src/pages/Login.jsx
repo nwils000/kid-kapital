@@ -23,7 +23,7 @@ export default function Login() {
   }, [passwordHidden]);
 
   useEffect(() => {
-    console.log('THE TOKEN', main.state.accessToken);
+   
   }, [main.state.accessToken]);
 
   const submit = async () => {
