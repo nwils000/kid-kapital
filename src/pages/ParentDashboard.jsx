@@ -61,12 +61,16 @@ export default function ParentDashboard() {
             onChange={(e) => setSelectedChildIdNeedingApproval(e.target.value)}
             value={selectedChildIdNeedingApproval}
           >
-            <option value="all">Whole Family</option>
-            {main.state.profile.family.members.map((child) => (
-              <option key={child.id} value={child.id}>
-                {child.first_name}
-              </option>
-            ))}
+            <option value="all">All Kids</option>
+            {main.state.profile.family.members
+              .filter((member) => {
+                return !member.parent;
+              })
+              .map((child) => (
+                <option key={child.id} value={child.id}>
+                  {child.first_name}
+                </option>
+              ))}
           </select>
           <div style={{ maxWidth: '35rem' }}>
             {selectedChildIdNeedingApproval === 'all'

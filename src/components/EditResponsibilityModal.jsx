@@ -43,6 +43,7 @@ function EditResponsibilityModal({
 
   useEffect(() => {
     if (showEditModal) {
+      setIsEditing(false);
       setDifficulty(currentResponsibility.difficulty);
       setTitle(currentResponsibility.title);
       setDescription(currentResponsibility.description);
@@ -73,6 +74,36 @@ function EditResponsibilityModal({
     }
   }, [showEditModal, currentResponsibility]);
 
+  const setTheDifficulty = () => {
+    switch (difficulty) {
+      case 0:
+        setDifficultyString('Too Easy');
+        break;
+      case 1:
+        setDifficultyString('Very Easy');
+        break;
+      case 2:
+        setDifficultyString('Easy');
+        break;
+      case 3:
+        setDifficultyString('Medium');
+        break;
+      case 4:
+        setDifficultyString('Hard');
+        break;
+      case 5:
+        setDifficultyString('Very Hard');
+        break;
+      case 6:
+        setDifficultyString('Extremely Hard');
+        break;
+    }
+  };
+
+  useEffect(() => {
+    console.log('THIS IS THE DIFFICULTY', difficulty);
+  }, [difficulty]);
+
   const handleSubmit = () => {
     editResponsibility({
       id: currentResponsibility.id,
@@ -81,7 +112,7 @@ function EditResponsibilityModal({
       difficulty,
       completed,
     });
-
+    setTheDifficulty();
     setIsEditing(false);
   };
 
@@ -92,27 +123,31 @@ function EditResponsibilityModal({
 
   if (!showEditModal) return null;
 
-  const modalClass = currentResponsibility.verified
-    ? 'modal-content verified'
-    : 'modal-content';
+  const modalClass =
+    currentResponsibility.verified && !main.state.profile.parent
+      ? 'modal-content verified'
+      : 'modal-content';
 
   return (
     <div className="modal-overlay" onClick={() => setShowEditModal(false)}>
       <div className={modalClass} onClick={(e) => e.stopPropagation()}>
-        {currentResponsibility.verified ? (
-          <p style={{ color: 'rgb(49, 154, 199)', textAlign: 'center' }}>
-            Parent approved
-          </p>
-        ) : (
-          <p style={{ color: 'rgb(49, 154, 199)', textAlign: 'center' }}>
-            Waiting for parent approval
-          </p>
-        )}
+        {!main.state.profile.parent ? (
+          currentResponsibility.verified ? (
+            <p style={{ color: 'rgb(49, 154, 199)', textAlign: 'center' }}>
+              Parent approved
+            </p>
+          ) : (
+            <p style={{ color: 'rgb(49, 154, 199)', textAlign: 'center' }}>
+              Waiting for parent approval
+            </p>
+          )
+        ) : null}
         <button className="close-btn" onClick={() => setShowEditModal(false)}>
           X
         </button>
         <div className="modal-body">
-          {isEditing && !currentResponsibility.verified ? (
+          {isEditing &&
+          (!currentResponsibility.verified || main.state.profile.parent) ? (
             <>
               <input
                 className="title-input"
@@ -129,7 +164,7 @@ function EditResponsibilityModal({
               <select
                 className="difficulty-select"
                 value={difficulty}
-                onChange={(e) => setDifficulty(e.target.value)}
+                onChange={(e) => setDifficulty(Number(e.target.value))}
               >
                 <option value={0}>Too Easy</option>
                 <option value={1}>Very Easy</option>
@@ -168,11 +203,15 @@ function EditResponsibilityModal({
                   </button>
                 </div>
               )}
-              {!currentResponsibility.verified && (
-                <button className="edit-btn" onClick={() => setIsEditing(true)}>
-                  <FiEdit /> Edit
-                </button>
-              )}
+              {!currentResponsibility.verified ||
+                (main.state.profile.parent && (
+                  <button
+                    className="edit-btn"
+                    onClick={() => setIsEditing(true)}
+                  >
+                    <FiEdit /> Edit
+                  </button>
+                ))}
             </>
           )}
         </div>

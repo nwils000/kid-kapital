@@ -79,7 +79,7 @@ export default function FamilyManager() {
                     </td>
                     <td>
                       {member.responsibilities
-                        .filter((resp) => resp.completed)
+                        .filter((resp) => resp.completed && resp.verified)
                         .reduce(
                           (totalDifficulty, resp) =>
                             totalDifficulty + resp.difficulty,
