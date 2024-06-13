@@ -22,6 +22,7 @@ import Family from './pages/Family';
 import FamilyStore from './pages/FamilyStore';
 
 import Responsibilities from './pages/Responsibilities';
+import ChildResponsibilities from './pages/ChildResponsibilities';
 
 function Layout() {
   return (
@@ -69,6 +70,10 @@ const router = createBrowserRouter([
       {
         path: '/child-dashboard',
         element: <ChildDashboard />,
+      },
+      {
+        path: '/child-responsibilities',
+        element: <ChildResponsibilities />,
       },
       {
         path: '/family',

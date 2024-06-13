@@ -82,6 +82,8 @@ export const createResponsibility = async ({
   main,
   title,
   description,
+  profileId,
+  verified,
   date,
 }) => {
   console.log(main);
@@ -95,7 +97,9 @@ export const createResponsibility = async ({
       data: {
         title,
         date,
+        verified,
         description,
+        profile_id: profileId,
       },
     });
     console.log('CREATE RESPONSIBILITY: ', response);
@@ -121,7 +125,30 @@ export const fetchResponsibilities = async ({ main }) => {
   }
 };
 
-export const deleteResponsibilities = async ({ main, id }) => {
+export const fetchChildResponsibilities = async ({ main, childId }) => {
+  try {
+    const response = await axios({
+      method: 'get',
+      url: `${baseUrl}/child-responsibilities/`,
+      headers: {
+        Authorization: `Bearer ${main.state.accessToken}`,
+      },
+      params: {
+        child_id: childId,
+      },
+    });
+    main.dispatch({
+      type: 'SET_CHILD_IM_SEEINGS_RESPONSIBILITIES',
+      childImSeeingsResponsibilities: response.data,
+    });
+    console.log('FETCHED CHILD RESPONSIBILITIES: ', response);
+    return response;
+  } catch (error) {
+    console.log('Error with fetchChildResponsibility api call: ', error);
+  }
+};
+
+export const deleteResponsibilities = async ({ main, id, profileId }) => {
   try {
     const response = await axios({
       method: 'delete',
@@ -131,6 +158,7 @@ export const deleteResponsibilities = async ({ main, id }) => {
       },
       data: {
         id,
+        profile_id: profileId,
       },
     });
     console.log('DELETE RESPONSIBILITIES: ', response);
@@ -147,6 +175,7 @@ export const updateResponsibility = async ({
   difficulty,
   completed,
   id,
+  profileId,
 }) => {
   try {
     const response = await axios({
@@ -161,6 +190,7 @@ export const updateResponsibility = async ({
         description,
         difficulty,
         completed,
+        profile_id: profileId,
       },
     });
     fetchUser({ accessToken: main.state.accessToken, main });

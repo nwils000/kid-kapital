@@ -3,6 +3,8 @@ const JSONStorage = JSON.parse(localStorage.getItem('STATE'));
 export const initialMainState = JSONStorage ?? {
   accessToken: '',
   profile: {},
+  childImSeeingsResponsibilities: [],
+  childImSeeingsId: 0,
 };
 
 export const mainReducer = (state, action) => {
@@ -19,6 +21,18 @@ export const mainReducer = (state, action) => {
       newState = {
         ...state,
         profile: action.profile,
+      };
+      break;
+    case 'SET_CHILD_IM_SEEINGS_RESPONSIBILITIES':
+      newState = {
+        ...state,
+        childImSeeingsResponsibilities: action.childImSeeingsResponsibilities,
+      };
+      break;
+    case 'SET_CHILD_IM_SEEINGS_ID':
+      newState = {
+        ...state,
+        childImSeeingsId: action.childImSeeingsId,
       };
       break;
     default:

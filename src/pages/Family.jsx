@@ -1,7 +1,8 @@
 import React, { useContext, useState, useEffect } from 'react';
 import { MainContext } from '../context/context';
 import ParentDashboardNavbar from '../layout/ParentDashboardNavbar';
-import { fetchUser } from '../api-calls/api';
+import { fetchChildResponsibilities, fetchUser } from '../api-calls/api';
+import { useNavigate } from 'react-router-dom';
 
 export default function FamilyManager() {
   const { main } = useContext(MainContext);
@@ -10,6 +11,8 @@ export default function FamilyManager() {
   const [allowancePeriod, setAllowancePeriod] = useState(14);
   const [showModal, setShowModal] = useState(false);
   const [selectedChild, setSelectedChild] = useState(null);
+
+  const navigate = useNavigate();
 
   useEffect(() => {
     async function loadFamilyData() {
@@ -33,6 +36,20 @@ export default function FamilyManager() {
   const handleEditClick = (member) => {
     setSelectedChild(member);
     setShowModal(true);
+  };
+
+  const navigateToChild = async (childId) => {
+    try {
+      console.log('CHILDID', childId);
+      main.dispatch({
+        type: 'SET_CHILD_IM_SEEINGS_ID',
+        childImSeeingsId: childId,
+      });
+      fetchChildResponsibilities({ main, childId });
+      navigate('/child-responsibilities');
+    } catch (e) {
+      console.error(e);
+    }
   };
 
   return (
@@ -63,7 +80,9 @@ export default function FamilyManager() {
               {familyData.map((member) => {
                 return (
                   <tr style={{ textAlign: 'center' }} key={member.id}>
-                    <td>{member.first_name}</td>
+                    <td onClick={() => navigateToChild(member.id)}>
+                      {member.first_name}
+                    </td>
                     <td>
                       <div>
                         {

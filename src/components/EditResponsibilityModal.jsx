@@ -123,25 +123,22 @@ function EditResponsibilityModal({
 
   if (!showEditModal) return null;
 
-  const modalClass =
-    currentResponsibility.verified && !main.state.profile.parent
-      ? 'modal-content verified'
-      : 'modal-content';
+  const modalClass = currentResponsibility.verified
+    ? 'modal-content verified'
+    : 'modal-content';
 
   return (
     <div className="modal-overlay" onClick={() => setShowEditModal(false)}>
       <div className={modalClass} onClick={(e) => e.stopPropagation()}>
-        {!main.state.profile.parent ? (
-          currentResponsibility.verified ? (
-            <p style={{ color: 'rgb(49, 154, 199)', textAlign: 'center' }}>
-              Parent approved
-            </p>
-          ) : (
-            <p style={{ color: 'rgb(49, 154, 199)', textAlign: 'center' }}>
-              Waiting for parent approval
-            </p>
-          )
-        ) : null}
+        {currentResponsibility.verified ? (
+          <p style={{ color: 'rgb(49, 154, 199)', textAlign: 'center' }}>
+            Parent approved
+          </p>
+        ) : (
+          <p style={{ color: 'rgb(49, 154, 199)', textAlign: 'center' }}>
+            Waiting for parent approval
+          </p>
+        )}
         <button className="close-btn" onClick={() => setShowEditModal(false)}>
           X
         </button>

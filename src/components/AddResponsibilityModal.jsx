@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import '../styles/responsibility-modal.css';
 
 function AddResponsibilityModal({
@@ -13,6 +13,11 @@ function AddResponsibilityModal({
     addResponsibility(title, description);
     setShowAddResponsibilityModal(false);
   };
+
+  useEffect(() => {
+    setTitle('');
+    setDescription('');
+  }, [showAddResponsibilityModal]);
 
   if (!showAddResponsibilityModal) return null;
 

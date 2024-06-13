@@ -4,6 +4,7 @@ import '../styles/my-responsibilities.css';
 import {
   createResponsibility,
   deleteResponsibilities,
+  fetchChildResponsibilities,
   fetchResponsibilities,
   updateResponsibility,
 } from '../api-calls/api';
@@ -12,7 +13,7 @@ import ChildDashboardNavbar from '../layout/ChildDashboardNavbar';
 import AddResponsibilityModal from '../components/AddResponsibilityModal';
 import EditResponsibilityModal from '../components/EditResponsibilityModal';
 
-function Responsibilities() {
+function ChildResponsibilities() {
   const { main } = useContext(MainContext);
   const [showAddResponsibilityModal, setShowAddResponsibilityModal] =
     useState(false);
@@ -25,10 +26,12 @@ function Responsibilities() {
   useEffect(() => {
     async function getResponsibilities() {
       try {
-        const fetchedResponsibilities = await fetchResponsibilities({ main });
+        const fetchedResponsibilities =
+          main.state.childImSeeingsResponsibilities;
         let allResponsibilities = {};
+        console.log('AFASFASFSAFSA', fetchedResponsibilities);
 
-        fetchedResponsibilities.data.forEach((element) => {
+        fetchedResponsibilities.forEach((element) => {
           if (!allResponsibilities[element.date]) {
             allResponsibilities[element.date] = [];
           }
@@ -52,7 +55,11 @@ function Responsibilities() {
     }
 
     getResponsibilities();
-  }, [main.state.profile]);
+  }, [main.state.childImSeeingsResponsibilities]);
+
+  useEffect(() => {
+    fetchChildResponsibilities({ main, childId: main.state.childImSeeingsId });
+  }, []);
 
   function getSunday(d) {
     const date = new Date(d);
@@ -103,8 +110,8 @@ function Responsibilities() {
         main,
         title,
         description,
-        verified: main.state.profile.parent ? true : false,
-        profileId: main.state.profile.id,
+        verified: true,
+        profileId: main.state.childImSeeingsId,
         date: formattedDate,
       });
 
@@ -133,8 +140,8 @@ function Responsibilities() {
         id,
         main,
         title,
+        profileId: main.state.childImSeeingsId,
         description,
-        profileId: main.state.profile.id,
         difficulty,
         completed,
         date: formattedDate,
@@ -161,8 +168,8 @@ function Responsibilities() {
     try {
       const updatedResponsibilitiesData = await deleteResponsibilities({
         main,
-        profileId: main.state.profile.id,
         id,
+        profileId: main.state.childImSeeingsId,
       });
 
       let allResponsibilities = {};
@@ -213,11 +220,8 @@ function Responsibilities() {
 
   return (
     <>
-      {main.state.profile.parent ? (
-        <ParentDashboardNavbar />
-      ) : (
-        <ChildDashboardNavbar />
-      )}
+      <ParentDashboardNavbar />
+
       <div style={{ display: 'flex', justifyContent: 'center', gap: '8rem' }}>
         <div className="sidebar left">
           <h2>All Responsibilities</h2>
@@ -314,11 +318,13 @@ function Responsibilities() {
               Add Responsibility
             </button>
             <AddResponsibilityModal
+              parentalControl={true}
               showAddResponsibilityModal={showAddResponsibilityModal}
               setShowAddResponsibilityModal={setShowAddResponsibilityModal}
               addResponsibility={addResponsibility}
             />
             <EditResponsibilityModal
+              parentalControl={true}
               showEditModal={showEditModal}
               setShowEditModal={setShowEditModal}
               currentResponsibility={currentResponsibility}
@@ -334,4 +340,4 @@ function Responsibilities() {
   );
 }
 
-export default Responsibilities;
+export default ChildResponsibilities;
