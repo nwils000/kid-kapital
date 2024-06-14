@@ -1,5 +1,5 @@
 import '../styles/landing-page.css';
-import LandingPageNavbar from '../layout/LandingPageNavbar';
+import LandingPageNavbar from '../layout/LandingPageNavbar.jsx';
 
 export default function LandingPage() {
   return (
