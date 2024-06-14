@@ -89,7 +89,10 @@ export default function FamilyManager() {
             <tbody>
               {familyData.map((member) => (
                 <tr style={{ textAlign: 'center' }} key={member.id}>
-                  <td onClick={() => navigateToChild(member.id)}>
+                  <td
+                    className="hover"
+                    onClick={() => navigateToChild(member.id)}
+                  >
                     {member.first_name}
                   </td>
                   <td>
