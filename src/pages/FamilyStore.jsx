@@ -13,6 +13,7 @@ import StoreItemModal from '../components/StoreItemModal';
 import '../styles/family-store.css';
 import ApproveItemModal from '../components/ApproveItemModal';
 import PurchaseItemModal from '../components/PurchaseItemModal';
+import ChildDashboardNavbar from '../layout/ChildDashboardNavbar';
 
 function FamilyStore() {
   const { main } = useContext(MainContext);
@@ -65,10 +66,16 @@ function FamilyStore() {
 
   return (
     <>
-      <ParentDashboardNavbar />
+      {main.state.profile.parent ? (
+        <ParentDashboardNavbar />
+      ) : (
+        <ChildDashboardNavbar />
+      )}
       <div className="family-store">
         <h1>Family Store</h1>
-        {<p></p>}
+        {!main.state.profile.parent && (
+          <p>Total Money: ${main.state.profile.total_money}</p>
+        )}
         <div style={{ display: 'flex', justifyContent: 'center', gap: '8rem' }}>
           {main.state.profile.parent && (
             <div className="sidebar left">
@@ -110,14 +117,16 @@ function FamilyStore() {
                 {items
                   .filter((item) => item.approved)
                   .map((item) => (
-                    <div key={item.id} className="item-card">
-                      <div
-                        onClick={() => {
-                          main.state.profile.parent
-                            ? openItemModal(item)
-                            : openPurchaseModal(item);
-                        }}
-                      >
+                    <div
+                      onClick={() => {
+                        main.state.profile.parent
+                          ? openItemModal(item)
+                          : openPurchaseModal(item);
+                      }}
+                      key={item.id}
+                      className="item-card"
+                    >
+                      <div>
                         {item.name} - ${item.price}
                       </div>
                     </div>

@@ -1,20 +1,30 @@
-import React, { useState } from 'react';
+import React, { useContext, useState } from 'react';
 import '../styles/responsibility-modal.css';
+import { MainContext } from '../context/context';
 
 function AllowancePeriodModal({
   showAllowancePeriodModal,
   setShowAllowancePeriodModal,
   setTheAllowancePeriod,
 }) {
-  const [periodType, setPeriodType] = useState('weeks');
-  const [day, setDay] = useState(1);
+  const { main } = useContext(MainContext);
+  const [periodType, setPeriodType] = useState(
+    main.state.profile.family.allowance_period_type === 'Weekly'
+      ? 'weeks'
+      : 'months'
+  );
+  const [day, setDay] = useState(main.state.profile.family.allowance_day);
 
   const handleSubmit = () => {
+    console.log(
+      'ASDSDA',
+      main.state.profile.family.allowance_period_type,
+      main.state.profile.family.allowance_day
+    );
     setTheAllowancePeriod({
       periodType: periodType === 'weeks' ? 'Weekly' : 'Monthly',
       allowanceDay: day,
     });
-    setShowAllowancePeriodModal(false);
     setShowAllowancePeriodModal(false);
   };
 

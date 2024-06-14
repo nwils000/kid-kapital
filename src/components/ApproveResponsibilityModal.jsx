@@ -22,24 +22,9 @@ function ApproveResponsibilityModal({
   const [approved, setApproved] = useState(false);
 
   useEffect(() => {
-    const approveIt = async () => {
-      try {
-        let editedResponsibility = await approveResponsibility({
-          id: currentResponsibility.id,
-          difficulty,
-          main,
-          approved,
-        });
-
-        console.log(editedResponsibility);
-
-        setCurrentResponsibility(editedResponsibility.data);
-        setIsEditing(false);
-      } catch (e) {
-        console.log(e);
-      }
-    };
-    approveIt();
+    if (approved) {
+      handleSave();
+    }
   }, [approved]);
 
   useEffect(() => {
@@ -162,6 +147,7 @@ function ApproveResponsibilityModal({
                   className="complete-btn"
                   onClick={() => {
                     setApproved(true);
+
                     setShowApproveModal(false);
                   }}
                 >

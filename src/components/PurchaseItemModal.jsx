@@ -1,11 +1,13 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useContext } from 'react';
 import { purchaseStoreItem } from '../api-calls/api';
+import { MainContext } from '../context/context';
 
 export default function PurchaseItemModal({
   showPurchaseModal,
   setShowPurchaseModal,
   currentItem,
 }) {
+  const { main } = useContext(MainContext);
   const [name, setName] = useState('');
   const [price, setPrice] = useState(0);
 
@@ -20,7 +22,7 @@ export default function PurchaseItemModal({
   }, [currentItem]);
 
   const handlePurchase = async () => {
-    purchaseStoreItem({ state, itemId: currentItem.id });
+    purchaseStoreItem({ main, itemId: currentItem.id });
     setShowPurchaseModal(false);
   };
 

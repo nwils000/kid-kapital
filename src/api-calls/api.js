@@ -1,7 +1,7 @@
 import axios from 'axios';
 
-// const baseUrl = 'http://127.0.0.1:8000';
-const baseUrl = 'https://family-finance-server.fly.dev';
+const baseUrl = 'http://127.0.0.1:8000';
+// const baseUrl = 'https://family-finance-server.fly.dev';
 
 export const getToken = async ({ main, username, password }) => {
   try {
@@ -391,6 +391,7 @@ export const handleApproveStoreItemRequest = async ({ main, itemId }) => {
     console.error('Error with handleApproveStoreItemRequest api call: ', error);
   }
 };
+
 export const purchaseStoreItem = async ({ main, itemId }) => {
   try {
     const response = await axios({
@@ -403,13 +404,53 @@ export const purchaseStoreItem = async ({ main, itemId }) => {
         id: itemId,
       },
     });
-    main.dispatch({
-      type: 'SET_FAMILY_STORE_ITEMS',
-      familyStoreItems: response.data,
-    });
     console.log('PURCHASE STORE ITEM: ', response);
+    main.dispatch({
+      type: 'SET_PROFILE',
+      profile: response.data,
+    });
     return response.data;
   } catch (error) {
     console.error('Error with purchaseStoreItem api call: ', error);
+  }
+};
+
+export const getunnaprovedPurchases = async ({ main }) => {
+  try {
+    const response = await axios({
+      method: 'get',
+      url: `${baseUrl}/list-unnaproved-purchases/`,
+      headers: {
+        Authorization: `Bearer ${main.state.accessToken}`,
+      },
+    });
+    console.log('GET PURCHASES: ', response);
+    return response.data;
+  } catch (error) {
+    console.error('Error with getPurchases api call: ', error);
+  }
+};
+
+export const updatePurchaseApproval = async ({
+  main,
+  purchaseId,
+  newStatus,
+}) => {
+  try {
+    const response = await axios({
+      method: 'put',
+      url: `${baseUrl}/approve-purchase/`,
+      headers: {
+        Authorization: `Bearer ${main.state.accessToken}`,
+      },
+      data: {
+        id: purchaseId,
+        approved: newStatus,
+      },
+    });
+    console.log('UPDATE PURCHASE APPROVAL: ', response);
+    return response.data;
+  } catch (error) {
+    console.error('Error with updatePurchaseApproval api call:', error);
   }
 };

@@ -6,6 +6,7 @@ import { fetchUser, getFamilyStoreItems } from '../api-calls/api';
 import ApproveResponsibilityModal from '../components/ApproveResponsibilityModal';
 import ResponsibilityModal from '../components/ResponsibilityModal';
 import { useNavigate } from 'react-router-dom';
+import UnapprovedPurchases from '../components/UnapprovedPurchases';
 
 export default function ParentDashboard() {
   const { main } = useContext(MainContext);
@@ -47,7 +48,9 @@ export default function ParentDashboard() {
     <>
       <ParentDashboardNavbar />
       <div className="parent-dashboard">
-        <div className="family-store">Family Store</div>
+        <div className="family-store">
+          <UnapprovedPurchases />
+        </div>
         <div className="family-members">
           <h1 className="family-name">{main.state.profile.family.name}</h1>
           <div className="invitation-code">

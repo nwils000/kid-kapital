@@ -5,6 +5,7 @@ import ChildDashboardNavbar from '../layout/ChildDashboardNavbar';
 import { fetchUser, getFamilyStoreItems } from '../api-calls/api';
 import ResponsibilityModal from '../components/ResponsibilityModal';
 import { useNavigate } from 'react-router-dom';
+import Wallet from '../components/Wallet';
 
 function formatDate(dateString) {
   const date = new Date(dateString);
@@ -117,7 +118,7 @@ export default function ChildDashboard() {
               </div>
             ))}
         </div>
-        <div className="wallet">Wallet</div>
+        <Wallet />
         <ResponsibilityModal
           currentResponsibility={currentResponsibility}
           currentChildName={currentChildName}

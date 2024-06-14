@@ -8,6 +8,7 @@ import {
 } from '../api-calls/api';
 import { useNavigate } from 'react-router-dom';
 import AllowancePeriodModal from '../components/AllowancePeriodModal';
+import ChildDashboardNavbar from '../layout/ChildDashboardNavbar';
 
 export default function FamilyManager() {
   const { main } = useContext(MainContext);
@@ -58,6 +59,7 @@ export default function FamilyManager() {
   };
 
   const setTheAllowancePeriod = async ({ periodType, allowanceDay }) => {
+    console.log('PERIOD TYPE', periodType);
     try {
       establishAllowancePeriod({ main, periodType, allowanceDay });
     } catch (e) {
@@ -67,7 +69,11 @@ export default function FamilyManager() {
 
   return (
     <>
-      <ParentDashboardNavbar />
+      {main.state.profile.parent ? (
+        <ParentDashboardNavbar />
+      ) : (
+        <ChildDashboardNavbar />
+      )}
       <div className="family-manager">
         <h1>Family Financial Manager</h1>
         <button onClick={() => setShowAllowancePeriodModal(true)}>
