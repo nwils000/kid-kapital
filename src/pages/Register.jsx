@@ -3,8 +3,27 @@ import { Link, useNavigate } from 'react-router-dom';
 import { FaEye, FaEyeSlash } from 'react-icons/fa';
 import { useEffect, useState } from 'react';
 import { createUser } from '../api-calls/api.js';
-import LandingPageNavbar from '../layout/LandingPageNavbar.jsx';
 
+function LandingPageNavbar() {
+  return (
+    <>
+      <div className="navbar">
+        <Link to="/">
+          <span className="logo-text">Kid Kapital</span>
+        </Link>
+        <div className="nav-links-wrapper">
+          <Link className="nav-link" to="/register">
+            Register
+          </Link>
+          <Link to="/login" className="nav-link">
+            Sign in
+          </Link>
+        </div>
+      </div>
+      <div style={{ height: '6rem' }}></div>
+    </>
+  );
+}
 export default function Register() {
   const [passwordHidden, setPasswordHidden] = useState(true);
   const [confirmPasswordHidden, setConfirmPasswordHidden] = useState(true);
