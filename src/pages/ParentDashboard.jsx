@@ -18,7 +18,7 @@ export default function ParentDashboard() {
   const [showApproveModal, setShowApproveModal] = useState(false);
   const [showResponsibilityModal, setShowResponsibilityModal] = useState(false);
   const [currentResponsibility, setCurrentResponsibility] = useState({});
-  const [currentChildName, setCurrentChildName] = useState(''); // State to store the current child's name
+  const [currentChildName, setCurrentChildName] = useState('');
 
   const navigate = useNavigate();
 
@@ -29,14 +29,18 @@ export default function ParentDashboard() {
 
   useEffect(() => {
     fetchUser({ accessToken: main.state.accessToken, main });
-    getFamilyStoreItems({main})
+    getFamilyStoreItems({ main });
   }, []);
 
   const handleResponsibilityClick = (responsibility, childName = '') => {
-    // Default childName to empty string
     setCurrentResponsibility(responsibility);
-    setCurrentChildName(childName); // Set child name or empty string
+    setCurrentChildName(childName);
     setShowResponsibilityModal(true);
+  };
+  const handleApprovalClick = (responsibility, childName = '') => {
+    setCurrentResponsibility(responsibility);
+    setCurrentChildName(childName);
+    setShowApproveModal(true);
   };
 
   return (
@@ -78,10 +82,7 @@ export default function ParentDashboard() {
                     .map((responsibility) => (
                       <div
                         onClick={() =>
-                          handleResponsibilityClick(
-                            responsibility,
-                            child.first_name
-                          )
+                          handleApprovalClick(responsibility, child.first_name)
                         }
                         className="child-responsibility-to-approve"
                         key={responsibility.id}
@@ -106,7 +107,7 @@ export default function ParentDashboard() {
                       .map((responsibility) => (
                         <div
                           onClick={() =>
-                            handleResponsibilityClick(
+                            handleApprovalClick(
                               responsibility,
                               child.first_name
                             )
