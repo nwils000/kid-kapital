@@ -1,6 +1,7 @@
 import axios from 'axios';
 
-const baseUrl = 'http://127.0.0.1:8000';
+// const baseUrl = 'http://127.0.0.1:8000';
+const baseUrl = 'https://family-finance-server.fly.dev';
 
 export const getToken = async ({ main, username, password }) => {
   try {
@@ -246,5 +247,30 @@ export const completeResponsibility = async ({ main, completed, id }) => {
     return response;
   } catch (error) {
     console.log('Error with completeResponsibility api call: ', error);
+  }
+};
+
+export const establishAllowancePeriod = async ({
+  main,
+  allowanceDay,
+  periodType,
+}) => {
+  console.log(main);
+  try {
+    const response = await axios({
+      method: 'post',
+      url: `${baseUrl}/set-allowance-period/`,
+      headers: {
+        Authorization: `Bearer ${main.state.accessToken}`,
+      },
+      data: {
+        period_type: periodType,
+        allowance_day: allowanceDay,
+      },
+    });
+    console.log('ALLOWANCE PERIOD: ', response);
+    return response.data;
+  } catch (error) {
+    console.log('Error with establishAllowancePeriod api call: ', error);
   }
 };

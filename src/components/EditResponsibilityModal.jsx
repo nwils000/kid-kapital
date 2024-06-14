@@ -11,6 +11,7 @@ function EditResponsibilityModal({
   setCurrentResponsibility,
   editResponsibility,
   handleDeleteResponsibility,
+  parentalControl,
 }) {
   const { main } = useContext(MainContext);
 
@@ -183,23 +184,16 @@ function EditResponsibilityModal({
               <h3>{title}</h3>
               <p>{description}</p>
               <p>{difficultyString}</p>
-              {currentResponsibility.verified ? (
+
+              {!parentalControl && (
                 <button
                   className="complete-btn"
                   onClick={() => completeIt(true)}
                 >
                   Mark as Completed
                 </button>
-              ) : (
-                <div>
-                  <button
-                    className="complete-btn"
-                    onClick={() => completeIt(true)}
-                  >
-                    Mark as Completed
-                  </button>
-                </div>
               )}
+
               {!currentResponsibility.verified ||
                 (main.state.profile.parent && (
                   <button
