@@ -4,7 +4,28 @@ import { FaEye, FaEyeSlash } from 'react-icons/fa';
 import { useState, useEffect, useContext } from 'react';
 import { getToken, fetchUser } from '../api-calls/api.js';
 import { MainContext } from '../context/context.js';
-import LandingPageNavbar from '../layout/LandingPageNavbar.jsx';
+import { Link } from 'react-router-dom';
+
+function LandingPageNavbar() {
+  return (
+    <>
+      <div className="navbar">
+        <Link to="/">
+          <span className="logo-text">Kid Kapital</span>
+        </Link>
+        <div className="nav-links-wrapper">
+          <Link className="nav-link" to="/register">
+            Register
+          </Link>
+          <Link to="/login" className="nav-link">
+            Sign in
+          </Link>
+        </div>
+      </div>
+      <div style={{ height: '6rem' }}></div>
+    </>
+  );
+}
 
 export default function Login() {
   const { main } = useContext(MainContext);
