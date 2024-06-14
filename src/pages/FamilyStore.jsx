@@ -5,14 +5,21 @@ import {
   createStoreItem,
   updateStoreItem,
   deleteFamilyStoreItems,
+  handleApproveStoreItemRequest,
+  // approveStoreItemRequest,
+  // requestStoreItem,
 } from '../api-calls/api';
 import StoreItemModal from '../components/StoreItemModal';
 import '../styles/family-store.css';
+import ApproveItemModal from '../components/ApproveItemModal';
+import PurchaseItemModal from '../components/PurchaseItemModal';
 
 function FamilyStore() {
   const { main } = useContext(MainContext);
   const [items, setItems] = useState(main.state.familyStoreItems);
   const [showItemModal, setShowItemModal] = useState(false);
+  const [showApproveItemModal, setShowApproveItemModal] = useState(false);
+  const [showPurchaseModal, setShowPurchaseModal] = useState(false);
   const [currentItem, setCurrentItem] = useState(null);
 
   useEffect(() => {
@@ -31,9 +38,29 @@ function FamilyStore() {
     updateStoreItem({ id, name, price, main });
   };
 
+  const handleRequestStoreItem = async (itemId) => {
+    // requestStoreItem({ main, itemId });
+  };
+
+  const handleApproveStoreItem = async ({ itemId }) => {
+    console.log('item iddddd', itemId);
+    handleApproveStoreItemRequest({ main, itemId });
+  };
+
   const openItemModal = (item) => {
     setCurrentItem(item);
     setShowItemModal(true);
+  };
+
+  const openApproveItemModal = (item) => {
+    setCurrentItem(item);
+    setShowApproveItemModal(true);
+  };
+
+  const openPurchaseModal = (item) => {
+    console.log('hi');
+    setCurrentItem(item);
+    setShowPurchaseModal(true);
   };
 
   return (
@@ -41,23 +68,64 @@ function FamilyStore() {
       <ParentDashboardNavbar />
       <div className="family-store">
         <h1>Family Store</h1>
-        <button onClick={() => openItemModal(null)}>Add New Item</button>
-        <div className="store-items">
-          <h2>Available Items</h2>
-          <div className="items-grid">
-            {items.map((item) => {
-              console.log('Rendering item with id:', item.id); // Add console log to debug
-              return (
-                <div
-                  key={item.id}
-                  className="item-card"
-                  onClick={() => openItemModal(item)}
-                >
-                  {item.name} - ${item.price}
-                </div>
-              );
-            })}
+        {<p></p>}
+        <div style={{ display: 'flex', justifyContent: 'center', gap: '8rem' }}>
+          {main.state.profile.parent && (
+            <div className="sidebar left">
+              <ul className="responsibilities-list">
+                {items.filter((item) => !item.approved).length > 0 ? (
+                  <div>
+                    <h2>Items to approve</h2>
+                    {items
+                      .filter((item) => !item.approved)
+                      .map((item) => {
+                        return (
+                          <li
+                            key={item.id}
+                            className="hover"
+                            onClick={() => openApproveItemModal(item)}
+                          >
+                            {item.name} - ${item.price}
+                          </li>
+                        );
+                      })}
+                  </div>
+                ) : (
+                  <li>No items to approve</li>
+                )}
+              </ul>
+            </div>
+          )}
+          <div>
+            <button onClick={() => openItemModal(null)}>
+              {main.state.profile.parent ? (
+                <p>Add New Item</p>
+              ) : (
+                <p>Request New Item</p>
+              )}
+            </button>
+            <div className="store-items">
+              <h2>Available Items</h2>
+              <div className="items-grid">
+                {items
+                  .filter((item) => item.approved)
+                  .map((item) => (
+                    <div key={item.id} className="item-card">
+                      <div
+                        onClick={() => {
+                          main.state.profile.parent
+                            ? openItemModal(item)
+                            : openPurchaseModal(item);
+                        }}
+                      >
+                        {item.name} - ${item.price}
+                      </div>
+                    </div>
+                  ))}
+              </div>
+            </div>
           </div>
+          <div className="right"></div>
         </div>
       </div>
       {showItemModal && (
@@ -68,6 +136,22 @@ function FamilyStore() {
           handleCreateStoreItem={handleCreateStoreItem}
           handleUpdateStoreItem={handleUpdateStoreItem}
           handleDeleteStoreItem={handleDeleteStoreItem}
+        />
+      )}
+      {showApproveItemModal && (
+        <ApproveItemModal
+          showApproveItemModal={showApproveItemModal}
+          setShowApproveItemModal={setShowApproveItemModal}
+          handleApproveStoreItem={handleApproveStoreItem}
+          handleDeleteStoreItem={handleDeleteStoreItem}
+          currentItem={currentItem}
+        />
+      )}
+      {showPurchaseModal && (
+        <PurchaseItemModal
+          showPurchaseModal={showPurchaseModal}
+          setShowPurchaseModal={setShowPurchaseModal}
+          currentItem={currentItem}
         />
       )}
     </>

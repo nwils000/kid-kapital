@@ -2,7 +2,7 @@ import React, { useContext, useEffect, useState } from 'react';
 import { MainContext } from '../context/context';
 import '../styles/child-dashboard.css';
 import ChildDashboardNavbar from '../layout/ChildDashboardNavbar';
-import { fetchUser } from '../api-calls/api';
+import { fetchUser, getFamilyStoreItems } from '../api-calls/api';
 import ResponsibilityModal from '../components/ResponsibilityModal';
 import { useNavigate } from 'react-router-dom';
 

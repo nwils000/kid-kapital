@@ -1,7 +1,7 @@
 import axios from 'axios';
 
-// const baseUrl = 'http://127.0.0.1:8000';
-const baseUrl = 'https://family-finance-server.fly.dev';
+const baseUrl = 'http://127.0.0.1:8000';
+// const baseUrl = 'https://family-finance-server.fly.dev';
 
 export const getToken = async ({ main, username, password }) => {
   try {
@@ -366,5 +366,50 @@ export const deleteFamilyStoreItems = async ({ main, itemId }) => {
     return response.data;
   } catch (error) {
     console.error('Error with deleteFamilyStoreItems api call: ', error);
+  }
+};
+
+export const handleApproveStoreItemRequest = async ({ main, itemId }) => {
+  try {
+    const response = await axios({
+      method: 'put',
+      url: `${baseUrl}/approve-store-item/`,
+      headers: {
+        Authorization: `Bearer ${main.state.accessToken}`,
+      },
+      data: {
+        id: itemId,
+      },
+    });
+    main.dispatch({
+      type: 'SET_FAMILY_STORE_ITEMS',
+      familyStoreItems: response.data,
+    });
+    console.log('APPROVE STORE ITEM: ', response);
+    return response.data;
+  } catch (error) {
+    console.error('Error with handleApproveStoreItemRequest api call: ', error);
+  }
+};
+export const purchaseStoreItem = async ({ main, itemId }) => {
+  try {
+    const response = await axios({
+      method: 'put',
+      url: `${baseUrl}/purchase-store-item/`,
+      headers: {
+        Authorization: `Bearer ${main.state.accessToken}`,
+      },
+      data: {
+        id: itemId,
+      },
+    });
+    main.dispatch({
+      type: 'SET_FAMILY_STORE_ITEMS',
+      familyStoreItems: response.data,
+    });
+    console.log('PURCHASE STORE ITEM: ', response);
+    return response.data;
+  } catch (error) {
+    console.error('Error with purchaseStoreItem api call: ', error);
   }
 };

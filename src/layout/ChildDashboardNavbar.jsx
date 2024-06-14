@@ -13,6 +13,9 @@ export default function ChildDashboardNavbar() {
           <Link className="nav-link" to="/child-dashboard">
             Dashboard
           </Link>
+          <Link className="nav-link" to="/family-store">
+            Family Store
+          </Link>
           <Link to="/responsibilities" className="nav-link">
             My Responsibilities
           </Link>
