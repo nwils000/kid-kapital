@@ -1,7 +1,7 @@
 import '../styles/navbar.css';
 import { Link } from 'react-router-dom';
 
-export default function LandingPageNavbar() {
+function LandingPageNavbar() {
   return (
     <>
       <div className="navbar">
@@ -21,3 +21,5 @@ export default function LandingPageNavbar() {
     </>
   );
 }
+
+export default LandingPageNavbar;
