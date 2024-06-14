@@ -4,7 +4,6 @@ import { FaEye, FaEyeSlash } from 'react-icons/fa';
 import { useState, useEffect, useContext } from 'react';
 import { getToken, fetchUser } from '../api-calls/api.js';
 import { MainContext } from '../context/context.js';
-import { Link } from 'react-router-dom';
 
 function LandingPageNavbar() {
   return (
