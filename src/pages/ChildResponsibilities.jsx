@@ -103,13 +103,14 @@ function ChildResponsibilities() {
     return days;
   }
 
-  async function addResponsibility(title, description) {
+  async function addResponsibility({ title, description, difficulty }) {
     const formattedDate = formatDate(selectedDay);
     try {
       let newResponsibility = await createResponsibility({
         main,
         title,
         description,
+        difficulty,
         verified: true,
         profileId: main.state.childImSeeingsId,
         date: formattedDate,

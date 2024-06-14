@@ -43,6 +43,7 @@ function EditResponsibilityModal({
   };
 
   useEffect(() => {
+    console.log('SDSDSDDS', currentResponsibility);
     if (showEditModal) {
       setIsEditing(false);
       setDifficulty(currentResponsibility.difficulty);
@@ -194,15 +195,12 @@ function EditResponsibilityModal({
                 </button>
               )}
 
-              {!currentResponsibility.verified ||
-                (main.state.profile.parent && (
-                  <button
-                    className="edit-btn"
-                    onClick={() => setIsEditing(true)}
-                  >
-                    <FiEdit /> Edit
-                  </button>
-                ))}
+              {(!currentResponsibility.verified ||
+                main.state.profile.parent) && (
+                <button className="edit-btn" onClick={() => setIsEditing(true)}>
+                  <FiEdit /> Edit
+                </button>
+              )}
             </>
           )}
         </div>

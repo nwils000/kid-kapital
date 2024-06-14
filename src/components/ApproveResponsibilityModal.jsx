@@ -35,7 +35,6 @@ function ApproveResponsibilityModal({
 
         setCurrentResponsibility(editedResponsibility.data);
         setIsEditing(false);
-        setShowApproveModal(false);
       } catch (e) {
         console.log(e);
       }
@@ -161,7 +160,10 @@ function ApproveResponsibilityModal({
               <div>
                 <button
                   className="complete-btn"
-                  onClick={() => setApproved(true)}
+                  onClick={() => {
+                    setApproved(true);
+                    setShowApproveModal(false);
+                  }}
                 >
                   Mark as Approved
                 </button>

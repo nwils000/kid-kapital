@@ -84,9 +84,6 @@ export default function FamilyManager() {
                 <th>Total Difficulty Points</th>
                 <th>Total Money</th>
                 <th>Savings</th>
-                <th>Interest Rate (%)</th>
-                <th>Allowance</th>
-                <th>Actions</th>
               </tr>
             </thead>
             <tbody>

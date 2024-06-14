@@ -1,7 +1,7 @@
 import axios from 'axios';
 
-// const baseUrl = 'http://127.0.0.1:8000';
-const baseUrl = 'https://family-finance-server.fly.dev';
+const baseUrl = 'http://127.0.0.1:8000';
+// const baseUrl = 'https://family-finance-server.fly.dev';
 
 export const getToken = async ({ main, username, password }) => {
   try {
@@ -83,6 +83,7 @@ export const createResponsibility = async ({
   main,
   title,
   description,
+  difficulty,
   profileId,
   verified,
   date,
@@ -99,6 +100,7 @@ export const createResponsibility = async ({
         title,
         date,
         verified,
+        difficulty,
         description,
         profile_id: profileId,
       },
@@ -272,5 +274,97 @@ export const establishAllowancePeriod = async ({
     return response.data;
   } catch (error) {
     console.log('Error with establishAllowancePeriod api call: ', error);
+  }
+};
+
+export const createStoreItem = async ({ main, name, price }) => {
+  try {
+    const response = await axios({
+      method: 'post',
+      url: `${baseUrl}/create-store-item/`,
+      headers: {
+        Authorization: `Bearer ${main.state.accessToken}`,
+      },
+      data: {
+        name,
+        price,
+      },
+    });
+    main.dispatch({
+      type: 'SET_FAMILY_STORE_ITEMS',
+      familyStoreItems: response.data,
+    });
+    console.log('CREATE STORE ITEM: ', response);
+    return response.data;
+  } catch (error) {
+    console.error('Error with createStoreItem api call: ', error);
+  }
+};
+
+export const updateStoreItem = async ({ main, id, name, price }) => {
+  try {
+    const response = await axios({
+      method: 'put',
+      url: `${baseUrl}/update-store-item/`,
+      headers: {
+        Authorization: `Bearer ${main.state.accessToken}`,
+      },
+      data: {
+        id,
+        name,
+        price,
+      },
+    });
+    main.dispatch({
+      type: 'SET_FAMILY_STORE_ITEMS',
+      familyStoreItems: response.data,
+    });
+    console.log('UPDATE STORE ITEMS: ', response);
+    return response.data;
+  } catch (error) {
+    console.error('Error with updateStoreItem api call: ', error);
+  }
+};
+
+export const getFamilyStoreItems = async ({ main }) => {
+  try {
+    const response = await axios({
+      method: 'get',
+      url: `${baseUrl}/get-store-items/`,
+      headers: {
+        Authorization: `Bearer ${main.state.accessToken}`,
+      },
+    });
+    main.dispatch({
+      type: 'SET_FAMILY_STORE_ITEMS',
+      familyStoreItems: response.data,
+    });
+    console.log('GET STORE ITEMS: ', response);
+    return response.data;
+  } catch (error) {
+    console.error('Error with getFamilyStoreItems api call: ', error);
+  }
+};
+
+export const deleteFamilyStoreItems = async ({ main, itemId }) => {
+  try {
+    const response = await axios({
+      method: 'delete',
+      url: `${baseUrl}/delete-store-items/`,
+      headers: {
+        Authorization: `Bearer ${main.state.accessToken}`,
+      },
+      data: {
+        item_id: itemId,
+      },
+    });
+    console.log('DELETE STORE ITEMS: ', response);
+    main.dispatch({
+      type: 'SET_FAMILY_STORE_ITEMS',
+      familyStoreItems: response.data,
+    });
+    return response.data;
+  } catch (error) {
+    console.error('Error with deleteFamilyStoreItems api call: ', error);
   }
 };

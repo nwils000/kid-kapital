@@ -8,15 +8,21 @@ function AddResponsibilityModal({
 }) {
   const [title, setTitle] = useState('');
   const [description, setDescription] = useState('');
+  const [difficulty, setDifficulty] = useState(0);
 
   const handleSubmit = () => {
-    addResponsibility(title, description);
+    addResponsibility({
+      title,
+      description,
+      difficulty,
+    });
     setShowAddResponsibilityModal(false);
   };
 
   useEffect(() => {
     setTitle('');
     setDescription('');
+    setDifficulty(0);
   }, [showAddResponsibilityModal]);
 
   if (!showAddResponsibilityModal) return null;
@@ -26,18 +32,14 @@ function AddResponsibilityModal({
       className="modal-overlay"
       onClick={() => setShowAddResponsibilityModal(false)}
     >
-      <div className="modal-content">
+      <div className="modal-content" onClick={(e) => e.stopPropagation()}>
         <button
           className="close-btn"
           onClick={() => setShowAddResponsibilityModal(false)}
         >
           X
         </button>
-        <div
-          onClick={(e) => {
-            e.stopPropagation();
-          }}
-        >
+        <div>
           <label>Title:</label>
           <input
             type="text"
@@ -51,6 +53,19 @@ function AddResponsibilityModal({
             onChange={(e) => setDescription(e.target.value)}
             required
           />
+          <label>Difficulty:</label>
+          <select
+            value={difficulty}
+            onChange={(e) => setDifficulty(Number(e.target.value))}
+          >
+            <option value={0}>Too Easy</option>
+            <option value={1}>Very Easy</option>
+            <option value={2}>Easy</option>
+            <option value={3}>Medium</option>
+            <option value={4}>Hard</option>
+            <option value={5}>Very Hard</option>
+            <option value={6}>Extremely Hard</option>
+          </select>
           <button onClick={handleSubmit}>Add Responsibility</button>
         </div>
       </div>

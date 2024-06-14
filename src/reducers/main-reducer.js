@@ -5,6 +5,7 @@ export const initialMainState = JSONStorage ?? {
   profile: {},
   childImSeeingsResponsibilities: [],
   childImSeeingsId: 0,
+  familyStoreItems: [],
 };
 
 export const mainReducer = (state, action) => {
@@ -33,6 +34,12 @@ export const mainReducer = (state, action) => {
       newState = {
         ...state,
         childImSeeingsId: action.childImSeeingsId,
+      };
+      break;
+    case 'SET_FAMILY_STORE_ITEMS':
+      newState = {
+        ...state,
+        familyStoreItems: action.familyStoreItems,
       };
       break;
     default:

@@ -2,12 +2,10 @@ import React, { useContext, useEffect, useState } from 'react';
 import { MainContext } from '../context/context';
 import '../styles/parent-dashboard.css';
 import ParentDashboardNavbar from '../layout/ParentDashboardNavbar';
-import {
-  approveResponsibility,
-  fetchUser,
-  updateResponsibility,
-} from '../api-calls/api';
+import { fetchUser, getFamilyStoreItems } from '../api-calls/api';
 import ApproveResponsibilityModal from '../components/ApproveResponsibilityModal';
+import ResponsibilityModal from '../components/ResponsibilityModal';
+import { useNavigate } from 'react-router-dom';
 
 export default function ParentDashboard() {
   const { main } = useContext(MainContext);
@@ -18,30 +16,28 @@ export default function ParentDashboard() {
     setSelectedChildIdIncompleteResponsibilities,
   ] = useState('all');
   const [showApproveModal, setShowApproveModal] = useState(false);
+  const [showResponsibilityModal, setShowResponsibilityModal] = useState(false);
   const [currentResponsibility, setCurrentResponsibility] = useState({});
+  const [currentChildName, setCurrentChildName] = useState(''); // State to store the current child's name
+
+  const navigate = useNavigate();
 
   function formatDate(dateString) {
     const date = new Date(dateString);
-    return `${date.getMonth() + 1}/${date.getDate() + 1}`;
+    return `${date.getMonth() + 1}/${date.getDate()}`;
   }
-
-  useEffect(() => {}, [selectedChildIdNeedingApproval]);
 
   useEffect(() => {
     fetchUser({ accessToken: main.state.accessToken, main });
+    getFamilyStoreItems({main})
   }, []);
 
-  async function saveResponsibility({ id, difficulty }) {
-    try {
-      await approveResponsibility({
-        id,
-        main,
-        difficulty,
-      });
-    } catch (e) {
-      console.error('Error editing responsibility:', e);
-    }
-  }
+  const handleResponsibilityClick = (responsibility, childName = '') => {
+    // Default childName to empty string
+    setCurrentResponsibility(responsibility);
+    setCurrentChildName(childName); // Set child name or empty string
+    setShowResponsibilityModal(true);
+  };
 
   return (
     <>
@@ -51,7 +47,7 @@ export default function ParentDashboard() {
         <div className="family-members">
           <h1 className="family-name">{main.state.profile.family.name}</h1>
           <div className="invitation-code">
-            Invitation Code:{' '}
+            Invitation Code:
             <span style={{ fontWeight: '500' }}>
               {main.state.profile.family.invitation_code}
             </span>
@@ -63,9 +59,7 @@ export default function ParentDashboard() {
           >
             <option value="all">All Kids</option>
             {main.state.profile.family.members
-              .filter((member) => {
-                return !member.parent;
-              })
+              .filter((member) => !member.parent)
               .map((child) => (
                 <option key={child.id} value={child.id}>
                   {child.first_name}
@@ -76,18 +70,19 @@ export default function ParentDashboard() {
             {selectedChildIdNeedingApproval === 'all'
               ? main.state.profile.family.members.map((child) =>
                   child.responsibilities
-                    .filter((responsibility) => {
-                      return (
+                    .filter(
+                      (responsibility) =>
                         responsibility.verified === false &&
                         responsibility.completed === false
-                      );
-                    })
+                    )
                     .map((responsibility) => (
                       <div
-                        onClick={() => {
-                          setShowApproveModal(true);
-                          setCurrentResponsibility(responsibility);
-                        }}
+                        onClick={() =>
+                          handleResponsibilityClick(
+                            responsibility,
+                            child.first_name
+                          )
+                        }
                         className="child-responsibility-to-approve"
                         key={responsibility.id}
                       >
@@ -97,33 +92,33 @@ export default function ParentDashboard() {
                     ))
                 )
               : main.state.profile.family.members
-                  .filter((child) => {
-                    return (
+                  .filter(
+                    (child) =>
                       child.id.toString() === selectedChildIdNeedingApproval
-                    );
-                  })
-                  .map((child) => {
-                    return child.responsibilities
-                      .filter((responsibility) => {
-                        return (
+                  )
+                  .map((child) =>
+                    child.responsibilities
+                      .filter(
+                        (responsibility) =>
                           responsibility.verified === false &&
                           responsibility.completed === false
-                        );
-                      })
+                      )
                       .map((responsibility) => (
                         <div
-                          onClick={() => {
-                            setShowApproveModal(true);
-                            setCurrentResponsibility(responsibility);
-                          }}
+                          onClick={() =>
+                            handleResponsibilityClick(
+                              responsibility,
+                              child.first_name
+                            )
+                          }
                           className="child-responsibility-to-approve"
                           key={responsibility.id}
                         >
                           {formatDate(responsibility.date)} -{' '}
                           {responsibility.title}
                         </div>
-                      ));
-                  })}
+                      ))
+                  )}
           </div>
           <h2>All Incomplete Responsibilities</h2>
           <select
@@ -142,44 +137,61 @@ export default function ParentDashboard() {
           {selectedChildIdIncompleteResponsibilities === 'all'
             ? main.state.profile.family.members.map((child) =>
                 child.responsibilities
-                  .filter((responsibility) => {
-                    return responsibility.completed === false;
-                  })
+                  .filter((responsibility) => !responsibility.completed)
                   .map((responsibility) => (
-                    <div key={responsibility.id}>
+                    <div
+                      className="hover"
+                      onClick={() =>
+                        handleResponsibilityClick(
+                          responsibility,
+                          child.first_name
+                        )
+                      }
+                      key={responsibility.id}
+                    >
                       {child.first_name}: {formatDate(responsibility.date)} -{' '}
                       {responsibility.title}
                     </div>
                   ))
               )
             : main.state.profile.family.members
-                .filter((child) => {
-                  return (
+                .filter(
+                  (child) =>
                     child.id.toString() ===
                     selectedChildIdIncompleteResponsibilities
-                  );
-                })
-                .map((child) => {
-                  return child.responsibilities
-                    .filter((responsibility) => {
-                      return responsibility.completed === false;
-                    })
+                )
+                .map((child) =>
+                  child.responsibilities
+                    .filter((responsibility) => !responsibility.completed)
                     .map((responsibility) => (
-                      <div key={responsibility.id}>
+                      <div
+                        className="hover"
+                        onClick={() =>
+                          handleResponsibilityClick(
+                            responsibility,
+                            child.first_name
+                          )
+                        }
+                        key={responsibility.id}
+                      >
                         {formatDate(responsibility.date)} -{' '}
                         {responsibility.title}
                       </div>
-                    ));
-                })}
+                    ))
+                )}
         </div>
         <div className="responsibilities">
-          My Responsibilities
+          <h2 className="hover" onClick={() => navigate('/responsibilities')}>
+            My Responsibilities
+          </h2>
           {main.state.profile.responsibilities
-            .filter((resp) => {
-              return resp.completed === false;
-            })
+            .filter((resp) => !resp.completed)
             .map((responsibility) => (
-              <div key={responsibility.id}>
+              <div
+                className="hover"
+                onClick={() => handleResponsibilityClick(responsibility)}
+                key={responsibility.id}
+              >
                 {formatDate(responsibility.date)} - {responsibility.title}
               </div>
             ))}
@@ -190,6 +202,12 @@ export default function ParentDashboard() {
           setShowApproveModal={setShowApproveModal}
           currentResponsibility={currentResponsibility}
           setCurrentResponsibility={setCurrentResponsibility}
+        />
+        <ResponsibilityModal
+          currentResponsibility={currentResponsibility}
+          currentChildName={currentChildName}
+          setShowResponsibilityModal={setShowResponsibilityModal}
+          showResponsibilityModal={showResponsibilityModal}
         />
       </div>
     </>
