@@ -1,10 +1,10 @@
 import '../styles/landing-page.css';
-import LandingPageNavbar from '../layout/LandingPageNavbar';
+// import LandingPageNavbar from '../layout/LandingPageNavbar';
 
 export default function LandingPage() {
   return (
     <>
-      <LandingPageNavbar />
+      {/* <LandingPageNavbar /> */}
       <div className="landing-page"></div>
     </>
   );

@@ -4,7 +4,7 @@ import { FaEye, FaEyeSlash } from 'react-icons/fa';
 import { useState, useEffect, useContext } from 'react';
 import { getToken, fetchUser } from '../api-calls/api.js';
 import { MainContext } from '../context/context.js';
-import LandingPageNavbar from '../layout/LandingPageNavbar.jsx';
+// import LandingPageNavbar from '../layout/LandingPageNavbar.jsx';
 
 export default function Login() {
   const { main } = useContext(MainContext);
@@ -39,7 +39,7 @@ export default function Login() {
 
   return (
     <>
-      <LandingPageNavbar />
+      {/* <LandingPageNavbar /> */}
       <div className="login">
         <div></div>
         <h1>
