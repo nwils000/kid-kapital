@@ -12,6 +12,7 @@ function EditResponsibilityModal({
   editResponsibility,
   handleDeleteResponsibility,
   parentalControl,
+  currentChildId,
 }) {
   const { main } = useContext(MainContext);
 
@@ -74,6 +75,12 @@ function EditResponsibilityModal({
           break;
       }
     }
+    console.log(
+      'STUFFFFF',
+      currentChildId,
+      main.state.profile.id,
+      parentalControl
+    );
   }, [showEditModal, currentResponsibility]);
 
   const setTheDifficulty = () => {
@@ -186,20 +193,27 @@ function EditResponsibilityModal({
               <p>{description}</p>
               <p>{difficultyString}</p>
 
-              {!parentalControl && (
-                <button
-                  className="complete-btn"
-                  onClick={() => completeIt(true)}
-                >
-                  Mark as Completed
-                </button>
-              )}
-
-              {(!currentResponsibility.verified ||
-                main.state.profile.parent) && (
-                <button className="edit-btn" onClick={() => setIsEditing(true)}>
-                  <FiEdit /> Edit
-                </button>
+              {!parentalControl &&
+              currentChildId !== main.state.profile.id ? null : (
+                <>
+                  {!parentalControl && (
+                    <button
+                      className="complete-btn"
+                      onClick={() => completeIt(true)}
+                    >
+                      Mark as Completed
+                    </button>
+                  )}
+                  {(!currentResponsibility.verified ||
+                    main.state.profile.parent) && (
+                    <button
+                      className="edit-btn"
+                      onClick={() => setIsEditing(true)}
+                    >
+                      <FiEdit /> Edit
+                    </button>
+                  )}
+                </>
               )}
             </>
           )}

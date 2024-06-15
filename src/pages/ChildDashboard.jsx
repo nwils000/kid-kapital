@@ -2,8 +2,13 @@ import React, { useContext, useEffect, useState } from 'react';
 import { MainContext } from '../context/context';
 import '../styles/child-dashboard.css';
 import ChildDashboardNavbar from '../layout/ChildDashboardNavbar';
-import { fetchUser, getFamilyStoreItems } from '../api-calls/api';
-import ResponsibilityModal from '../components/ResponsibilityModal';
+import {
+  fetchUser,
+  getFamilyStoreItems,
+  updateResponsibility,
+  deleteResponsibilities,
+} from '../api-calls/api'; // Added API functions
+import EditResponsibilityModal from '../components/EditResponsibilityModal';
 import { useNavigate } from 'react-router-dom';
 import Wallet from '../components/Wallet';
 
@@ -15,9 +20,9 @@ function formatDate(dateString) {
 export default function ChildDashboard() {
   const { main } = useContext(MainContext);
   const [selectedChildId, setSelectedChildId] = useState('all');
-  const [showResponsibilityModal, setShowResponsibilityModal] = useState(false);
+  const [showEditModal, setShowEditModal] = useState(false);
   const [currentResponsibility, setCurrentResponsibility] = useState({});
-  const [currentChildName, setCurrentChildName] = useState('');
+  const [currentChildId, setCurrentChildId] = useState('');
 
   const navigate = useNavigate();
 
@@ -26,11 +31,46 @@ export default function ChildDashboard() {
     getFamilyStoreItems({ main });
   }, []);
 
-  const handleResponsibilityClick = (responsibility, childName) => {
+  const handleResponsibilityClick = (responsibility, childId) => {
     setCurrentResponsibility(responsibility);
-    setCurrentChildName(childName);
-    setShowResponsibilityModal(true);
+    setCurrentChildId(childId);
+    setShowEditModal(true);
   };
+
+  async function editResponsibility({
+    id,
+    title,
+    description,
+    difficulty,
+    completed,
+  }) {
+    try {
+      await updateResponsibility({
+        id,
+        main,
+        title,
+        description,
+        profileId: main.state.profile.id,
+        difficulty,
+        completed,
+        date: currentResponsibility.date,
+      });
+    } catch (e) {
+      console.error(e);
+    }
+  }
+
+  async function handleDeleteResponsibility(id) {
+    try {
+      await deleteResponsibilities({
+        main,
+        profileId: main.state.profile.id,
+        id,
+      });
+    } catch (e) {
+      console.log(e);
+    }
+  }
 
   return (
     <>
@@ -67,10 +107,7 @@ export default function ChildDashboard() {
                       <div
                         className="hover"
                         onClick={() =>
-                          handleResponsibilityClick(
-                            responsibility,
-                            child.first_name
-                          )
+                          handleResponsibilityClick(responsibility, child.id)
                         }
                         key={responsibility.id}
                       >
@@ -88,10 +125,7 @@ export default function ChildDashboard() {
                         <div
                           className="hover"
                           onClick={() =>
-                            handleResponsibilityClick(
-                              responsibility,
-                              child.first_name
-                            )
+                            handleResponsibilityClick(responsibility, child.id)
                           }
                           key={responsibility.id}
                         >
@@ -119,11 +153,14 @@ export default function ChildDashboard() {
             ))}
         </div>
         <Wallet />
-        <ResponsibilityModal
+        <EditResponsibilityModal
+          showEditModal={showEditModal}
+          setShowEditModal={setShowEditModal}
           currentResponsibility={currentResponsibility}
-          currentChildName={currentChildName}
-          setShowResponsibilityModal={setShowResponsibilityModal}
-          showResponsibilityModal={showResponsibilityModal}
+          setCurrentResponsibility={setCurrentResponsibility}
+          editResponsibility={editResponsibility}
+          handleDeleteResponsibility={handleDeleteResponsibility}
+          currentChildId={currentChildId}
         />
       </div>
     </>
