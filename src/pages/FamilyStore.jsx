@@ -81,7 +81,7 @@ function FamilyStore() {
             <div className="sidebar left">
               <ul className="responsibilities-list">
                 {items.filter((item) => !item.approved).length > 0 ? (
-                  <div>
+                  <div style={{ minWidth: '15rem' }}>
                     <h2>Items to approve</h2>
                     {items
                       .filter((item) => !item.approved)

@@ -45,7 +45,7 @@ function UnapprovedPurchases() {
 
   return (
     <div>
-      <h1>Unapproved Purchases</h1>
+      <h2>Unapproved Purchases</h2>
       <ul>
         {purchases.map((purchase) => (
           <li key={purchase.id}>

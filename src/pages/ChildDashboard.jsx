@@ -76,7 +76,7 @@ export default function ChildDashboard() {
     <>
       <ChildDashboardNavbar />
       <div className="child-dashboard">
-        <div className="family-store">Family Store</div>
+        <Wallet />
         <div className="family-members">
           <h1 className="family-name">{main.state.profile.family.name}</h1>
           <div className="invitation-code">
@@ -157,7 +157,6 @@ export default function ChildDashboard() {
               </div>
             ))}
         </div>
-        <Wallet />
         <EditResponsibilityModal
           showEditModal={showEditModal}
           setShowEditModal={setShowEditModal}
