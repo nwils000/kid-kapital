@@ -23,6 +23,7 @@ import FamilyStore from './pages/FamilyStore';
 
 import Responsibilities from './pages/Responsibilities';
 import ChildResponsibilities from './pages/ChildResponsibilities';
+import MyMoney from './pages/MyMoney';
 
 function Layout() {
   return (
@@ -86,6 +87,10 @@ const router = createBrowserRouter([
       {
         path: '/responsibilities',
         element: <Responsibilities />,
+      },
+      {
+        path: '/my-money',
+        element: <MyMoney />,
       },
 
       // {
