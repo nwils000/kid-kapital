@@ -9,7 +9,6 @@ import {
   updateResponsibility,
 } from '../api-calls/api';
 import ApproveResponsibilityModal from '../components/ApproveResponsibilityModal';
-import ResponsibilityModal from '../components/ResponsibilityModal';
 import { useNavigate } from 'react-router-dom';
 import UnapprovedPurchases from '../components/UnapprovedPurchases';
 import EditResponsibilityModal from '../components/EditResponsibilityModal';
@@ -238,7 +237,7 @@ export default function ParentDashboard() {
               </div>
             ))}
         </div>
-        <div className="wallet">Wallet</div>
+
         <ApproveResponsibilityModal
           showApproveModal={showApproveModal}
           setShowApproveModal={setShowApproveModal}

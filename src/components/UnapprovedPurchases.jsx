@@ -32,7 +32,10 @@ function UnapprovedPurchases() {
       });
 
       const updatedPurchases = purchases.map((purchase) => {
-        return { ...purchase, approved: updatedPurchase.approved };
+        if (purchase.id === purchaseId) {
+          return { ...purchase, approved: updatedPurchase.approved };
+        }
+        return purchase;
       });
       setPurchases(updatedPurchases);
     } catch (error) {

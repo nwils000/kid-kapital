@@ -10,6 +10,7 @@ export default function PurchaseItemModal({
   const { main } = useContext(MainContext);
   const [name, setName] = useState('');
   const [price, setPrice] = useState(0);
+  const [errorMessage, setErrorMessage] = useState('');
 
   useEffect(() => {
     if (currentItem) {
@@ -22,8 +23,20 @@ export default function PurchaseItemModal({
   }, [currentItem]);
 
   const handlePurchase = async () => {
-    purchaseStoreItem({ main, itemId: currentItem.id });
-    setShowPurchaseModal(false);
+    try {
+      if (main.state.profile.total_money >= price) {
+        await purchaseStoreItem({ main, itemId: currentItem.id });
+        setShowPurchaseModal(false);
+        setErrorMessage(''); // Clear any previous error messages
+      } else {
+        setErrorMessage(
+          `You do not have enough money. Your balance is $${main.state.profile.total_money}, but this item costs $${price}.`
+        );
+      }
+    } catch (e) {
+      console.error(e);
+      setErrorMessage('An error occurred while trying to make the purchase.');
+    }
   };
 
   if (!showPurchaseModal) return null;
@@ -38,6 +51,7 @@ export default function PurchaseItemModal({
         <div className="modal-body">
           <p>{price}</p>
           <button onClick={handlePurchase}>Purchase</button>
+          {errorMessage && <p className="error-message">{errorMessage}</p>}
         </div>
       </div>
     </div>
