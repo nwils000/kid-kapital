@@ -2,11 +2,17 @@ import React, { useContext, useEffect, useState } from 'react';
 import { MainContext } from '../context/context';
 import '../styles/parent-dashboard.css';
 import ParentDashboardNavbar from '../layout/ParentDashboardNavbar';
-import { fetchUser, getFamilyStoreItems } from '../api-calls/api';
+import {
+  deleteResponsibilities,
+  fetchUser,
+  getFamilyStoreItems,
+  updateResponsibility,
+} from '../api-calls/api';
 import ApproveResponsibilityModal from '../components/ApproveResponsibilityModal';
 import ResponsibilityModal from '../components/ResponsibilityModal';
 import { useNavigate } from 'react-router-dom';
 import UnapprovedPurchases from '../components/UnapprovedPurchases';
+import EditResponsibilityModal from '../components/EditResponsibilityModal';
 
 export default function ParentDashboard() {
   const { main } = useContext(MainContext);
@@ -17,9 +23,8 @@ export default function ParentDashboard() {
     setSelectedChildIdIncompleteResponsibilities,
   ] = useState('all');
   const [showApproveModal, setShowApproveModal] = useState(false);
-  const [showResponsibilityModal, setShowResponsibilityModal] = useState(false);
+  const [showEditModal, setShowEditModal] = useState(false);
   const [currentResponsibility, setCurrentResponsibility] = useState({});
-  const [currentChildName, setCurrentChildName] = useState('');
 
   const navigate = useNavigate();
 
@@ -35,14 +40,47 @@ export default function ParentDashboard() {
 
   const handleResponsibilityClick = (responsibility, childName = '') => {
     setCurrentResponsibility(responsibility);
-    setCurrentChildName(childName);
-    setShowResponsibilityModal(true);
+    setShowEditModal(true);
   };
   const handleApprovalClick = (responsibility, childName = '') => {
     setCurrentResponsibility(responsibility);
-    setCurrentChildName(childName);
     setShowApproveModal(true);
   };
+
+  async function editResponsibility({
+    id,
+    title,
+    description,
+    difficulty,
+    completed,
+  }) {
+    try {
+      await updateResponsibility({
+        id,
+        main,
+        title,
+        description,
+        profileId: main.state.profile.id,
+        difficulty,
+        completed,
+        date: currentResponsibility.date,
+      });
+    } catch (e) {
+      console.error(e);
+    }
+  }
+
+  async function handleDeleteResponsibility(id) {
+    try {
+      await deleteResponsibilities({
+        main,
+        profileId: main.state.profile.id,
+        id,
+      });
+    } catch (e) {
+      console.log(e);
+    }
+  }
 
   return (
     <>
@@ -207,11 +245,14 @@ export default function ParentDashboard() {
           currentResponsibility={currentResponsibility}
           setCurrentResponsibility={setCurrentResponsibility}
         />
-        <ResponsibilityModal
+        <EditResponsibilityModal
+          showEditModal={showEditModal}
+          setShowEditModal={setShowEditModal}
           currentResponsibility={currentResponsibility}
-          currentChildName={currentChildName}
-          setShowResponsibilityModal={setShowResponsibilityModal}
-          showResponsibilityModal={showResponsibilityModal}
+          setCurrentResponsibility={setCurrentResponsibility}
+          editResponsibility={editResponsibility}
+          handleDeleteResponsibility={handleDeleteResponsibility}
+          parentalControl={true}
         />
       </div>
     </>

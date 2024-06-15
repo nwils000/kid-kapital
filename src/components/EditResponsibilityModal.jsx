@@ -141,7 +141,7 @@ function EditResponsibilityModal({
       <div className={modalClass} onClick={(e) => e.stopPropagation()}>
         {currentResponsibility.verified ? (
           <p style={{ color: 'rgb(49, 154, 199)', textAlign: 'center' }}>
-            Parent approved
+            Approved
           </p>
         ) : (
           <p style={{ color: 'rgb(49, 154, 199)', textAlign: 'center' }}>

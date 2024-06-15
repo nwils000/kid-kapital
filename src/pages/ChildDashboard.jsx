@@ -145,7 +145,12 @@ export default function ChildDashboard() {
             .map((responsibility, index) => (
               <div
                 className="hover"
-                onClick={() => handleResponsibilityClick(responsibility)}
+                onClick={() =>
+                  handleResponsibilityClick(
+                    responsibility,
+                    main.state.profile.id
+                  )
+                }
                 key={index}
               >
                 {formatDate(responsibility.date)} - {responsibility.title}
