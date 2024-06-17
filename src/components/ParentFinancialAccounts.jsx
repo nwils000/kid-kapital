@@ -91,7 +91,7 @@ export default function ParentFinancialAccounts() {
               ? 7
               : interestPeriodType === 'Monthly'
               ? 31
-              : 3
+              : 365
           }
           value={interestDay}
           onChange={(e) => setInterestDay(e.target.value)}
