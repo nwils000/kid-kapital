@@ -454,3 +454,132 @@ export const updatePurchaseApproval = async ({
     console.error('Error with updatePurchaseApproval api call:', error);
   }
 };
+
+export const listAccountTypes = async ({ main }) => {
+  try {
+    const response = await axios({
+      method: 'get',
+      url: `${baseUrl}/list-account-types/`,
+      headers: {
+        Authorization: `Bearer ${main.state.accessToken}`,
+      },
+    });
+    console.log('LIST ACCOUNT TYPES: ', response);
+    return response.data;
+  } catch (error) {
+    console.error('Error with listAccountTypes api call: ', error);
+  }
+};
+
+export const createFinancialAccount = async ({
+  main,
+  accountType,
+  interestRate,
+  interestPeriodType,
+  interestDay,
+}) => {
+  try {
+    const response = await axios({
+      method: 'post',
+      url: `${baseUrl}/create-account/`,
+      headers: {
+        Authorization: `Bearer ${main.state.accessToken}`,
+      },
+      data: {
+        account_type: accountType,
+        interest_rate: interestRate,
+        interest_period_type: interestPeriodType,
+        interest_day: interestDay,
+      },
+    });
+    console.log('CREATE FINANCIAL ACCOUNT: ', response);
+    return response.data;
+  } catch (error) {
+    console.error('Error with createFinancialAccount api call: ', error);
+  }
+};
+
+export const updateFinancialAccount = async ({
+  main,
+  accountId,
+  accountType,
+  interestRate,
+  interestPeriodType,
+  interestDay,
+}) => {
+  try {
+    const response = await axios({
+      method: 'put',
+      url: `${baseUrl}/update-account/`,
+      headers: {
+        Authorization: `Bearer ${main.state.accessToken}`,
+      },
+      data: {
+        id: accountId,
+        account_type: accountType,
+        interest_rate: interestRate,
+        interest_period_type: interestPeriodType,
+        interest_day: interestDay,
+      },
+    });
+    console.log('UPDATE FINANCIAL ACCOUNT: ', response);
+    return response.data;
+  } catch (error) {
+    console.error('Error with updateFinancialAccount api call: ', error);
+  }
+};
+
+export const viewAvailableAccounts = async ({ main }) => {
+  try {
+    const response = await axios({
+      method: 'get',
+      url: `${baseUrl}/view-available-accounts/`,
+      headers: {
+        Authorization: `Bearer ${main.state.accessToken}`,
+      },
+    });
+    console.log('VIEW AVAILABLE ACCOUNTS: ', response);
+    return response.data;
+  } catch (error) {
+    console.error('Error with viewAvailableAccounts api call: ', error);
+  }
+};
+
+export const deleteFinancialAccount = async ({ main, accountId }) => {
+  try {
+    const response = await axios({
+      method: 'delete',
+      url: `${baseUrl}/delete-account/`,
+      headers: {
+        Authorization: `Bearer ${main.state.accessToken}`,
+      },
+      data: {
+        id: accountId,
+      },
+    });
+    console.log('DELETE FINANCIAL ACCOUNT: ', response);
+    return response.data;
+  } catch (error) {
+    console.error('Error with deleteFinancialAccount api call: ', error);
+  }
+};
+
+export const investMoney = async ({ main, accountId, amount }) => {
+  try {
+    const response = await axios({
+      method: 'post',
+      url: `${baseUrl}/invest-money/`,
+      headers: {
+        Authorization: `Bearer ${main.state.accessToken}`,
+      },
+      data: {
+        account_id: accountId,
+        amount: amount,
+      },
+    });
+    console.log('INVEST MONEY: ', response);
+    return response.data;
+  } catch (error) {
+    console.error('Error with investMoney api call: ', error);
+  }
+};

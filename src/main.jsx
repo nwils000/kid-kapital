@@ -24,6 +24,8 @@ import FamilyStore from './pages/FamilyStore';
 import Responsibilities from './pages/Responsibilities';
 import ChildResponsibilities from './pages/ChildResponsibilities';
 import MyMoney from './pages/MyMoney';
+import ParentFinancialAccounts from './components/ParentFinancialAccounts';
+import ChildFinancialAccounts from './components/ChildFinancialAccounts';
 
 function Layout() {
   return (
@@ -91,6 +93,14 @@ const router = createBrowserRouter([
       {
         path: '/my-money',
         element: <MyMoney />,
+      },
+      {
+        path: '/parent-financial-accounts',
+        element: <ParentFinancialAccounts />,
+      },
+      {
+        path: '/child-financial-accounts',
+        element: <ChildFinancialAccounts />,
       },
 
       // {

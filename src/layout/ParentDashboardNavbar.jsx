@@ -22,6 +22,9 @@ export default function ParentDashboardNavbar() {
           <Link to="/responsibilities" className="nav-link">
             My Responsibilities
           </Link>
+          <Link to="/parent-financial-accounts" className="nav-link">
+            Parent Financial Accounts
+          </Link>
         </div>
       </div>
       <div style={{ height: '6rem' }}></div>
