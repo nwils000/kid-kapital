@@ -13,11 +13,17 @@ export default function ChildDashboardNavbar() {
           <Link className="nav-link" to="/child-dashboard">
             Dashboard
           </Link>
+          <Link className="nav-link" to="/my-money">
+            My Money
+          </Link>
           <Link className="nav-link" to="/family-store">
             Family Store
           </Link>
           <Link to="/responsibilities" className="nav-link">
             My Responsibilities
+          </Link>
+          <Link to="/child-financial-accounts" className="nav-link">
+            Child Financial Accounts
           </Link>
         </div>
       </div>
