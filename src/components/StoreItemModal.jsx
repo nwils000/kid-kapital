@@ -1,4 +1,5 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useContext } from 'react';
+import { MainContext } from '../context/context';
 
 function StoreItemModal({
   showItemModal,
@@ -8,6 +9,7 @@ function StoreItemModal({
   handleUpdateStoreItem,
   handleDeleteStoreItem,
 }) {
+  const { main } = useContext(MainContext);
   const [name, setName] = useState('');
   const [price, setPrice] = useState(0);
 
@@ -24,12 +26,14 @@ function StoreItemModal({
   const handleSubmit = async () => {
     if (currentItem) {
       await handleUpdateStoreItem({
+        main,
         id: currentItem.id,
         name,
         price,
       });
     } else {
       await handleCreateStoreItem({
+        main,
         name,
         price,
       });

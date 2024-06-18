@@ -1,19 +1,17 @@
 import React, { useContext, useEffect, useState } from 'react';
 import { MainContext } from '../context/context';
 import ParentDashboardNavbar from '../layout/ParentDashboardNavbar';
+import ChildDashboardNavbar from '../layout/ChildDashboardNavbar';
+import StoreItemModal from '../components/StoreItemModal';
+import ApproveItemModal from '../components/ApproveItemModal';
+import PurchaseItemModal from '../components/PurchaseItemModal';
 import {
   createStoreItem,
   updateStoreItem,
   deleteFamilyStoreItems,
   handleApproveStoreItemRequest,
-  // approveStoreItemRequest,
-  // requestStoreItem,
 } from '../api-calls/api';
-import StoreItemModal from '../components/StoreItemModal';
 import '../styles/family-store.css';
-import ApproveItemModal from '../components/ApproveItemModal';
-import PurchaseItemModal from '../components/PurchaseItemModal';
-import ChildDashboardNavbar from '../layout/ChildDashboardNavbar';
 
 function FamilyStore() {
   const { main } = useContext(MainContext);
@@ -27,27 +25,6 @@ function FamilyStore() {
     setItems(main.state.familyStoreItems);
   }, [main.state.familyStoreItems]);
 
-  const handleDeleteStoreItem = async ({ itemId }) => {
-    deleteFamilyStoreItems({ main, itemId });
-  };
-
-  const handleCreateStoreItem = async ({ name, price }) => {
-    createStoreItem({ name, price, main });
-  };
-
-  const handleUpdateStoreItem = async ({ id, name, price }) => {
-    updateStoreItem({ id, name, price, main });
-  };
-
-  const handleRequestStoreItem = async (itemId) => {
-    // requestStoreItem({ main, itemId });
-  };
-
-  const handleApproveStoreItem = async ({ itemId }) => {
-    console.log('item iddddd', itemId);
-    handleApproveStoreItemRequest({ main, itemId });
-  };
-
   const openItemModal = (item) => {
     setCurrentItem(item);
     setShowItemModal(true);
@@ -59,7 +36,6 @@ function FamilyStore() {
   };
 
   const openPurchaseModal = (item) => {
-    console.log('hi');
     setCurrentItem(item);
     setShowPurchaseModal(true);
   };
@@ -71,70 +47,59 @@ function FamilyStore() {
       ) : (
         <ChildDashboardNavbar />
       )}
+      <h1 style={{ fontSize: '2rem', margin: '20px', textAlign: 'center' }}>
+        Family Store
+      </h1>
       <div className="family-store">
-        <h1>Family Store</h1>
         {!main.state.profile.parent && (
           <p>Total Money: ${main.state.profile.total_money}</p>
         )}
-        <div style={{ display: 'flex', justifyContent: 'center', gap: '8rem' }}>
+        <div className="store-layout">
           {main.state.profile.parent && (
             <div className="sidebar left">
+              <h2>Items to Approve</h2>
               <ul className="responsibilities-list">
                 {items.filter((item) => !item.approved).length > 0 ? (
-                  <div style={{ minWidth: '15rem' }}>
-                    <h2>Items to approve</h2>
-                    {items
-                      .filter((item) => !item.approved)
-                      .map((item) => {
-                        return (
-                          <li
-                            key={item.id}
-                            className="hover"
-                            onClick={() => openApproveItemModal(item)}
-                          >
-                            {item.name} - ${item.price}
-                          </li>
-                        );
-                      })}
-                  </div>
+                  items
+                    .filter((item) => !item.approved)
+                    .map((item) => (
+                      <li
+                        key={item.id}
+                        className="hover"
+                        onClick={() => openApproveItemModal(item)}
+                      >
+                        {item.name} - ${item.price}
+                      </li>
+                    ))
                 ) : (
                   <li>No items to approve</li>
                 )}
               </ul>
             </div>
           )}
-          <div>
+          <div className="store-items">
             <button onClick={() => openItemModal(null)}>
-              {main.state.profile.parent ? (
-                <p>Add New Item</p>
-              ) : (
-                <p>Request New Item</p>
-              )}
+              {main.state.profile.parent ? 'Add New Item' : 'Request New Item'}
             </button>
-            <div className="store-items">
-              <h2>Available Items</h2>
-              <div className="items-grid">
-                {items
-                  .filter((item) => item.approved)
-                  .map((item) => (
-                    <div
-                      onClick={() => {
-                        main.state.profile.parent
-                          ? openItemModal(item)
-                          : openPurchaseModal(item);
-                      }}
-                      key={item.id}
-                      className="item-card"
-                    >
-                      <div>
-                        {item.name} - ${item.price}
-                      </div>
-                    </div>
-                  ))}
-              </div>
+            <h2>Available Items</h2>
+            <div className="items-grid">
+              {items
+                .filter((item) => item.approved)
+                .map((item) => (
+                  <div
+                    key={item.id}
+                    className="item-card hover"
+                    onClick={() => {
+                      main.state.profile.parent
+                        ? openItemModal(item)
+                        : openPurchaseModal(item);
+                    }}
+                  >
+                    {item.name} - ${item.price}
+                  </div>
+                ))}
             </div>
           </div>
-          <div className="right"></div>
         </div>
       </div>
       {showItemModal && (
@@ -142,17 +107,16 @@ function FamilyStore() {
           showItemModal={showItemModal}
           setShowItemModal={setShowItemModal}
           currentItem={currentItem}
-          handleCreateStoreItem={handleCreateStoreItem}
-          handleUpdateStoreItem={handleUpdateStoreItem}
-          handleDeleteStoreItem={handleDeleteStoreItem}
+          handleCreateStoreItem={createStoreItem}
+          handleUpdateStoreItem={updateStoreItem}
+          handleDeleteStoreItem={deleteFamilyStoreItems}
         />
       )}
       {showApproveItemModal && (
         <ApproveItemModal
           showApproveItemModal={showApproveItemModal}
           setShowApproveItemModal={setShowApproveItemModal}
-          handleApproveStoreItem={handleApproveStoreItem}
-          handleDeleteStoreItem={handleDeleteStoreItem}
+          handleApproveStoreItem={handleApproveStoreItemRequest}
           currentItem={currentItem}
         />
       )}

@@ -1,25 +1,31 @@
 import '../styles/navbar.css';
 import { Link } from 'react-router-dom';
+import { FaHome, FaUserFriends, FaStore, FaTasks } from 'react-icons/fa';
+import { GiTakeMyMoney } from 'react-icons/gi';
 
-function LandingPageNavbar() {
+export default function ParentDashboardNavbar() {
   return (
-    <>
-      <div className="navbar">
-        <Link to="/">
-          <span className="logo-text">Kid Kapital</span>
-        </Link>
-        <div className="nav-links-wrapper">
-          <Link className="nav-link" to="/register">
-            Register
+    <div>
+      <div className="navbar-wrapper">
+        <div className="navbar parent-navbar">
+          <Link to="/" className="nav-item">
+            <div className="logo-wrapper">
+              <GiTakeMyMoney className="logo-icon" />
+              <span className="logo-text">Kid Kapital</span>
+            </div>
           </Link>
-          <Link to="/login" className="nav-link">
-            Sign in
-          </Link>
+
+          <div className="nav-links-wrapper">
+            <Link className="nav-link landing-page-link" to="/register">
+              Register
+            </Link>
+            <Link to="/login" className="nav-link landing-page-link">
+              Sign in
+            </Link>
+          </div>
         </div>
       </div>
-      <div style={{ height: '6rem' }}></div>
-    </>
+      <div style={{ height: '5rem' }}></div>
+    </div>
   );
 }
-
-export default LandingPageNavbar;

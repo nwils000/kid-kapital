@@ -1,21 +1,16 @@
 import React, { useContext, useState, useEffect } from 'react';
 import { MainContext } from '../context/context';
 import ParentDashboardNavbar from '../layout/ParentDashboardNavbar';
-import {
-  establishAllowancePeriod,
-  fetchChildResponsibilities,
-  fetchUser,
-} from '../api-calls/api';
+import { fetchChildResponsibilities, fetchUser } from '../api-calls/api';
 import { useNavigate } from 'react-router-dom';
-import AllowancePeriodModal from '../components/AllowancePeriodModal';
 import ChildDashboardNavbar from '../layout/ChildDashboardNavbar';
+import '../styles/family-manager.css';
 
 export default function FamilyManager() {
   const { main } = useContext(MainContext);
   const [familyData, setFamilyData] = useState([]);
   const [loading, setLoading] = useState(true);
-  const [showAllowancePeriodModal, setShowAllowancePeriodModal] =
-    useState(false);
+
   const [lastAllowanceDate, setLastAllowanceDate] = useState(null);
 
   const navigate = useNavigate();
@@ -30,7 +25,7 @@ export default function FamilyManager() {
         });
         setFamilyData(data.family.members);
         setLastAllowanceDate(data.family.last_allowance_date);
-        console.log('family data', data.family.members);
+        console.log('Family data:', data.family.members);
       } catch (error) {
         console.error('Failed to fetch family data:', error);
       } finally {
@@ -40,31 +35,14 @@ export default function FamilyManager() {
     loadFamilyData();
   }, [main.state.accessToken]);
 
-  useEffect(() => {
-    console.log('LAST ALLOWANCE DATE', lastAllowanceDate);
-  }, [lastAllowanceDate]);
-
   const navigateToChild = async (childId) => {
-    try {
-      console.log('CHILDID', childId);
-      main.dispatch({
-        type: 'SET_CHILD_IM_SEEINGS_ID',
-        childImSeeingsId: childId,
-      });
-      fetchChildResponsibilities({ main, childId });
-      navigate('/child-responsibilities');
-    } catch (e) {
-      console.error(e);
-    }
-  };
-
-  const setTheAllowancePeriod = async ({ periodType, allowanceDay }) => {
-    console.log('PERIOD TYPE', periodType);
-    try {
-      establishAllowancePeriod({ main, periodType, allowanceDay });
-    } catch (e) {
-      console.error(e);
-    }
+    console.log('CHILDID', childId);
+    main.dispatch({
+      type: 'SET_CHILD_IM_SEEINGS_ID',
+      childImSeeingsId: childId,
+    });
+    fetchChildResponsibilities({ main, childId });
+    navigate('/child-responsibilities');
   };
 
   return (
@@ -74,13 +52,12 @@ export default function FamilyManager() {
       ) : (
         <ChildDashboardNavbar />
       )}
+      <h1 style={{ fontSize: '2rem', margin: '20px', textAlign: 'center' }}>
+        {main.state.profile.family.name}
+      </h1>
       <div className="family-manager">
-        <h1>Family Financial Manager</h1>
-        <button onClick={() => setShowAllowancePeriodModal(true)}>
-          Set Allowance Period
-        </button>
         {loading ? (
-          <p>Loading...</p>
+          <p className="loading">Loading...</p>
         ) : (
           <table>
             <thead>
@@ -94,7 +71,7 @@ export default function FamilyManager() {
             </thead>
             <tbody>
               {familyData.map((member) => (
-                <tr style={{ textAlign: 'center' }} key={member.id}>
+                <tr key={member.id}>
                   <td
                     className="hover"
                     onClick={() => navigateToChild(member.id)}
@@ -102,65 +79,37 @@ export default function FamilyManager() {
                     {member.first_name}
                   </td>
                   <td>
-                    <div>
-                      <p>
-                        {
-                          member.responsibilities.filter((resp) => {
-                            const respDate = new Date(resp.date);
-                            if (lastAllowanceDate) {
-                              const lastAllowanceDateObj = new Date(
-                                lastAllowanceDate
-                              );
-                              return (
-                                resp.completed &&
-                                respDate >= lastAllowanceDateObj &&
-                                respDate < new Date()
-                              );
-                            }
-                            return resp.completed && respDate < new Date();
-                          }).length
-                        }
-                      </p>
-                    </div>
+                    {
+                      member.responsibilities.filter((resp) => {
+                        const respDate = new Date(resp.date);
+                        return (
+                          resp.completed &&
+                          (!lastAllowanceDate ||
+                            respDate >= new Date(lastAllowanceDate)) &&
+                          respDate < new Date()
+                        );
+                      }).length
+                    }
                   </td>
                   <td>
                     {member.responsibilities
-                      .filter((resp) => {
-                        const respDate = new Date(resp.date);
-                        if (lastAllowanceDate) {
-                          const lastAllowanceDateObj = new Date(
-                            lastAllowanceDate
-                          );
-                          return (
-                            resp.completed &&
-                            resp.verified &&
-                            respDate >= lastAllowanceDateObj &&
-                            respDate < new Date()
-                          );
-                        }
-                        return (
+                      .filter(
+                        (resp) =>
                           resp.completed &&
-                          resp.verified &&
-                          respDate < new Date()
-                        );
-                      })
-                      .reduce(
-                        (totalDifficulty, resp) =>
-                          totalDifficulty + resp.difficulty,
-                        0
-                      )}
+                          (!lastAllowanceDate ||
+                            new Date(resp.date) >=
+                              new Date(lastAllowanceDate)) &&
+                          new Date(resp.date) < new Date()
+                      )
+                      .reduce((total, resp) => total + resp.difficulty, 0)}
                   </td>
                   <td>{member.total_money}</td>
+                  <td>{member.savings || '-'}</td>
                 </tr>
               ))}
             </tbody>
           </table>
         )}
-        <AllowancePeriodModal
-          setTheAllowancePeriod={setTheAllowancePeriod}
-          showAllowancePeriodModal={showAllowancePeriodModal}
-          setShowAllowancePeriodModal={setShowAllowancePeriodModal}
-        />
       </div>
     </>
   );
