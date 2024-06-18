@@ -1,11 +1,13 @@
 import '../styles/register.css';
 import { Link, useNavigate } from 'react-router-dom';
 import { FaEye, FaEyeSlash } from 'react-icons/fa';
-import { useEffect, useState } from 'react';
-import { createUser } from '../api-calls/api.js';
-import LandingPageNavbar from '../layout/LandingPageNavbar';
+import { useContext, useEffect, useState } from 'react';
+import { createUser, fetchUser } from '../api-calls/api.js';
+import ParentDashboardNavbar from '../layout/ParentDashboardNavbar.jsx';
+import { MainContext } from '../context/context.js';
 
-export default function Register() {
+export default function AddFamilyMember() {
+  const { main } = useContext(MainContext);
   const [passwordHidden, setPasswordHidden] = useState(true);
   const [confirmPasswordHidden, setConfirmPasswordHidden] = useState(true);
   const [passwordType, setPasswordType] = useState('password');
@@ -15,9 +17,11 @@ export default function Register() {
   const [username, setUsername] = useState('');
   const [password, setPassword] = useState('');
   const [confirmPassword, setConfirmPassword] = useState('');
-  const [hubInputType, setHubInputType] = useState('');
+  const [hubInputType, setHubInputType] = useState('join');
   const [newFamilyHubName, setNewFamilyHubName] = useState('');
-  const [familyHubInvitationCode, setFamilyHubInvitationCode] = useState('');
+  const [familyHubInvitationCode, setFamilyHubInvitationCode] = useState(
+    main.state.profile.family.invitation_code
+  );
   const [parent, setParent] = useState(false);
 
   let navigate = useNavigate();
@@ -30,7 +34,7 @@ export default function Register() {
     setConfirmPasswordType(confirmPasswordHidden ? 'password' : 'text');
   }, [confirmPasswordHidden]);
 
-  const handleSubmit = () => {
+  const handleSubmit = async () => {
     if (hubInputType === 'join' && parent === undefined) {
       alert('Please select whether you are a parent.');
       return;
@@ -39,48 +43,32 @@ export default function Register() {
       alert('Your passwords do not match.');
       return;
     }
-    createUser({
-      familyHubInvitationCode:
-        familyHubInvitationCode === '' ? null : familyHubInvitationCode,
-      newFamilyHubName: newFamilyHubName === '' ? null : newFamilyHubName,
-      username,
-      password,
-      firstName,
-      lastName,
-      parent: familyHubInvitationCode === '' ? true : parent,
-    });
-    navigate('/login');
+    try {
+      await createUser({
+        familyHubInvitationCode:
+          familyHubInvitationCode === '' ? null : familyHubInvitationCode,
+        newFamilyHubName: newFamilyHubName === '' ? null : newFamilyHubName,
+        username,
+        password,
+        firstName,
+        lastName,
+        parent: familyHubInvitationCode === '' ? true : parent,
+      });
+      navigate('/family');
+    } catch (e) {
+      console.error(e);
+    }
   };
 
   return (
     <>
-      <LandingPageNavbar />
+      <ParentDashboardNavbar />
       <div className="signup">
         <h1>
-          Create account<span>.</span>
+          Create family member<span>.</span>
         </h1>
-        <p>
-          Already have an account? <Link to="/login">Sign in</Link>
-        </p>
+
         <div className="signup-input-wrapper">
-          <div className="label-input-wrapper" style={{ position: 'relative' }}>
-            <span style={{ display: 'flex', gap: '5px' }}>
-              Create a{' '}
-              <button
-                onClick={() => setHubInputType('new')}
-                className="new-family-hub"
-              >
-                new family hub
-              </button>{' '}
-              or{' '}
-              <button
-                onClick={() => setHubInputType('join')}
-                className="joining-one"
-              >
-                join one
-              </button>
-            </span>
-          </div>
           {hubInputType === 'new' && (
             <div
               className="label-input-wrapper"
@@ -101,24 +89,13 @@ export default function Register() {
               <div
                 className="label-input-wrapper"
                 style={{ position: 'relative' }}
-              >
-                <label htmlFor="familyHubInvitationCode">
-                  Family Hub Invitation Code
-                </label>
-                <input
-                  id="familyHubInvitationCode"
-                  type="text"
-                  onChange={(e) => setFamilyHubInvitationCode(e.target.value)}
-                  value={familyHubInvitationCode}
-                  placeholder="JOINPS22"
-                />
-              </div>
+              ></div>
               <div
                 className="parent-input-wrapper"
-                style={{ position: 'relative' }}
+                style={{ position: 'relative', right: '7px' }}
               >
                 <label htmlFor="parent" className="parent-label">
-                  Are you a parent?
+                  Are they a parent?
                 </label>
                 <input
                   id="parent"
@@ -210,7 +187,12 @@ export default function Register() {
                   {confirmPasswordHidden ? <FaEyeSlash /> : <FaEye />}
                 </div>
               </div>
-              <Link onClick={handleSubmit} className="signup-button">
+              <Link
+                onClick={() => {
+                  handleSubmit();
+                }}
+                className="signup-button"
+              >
                 Create account
               </Link>
             </>

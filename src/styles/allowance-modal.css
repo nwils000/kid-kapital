@@ -26,8 +26,8 @@
   border: none;
   color: black;
   background: none;
-  padding: 8px 16px;
-  border-radius: 4px;
+  padding: 10px 20px;
+  border-radius: 8px;
   cursor: pointer;
   font-size: 16px;
   margin: 0;
@@ -37,22 +37,22 @@
   color: white;
   border: none;
   padding: 10px 20px;
-  border-radius: 5px;
+  border-radius: 8px;
   cursor: pointer;
   font-size: 16px;
   margin-top: 20px;
 }
 
 .allowance-modal select {
-  padding: 8px;
+  padding: 5px 10px;
   margin-right: 10px;
-  border-radius: 4px;
+  border-radius: 8px;
   border: 1px solid #ccc;
 }
 
 .allowance-modal input[type='number'] {
-  padding: 8px;
-  border-radius: 4px;
+  padding: 5px 10px;
+  border-radius: 8px;
   border: 1px solid #ccc;
 }
 

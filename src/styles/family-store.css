@@ -1,8 +1,5 @@
 .family-store {
   padding: 20px;
-  background-color: #f9f9f9;
-  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
-  border-radius: 10px;
   margin: 20px;
 }
 
@@ -18,18 +15,22 @@
 }
 
 .family-store .sidebar {
-  flex-basis: 20%;
   background: #ffffff;
-  padding: 10px;
-  border-radius: 5px;
-  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+  padding: 0 20px 20px 20px;
+  border-radius: 8px;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+}
+
+.family-store .sidebar h2 {
+  margin: 20px;
 }
 
 .family-store .store-items {
   flex-grow: 1;
-  padding: 10px;
-  background: #f0f0f0;
-  border-radius: 5px;
+  padding: 0 20px 20px 20px;
+  background-color: #ffff;
+  border-radius: 8px;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
 }
 
 .family-store .items-grid {
@@ -41,16 +42,15 @@
 .family-store .item-card {
   background-color: #fff;
   padding: 20px;
-  border-radius: 10px;
-  box-shadow: 0 5px 15px rgba(0, 0, 0, 0.2);
+  border-radius: 8px;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.2);
   cursor: pointer;
-  transition: transform 0.3s ease, box-shadow 0.3s ease;
+  transition: 0.3s ease;
 }
 
 .family-store .item-card:hover {
-  transform: translateY(-3px);
-  background-color: #e9ecef;
-  box-shadow: 0 8px 16px rgba(0, 0, 0, 0.25);
+  transform: translateY(-1px);
+  background-color: #f1f1f1;
 }
 
 .family-store button {
@@ -61,12 +61,11 @@
   border: none;
   cursor: pointer;
   margin: 10px 0;
-  transition: background-color 0.2s, box-shadow 0.2s;
+  transition: 0.5s;
 }
 
 .family-store button:hover {
   background-color: #3590b5;
-  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
 }
 
 .family-store .modal-overlay {

@@ -3,14 +3,14 @@
   background: #3fa0ca;
   position: absolute;
   left: 0;
-  height: calc(5rem + 1px);
+  height: 5rem;
 }
 
 .navbar {
   display: flex;
   align-items: center;
   justify-content: space-between;
-  padding: 0 4rem;
+  padding: 0 20px;
   font-size: 1.2rem;
   font-weight: 500;
   height: 5rem;
@@ -65,7 +65,7 @@
   justify-content: center;
   text-decoration: none;
   color: rgba(255, 255, 255, 0.842);
-  padding: 15px 2rem;
+  padding: 14px 2rem;
   font-size: 1rem;
   transition: 0.5s;
   border-left: 1px solid rgba(0, 0, 0, 0.13);

@@ -24,7 +24,7 @@ export default function FamilyManager() {
           main,
         });
         setFamilyData(data.family.members);
-        setLastAllowanceDate(data.family.last_allowance_date);
+
         console.log('Family data:', data.family.members);
       } catch (error) {
         console.error('Failed to fetch family data:', error);
@@ -33,7 +33,7 @@ export default function FamilyManager() {
       }
     }
     loadFamilyData();
-  }, [main.state.accessToken]);
+  }, []);
 
   const navigateToChild = async (childId) => {
     console.log('CHILDID', childId);
@@ -52,9 +52,18 @@ export default function FamilyManager() {
       ) : (
         <ChildDashboardNavbar />
       )}
-      <h1 style={{ fontSize: '2rem', margin: '20px', textAlign: 'center' }}>
+      <h1
+        style={{
+          fontSize: '2rem',
+          margin: '20px 20px 0 20px',
+          textAlign: 'center',
+        }}
+      >
         {main.state.profile.family.name}
       </h1>
+      <p style={{ textAlign: 'center', margin: 0 }}>
+        Invitation code: {main.state.profile.family.invitation_code}
+      </p>
       <div className="family-manager">
         {loading ? (
           <p className="loading">Loading...</p>
@@ -110,6 +119,12 @@ export default function FamilyManager() {
             </tbody>
           </table>
         )}
+        <button
+          onClick={() => navigate('/add-family-member')}
+          style={{ marginLeft: 0 }}
+        >
+          Add Child
+        </button>
       </div>
     </>
   );

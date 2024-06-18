@@ -98,7 +98,6 @@ export default function ParentFinancialAccounts() {
           alignItems: 'center',
           justifyContent: 'space-between',
         }}
-        className="hover"
       >
         <div>
           <h2 className="title">Manage Financial Accounts</h2>

@@ -57,7 +57,7 @@ function FamilyStore() {
         <div className="store-layout">
           {main.state.profile.parent && (
             <div className="sidebar left">
-              <h2>Items to Approve</h2>
+              <h2 style={{ textAlign: 'center' }}>Items to Approve</h2>
               <ul className="responsibilities-list">
                 {items.filter((item) => !item.approved).length > 0 ? (
                   items
@@ -72,16 +72,21 @@ function FamilyStore() {
                       </li>
                     ))
                 ) : (
-                  <li>No items to approve</li>
+                  <li style={{ textAlign: 'center' }}>No items to approve</li>
                 )}
               </ul>
             </div>
           )}
-          <div className="store-items">
-            <button onClick={() => openItemModal(null)}>
+          <div className="store-items" style={{ position: 'relative' }}>
+            <button
+              style={{ position: 'absolute', right: 20, top: 10 }}
+              onClick={() => openItemModal(null)}
+            >
               {main.state.profile.parent ? 'Add New Item' : 'Request New Item'}
             </button>
-            <h2>Available Items</h2>
+            <h2 style={{ textAlign: 'center', margin: '20px' }}>
+              Available Items
+            </h2>
             <div className="items-grid">
               {items
                 .filter((item) => item.approved)

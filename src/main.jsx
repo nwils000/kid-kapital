@@ -27,6 +27,7 @@ import MyMoney from './pages/MyMoney';
 import ParentFinancialAccounts from './components/ParentFinancialAccounts';
 import ChildFinancialAccounts from './components/ChildFinancialAccounts';
 import Finances from './pages/Finances';
+import AddFamilyMember from './pages/AddFamilyMember';
 
 function Layout() {
   return (
@@ -98,6 +99,10 @@ const router = createBrowserRouter([
       {
         path: '/finances',
         element: <Finances />,
+      },
+      {
+        path: '/add-family-member',
+        element: <AddFamilyMember />,
       },
       {
         path: '/child-financial-accounts',

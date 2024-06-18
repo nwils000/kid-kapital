@@ -53,7 +53,6 @@ function StoreItemModal({
       <div className="modal-content" onClick={(e) => e.stopPropagation()}>
         <div className="modal-header">
           <h5>{currentItem ? 'Edit Item' : 'Add New Item'}</h5>
-          <button onClick={() => setShowItemModal(false)}>Close</button>
         </div>
         <div className="modal-body">
           <input

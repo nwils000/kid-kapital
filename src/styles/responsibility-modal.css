@@ -13,9 +13,9 @@
 
 .modal-content {
   background: white;
-  padding: 40px;
+  padding: 20px;
   border-radius: 10px;
-  box-shadow: 0 8px 16px rgba(0, 0, 0, 0.2);
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
   width: 60%;
   max-width: 600px;
   position: relative;
@@ -37,18 +37,18 @@
 .title-input,
 .description-textarea {
   width: 100%;
-  padding: 10px;
+  padding: 5px 10px;
   border: 2px solid #ccc;
-  border-radius: 6px;
+  border-radius: 8px;
   font-size: 16px;
 }
 
 .tag {
   display: inline-block;
-  padding: 8px 16px;
+  padding: 10px 20px;
   background-color: rgb(220, 39, 39);
   color: white;
-  border-radius: 6px;
+  border-radius: 8px;
   font-size: 16px;
   width: fit-content;
   position: absolute;
@@ -66,7 +66,7 @@
 .delete-btn {
   padding: 10px 20px;
   border: none;
-  border-radius: 6px;
+  border-radius: 8px;
   cursor: pointer;
   font-size: 16px;
 }
@@ -83,5 +83,5 @@
 
 .verified {
   border: 3px solid rgb(49, 154, 199);
-  box-shadow: 0 0 10px rgb(49, 154, 199);
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
 }
