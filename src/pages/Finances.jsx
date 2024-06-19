@@ -5,6 +5,7 @@ import '../styles/finances.css';
 import { establishAllowancePeriod } from '../api-calls/api';
 import { MainContext } from '../context/context';
 import ChildDashboardNavbar from '../layout/ChildDashboardNavbar';
+import ParentDashboardNavbar from '../layout/ParentDashboardNavbar';
 
 export default function Finances() {
   const { main } = useContext(MainContext);
@@ -23,7 +24,12 @@ export default function Finances() {
 
   return (
     <div className="finances">
-      <ChildDashboardNavbar />
+      {main.state.profile.parent ? (
+        <ParentDashboardNavbar />
+      ) : (
+        <ChildDashboardNavbar />
+      )}
+
       <h1 style={{ textAlign: 'center', fontSize: '2rem', margin: '20px' }}>
         Manage {main.state.profile.family.name} Finances
       </h1>
