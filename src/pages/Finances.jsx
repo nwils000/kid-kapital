@@ -1,10 +1,10 @@
 import React, { useContext, useState } from 'react';
 import ParentFinancialAccounts from '../components/ParentFinancialAccounts';
-import ParentDashboardNavbar from '../layout/ParentDashboardNavbar';
 import AllowancePeriodModal from '../components/AllowancePeriodModal';
 import '../styles/finances.css';
 import { establishAllowancePeriod } from '../api-calls/api';
 import { MainContext } from '../context/context';
+import ChildDashboardNavbar from '../layout/ChildDashboardNavbar';
 
 export default function Finances() {
   const { main } = useContext(MainContext);
@@ -23,7 +23,7 @@ export default function Finances() {
 
   return (
     <div className="finances">
-      <ParentDashboardNavbar />
+      <ChildDashboardNavbar />
       <h1 style={{ textAlign: 'center', fontSize: '2rem', margin: '20px' }}>
         Manage {main.state.profile.family.name} Finances
       </h1>
