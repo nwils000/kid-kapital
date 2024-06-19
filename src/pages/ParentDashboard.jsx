@@ -3,7 +3,7 @@ import { MainContext } from '../context/context';
 import '../styles/parent-dashboard.css';
 import ParentDashboardNavbar from '../layout/ParentDashboardNavbar';
 import {
-  deleteResponsibilities,
+  deleteResponsibility,
   fetchUser,
   getFamilyStoreItems,
   updateResponsibility,
@@ -71,7 +71,7 @@ export default function ParentDashboard() {
 
   async function handleDeleteResponsibility(id) {
     try {
-      await deleteResponsibilities({
+      await deleteResponsibility({
         main,
         profileId: main.state.profile.id,
         id,

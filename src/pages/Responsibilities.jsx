@@ -3,7 +3,8 @@ import { MainContext } from '../context/context';
 import '../styles/my-responsibilities.css';
 import {
   createResponsibility,
-  deleteResponsibilities,
+  deleteResponsibility,
+  editResponsibilitySeries,
   fetchResponsibilities,
   updateResponsibility,
 } from '../api-calls/api';
@@ -41,6 +42,7 @@ function Responsibilities() {
             difficulty: element.difficulty,
             verified: element.verified,
             completed: element.completed,
+            series: element.series,
             date: element.date,
           });
         });
@@ -97,7 +99,7 @@ function Responsibilities() {
     return days;
   }
 
-  async function addResponsibility({ title, description, difficulty }) {
+  async function addResponsibility({ title, description, difficulty, repeat }) {
     const formattedDate = formatDate(selectedDay);
     try {
       let newResponsibility = await createResponsibility({
@@ -108,6 +110,7 @@ function Responsibilities() {
         verified: main.state.profile.parent ? true : false,
         profileId: main.state.profile.id,
         date: formattedDate,
+        repeat,
       });
 
       const updatedResponsibilities = responsibilities[formattedDate]
@@ -120,6 +123,28 @@ function Responsibilities() {
     } catch (e) {
       console.log(e);
     }
+  }
+
+  async function handleEditSeries({
+    seriesId,
+    title,
+    startDate,
+    repeatInfo,
+    description,
+    difficulty,
+    verified,
+  }) {
+    await editResponsibilitySeries({
+      main,
+      profileId: main.state.profile.id,
+      seriesId,
+      title,
+      startDate,
+      repeatInfo,
+      description,
+      difficulty,
+      verified,
+    });
   }
 
   async function editResponsibility({
@@ -161,7 +186,7 @@ function Responsibilities() {
 
   async function handleDeleteResponsibility(id) {
     try {
-      const updatedResponsibilitiesData = await deleteResponsibilities({
+      const updatedResponsibilitiesData = await deleteResponsibility({
         main,
         profileId: main.state.profile.id,
         id,
@@ -181,6 +206,7 @@ function Responsibilities() {
           difficulty: element.difficulty,
           verified: element.verified,
           completed: element.completed,
+          series: element.series,
           date: element.date,
         });
       });
@@ -330,6 +356,7 @@ function Responsibilities() {
               setCurrentResponsibility={setCurrentResponsibility}
               editResponsibility={editResponsibility}
               handleDeleteResponsibility={handleDeleteResponsibility}
+              handleEditSeries={handleEditSeries}
             />
           </div>
         </div>

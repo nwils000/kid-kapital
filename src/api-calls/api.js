@@ -87,6 +87,7 @@ export const createResponsibility = async ({
   profileId,
   verified,
   date,
+  repeat,
 }) => {
   console.log(main);
   try {
@@ -103,12 +104,79 @@ export const createResponsibility = async ({
         difficulty,
         description,
         profile_id: profileId,
+        repeat,
       },
     });
+
     console.log('CREATE RESPONSIBILITY: ', response);
     return response.data;
   } catch (error) {
     console.log('Error with createResponsibility api call: ', error);
+  }
+};
+
+export const editResponsibilitySeries = async ({
+  seriesId,
+  main,
+  title,
+  startDate,
+  repeatInfo,
+  description,
+  difficulty,
+  verified,
+  profileId,
+}) => {
+  try {
+    console.log('PROFILE ID AT API CALL', profileId);
+    const response = await axios({
+      method: 'put',
+      url: `${baseUrl}/edit-responsibility-series/`,
+      headers: {
+        Authorization: `Bearer ${main.state.accessToken}`,
+      },
+      data: {
+        series_id: seriesId,
+        title,
+        start_date: startDate,
+        repeat: repeatInfo,
+        description,
+        difficulty,
+        profile_id: profileId,
+        verified,
+      },
+    });
+
+    console.log('EDIT RESPONSIBILITY SERIES: ', response);
+
+    return response.data;
+  } catch (error) {
+    console.log('Error with editResponsibilitySeries api call: ', error);
+  }
+};
+
+export const deleteResponsibilitySeries = async ({ seriesId, main }) => {
+  try {
+    const response = await axios({
+      method: 'delete',
+      url: `${baseUrl}/delete-responsibility-series/`,
+      headers: {
+        Authorization: `Bearer ${main.state.accessToken}`,
+      },
+      data: {
+        series_id: seriesId,
+      },
+    });
+
+    console.log('DELETE RESPONSIBILITY SERIES: ', response);
+
+    return response.data;
+  } catch (error) {
+    console.log('Error with deleteResponsibilitySeries api call: ', error);
+
+    main.dispatch({
+      type: 'ERROR',
+      message: 'Failed to delete responsibility series',
+    });
   }
 };
 
@@ -151,7 +219,7 @@ export const fetchChildResponsibilities = async ({ main, childId }) => {
   }
 };
 
-export const deleteResponsibilities = async ({ main, id, profileId }) => {
+export const deleteResponsibility = async ({ main, id, profileId }) => {
   try {
     const response = await axios({
       method: 'delete',

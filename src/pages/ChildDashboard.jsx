@@ -6,7 +6,7 @@ import {
   fetchUser,
   getFamilyStoreItems,
   updateResponsibility,
-  deleteResponsibilities,
+  deleteResponsibility,
 } from '../api-calls/api'; // Added API functions
 import EditResponsibilityModal from '../components/EditResponsibilityModal';
 import { useNavigate } from 'react-router-dom';
@@ -62,7 +62,7 @@ export default function ChildDashboard() {
 
   async function handleDeleteResponsibility(id) {
     try {
-      await deleteResponsibilities({
+      await deleteResponsibility({
         main,
         profileId: main.state.profile.id,
         id,

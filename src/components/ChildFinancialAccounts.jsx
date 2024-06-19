@@ -44,7 +44,7 @@ export default function ChildFinancialAccounts() {
 
   return (
     <div>
-      \<h2>Child Component</h2>
+      <h2>Child Component</h2>
       <div>
         <h3>Invest Money</h3>
         <p>Total Money: {main.state.profile.total_money}</p>

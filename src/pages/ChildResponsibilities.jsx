@@ -3,7 +3,8 @@ import { MainContext } from '../context/context';
 import '../styles/my-responsibilities.css';
 import {
   createResponsibility,
-  deleteResponsibilities,
+  deleteResponsibility,
+  editResponsibilitySeries,
   fetchChildResponsibilities,
   updateResponsibility,
 } from '../api-calls/api';
@@ -127,6 +128,28 @@ function ChildResponsibilities() {
     }
   }
 
+  async function handleEditSeries({
+    seriesId,
+    title,
+    startDate,
+    repeatInfo,
+    description,
+    difficulty,
+    verified,
+  }) {
+    await editResponsibilitySeries({
+      main,
+      profileId: main.state.childImSeeingsId,
+      seriesId,
+      title,
+      startDate,
+      repeatInfo,
+      description,
+      difficulty,
+      verified,
+    });
+  }
+
   async function editResponsibility({
     id,
     title,
@@ -166,7 +189,7 @@ function ChildResponsibilities() {
 
   async function handleDeleteResponsibility(id) {
     try {
-      const updatedResponsibilitiesData = await deleteResponsibilities({
+      const updatedResponsibilitiesData = await deleteResponsibility({
         main,
         id,
         profileId: main.state.childImSeeingsId,
@@ -333,6 +356,7 @@ function ChildResponsibilities() {
               setCurrentResponsibility={setCurrentResponsibility}
               editResponsibility={editResponsibility}
               handleDeleteResponsibility={handleDeleteResponsibility}
+              handleEditSeries={handleEditSeries}
             />
           </div>
         </div>
