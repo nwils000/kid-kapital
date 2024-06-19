@@ -3,7 +3,7 @@ import { Link } from 'react-router-dom';
 import { FaHome, FaUserFriends, FaStore, FaTasks } from 'react-icons/fa';
 import { GiTakeMyMoney } from 'react-icons/gi';
 
-export default function ParentDashboardNavbar() {
+export default function LandingPageNavbar() {
   return (
     <div>
       <div className="navbar-wrapper">
