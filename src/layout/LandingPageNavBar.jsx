@@ -1,6 +1,5 @@
 import '../styles/navbar.css';
 import { Link } from 'react-router-dom';
-import { FaHome, FaUserFriends, FaStore, FaTasks } from 'react-icons/fa';
 import { GiTakeMyMoney } from 'react-icons/gi';
 
 export default function LandingPageNavbar() {
