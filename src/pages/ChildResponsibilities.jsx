@@ -5,13 +5,12 @@ import {
   createResponsibility,
   deleteResponsibilities,
   fetchChildResponsibilities,
-  fetchResponsibilities,
   updateResponsibility,
 } from '../api-calls/api';
 import ParentDashboardNavbar from '../layout/ParentDashboardNavbar';
-import ChildDashboardNavbar from '../layout/ChildDashboardNavbar';
 import AddResponsibilityModal from '../components/AddResponsibilityModal';
 import EditResponsibilityModal from '../components/EditResponsibilityModal';
+import { FaLongArrowAltLeft, FaLongArrowAltRight } from 'react-icons/fa';
 
 function ChildResponsibilities() {
   const { main } = useContext(MainContext);
@@ -265,9 +264,11 @@ function ChildResponsibilities() {
           <h2>{currentMonth}</h2>
           <div className="week-navigation">
             <button onClick={() => handleWeekChange(false)}>
-              Previous Week
+              <FaLongArrowAltLeft />
             </button>
-            <button onClick={() => handleWeekChange(true)}>Next Week</button>
+            <button onClick={() => handleWeekChange(true)}>
+              <FaLongArrowAltRight />
+            </button>
           </div>
           <div className="week-days">
             {daysOfWeek.map((day, index) => {

@@ -1,0 +1,65 @@
+.family-manager {
+  margin: 20px;
+  padding: 20px;
+  background-color: #f9f9f9;
+  border-radius: 8px;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+}
+
+.family-manager h1 {
+  font-size: 2rem;
+  text-align: center;
+  margin-bottom: 20px;
+}
+
+.family-manager button {
+  background-color: #3fa0ca;
+  color: white;
+  border: none;
+  padding: 10px 20px;
+  font-size: 16px;
+  border-radius: 8px;
+  cursor: pointer;
+  margin: 10px;
+  transition: background-color 0.3s ease;
+}
+
+.family-manager button:hover {
+  background-color: #3590b5;
+}
+
+.family-manager table {
+  width: 100%;
+  margin-top: 20px;
+  border-collapse: collapse;
+}
+
+.family-manager table th,
+.family-manager table td {
+  border: 1px solid #ddd;
+  padding: 20px;
+  text-align: left;
+}
+
+.family-manager table th {
+  background-color: #3fa0ca;
+  color: white;
+}
+
+.family-manager .hover:hover {
+  background-color: #f1f1f1;
+  cursor: pointer;
+}
+
+.family-manager .loading {
+  text-align: center;
+  color: #666;
+  font-size: 16px;
+}
+
+@media screen and (max-width: 600px) {
+  .family-manager table {
+    display: block;
+    overflow-x: auto;
+  }
+}

@@ -12,10 +12,10 @@ body {
     'Helvetica Neue', Arial, sans-serif;
   line-height: 1.6;
   color: rgb(16, 16, 16);
-  background-color: #f7f7f7;
+  background-color: #eaf0f0;
   max-width: 110rem;
   margin: auto;
-  padding: 0 4rem;
+  padding: 0 20px;
 }
 
 h1,
@@ -24,8 +24,9 @@ h3,
 h4,
 h5,
 h6 {
-  margin-top: 0;
-  margin-bottom: 0.5rem;
+  color: rgba(0, 0, 0, 0.89);
+  margin: 0;
+  padding: 10px 0;
 }
 
 h1 {
@@ -39,24 +40,17 @@ p {
 }
 
 a {
-  color: #36aa97;
   text-decoration: none;
-  font-weight: 700;
+  font-weight: 400;
   position: relative;
   transition: 300ms;
+  color: #3fa0ca;
 }
 
 a::before {
   transition: 300ms;
   content: '';
   position: absolute;
-}
-
-a:hover {
-  cursor: pointer;
-  color: #36aa97;
-
-  text-decoration: none;
 }
 
 button:hover {
@@ -79,4 +73,20 @@ input[type='file']::file-selector-button {
 .error-message {
   color: red;
   margin-top: 10px;
+}
+
+button {
+  display: flex;
+  align-items: center;
+  gap: 7px;
+  padding: 10px 20px;
+  border: none;
+  color: white;
+  background-color: #3fa0ca;
+  transition: 0.5s;
+  border-radius: 8px;
+}
+
+button:hover {
+  background-color: #3590b5;
 }

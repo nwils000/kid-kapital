@@ -1,12 +1,20 @@
+.navbar-wrapper {
+  width: 100%;
+  background: #3fa0ca;
+  position: absolute;
+  left: 0;
+  height: 5rem;
+}
+
 .navbar {
   display: flex;
   align-items: center;
   justify-content: space-between;
-  padding: 0 4rem;
+  padding: 0 20px;
   font-size: 1.2rem;
   font-weight: 500;
-  height: 6rem;
-  width: 100vw;
+  height: 5rem;
+  width: 100%;
   left: 50%;
   transform: translate(-50%);
   max-width: 90rem;
@@ -15,24 +23,68 @@
   z-index: 2;
 }
 
-.nav-link {
-  color: rgb(16, 16, 16);
-  padding: 15px 0px;
+.logo-wrapper {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  color: rgba(255, 255, 255, 0.842);
+}
+
+.logo-icon {
+  font-size: 2.2rem;
 }
 
 .logo-text {
-  font-size: 1.8rem;
-  font-weight: 400;
-  color: #36aa97;
+  font-size: 2.2rem;
+  font-weight: 300;
 }
 
-.logo-text:hover {
+.logo-wrapper:hover {
   text-decoration: none;
+  color: white;
+}
+
+.icon-wrapper {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  text-align: center;
+}
+
+.icon-wrapper svg {
+  font-size: 1.5rem;
+}
+
+.icon-wrapper span {
+  margin-top: 2px;
+}
+
+.nav-link {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  text-decoration: none;
+  color: rgba(255, 255, 255, 0.842);
+  padding: 14px 2rem;
+  font-size: 1rem;
+  transition: 0.5s;
+  border-left: 1px solid rgba(0, 0, 0, 0.13);
+}
+
+.landing-page-link {
+  padding: 28px 2rem;
+}
+
+.nav-link:last-of-type {
+  border-right: 1px solid rgba(0, 0, 0, 0.13);
+}
+
+.nav-link:hover {
+  background-color: #3590b5;
 }
 
 .nav-links-wrapper {
   display: flex;
-  gap: 4rem;
 }
 
 .create-post {
@@ -42,7 +94,7 @@
 
 .create-post:hover {
   cursor: pointer;
-  color: #36aa97;
+  color: #3fa0ca;
 }
 
 @media screen and (max-width: 1350px) {

@@ -12,6 +12,7 @@
 .week-days {
   display: flex;
   justify-content: space-evenly;
+  align-items: center;
   gap: 2rem;
 }
 
@@ -35,7 +36,7 @@
 }
 
 .day-button.selected {
-  background-color: #36aa97;
+  background-color: #3fa0ca;
   color: white;
 }
 
@@ -47,18 +48,13 @@
   align-items: center;
 }
 
-h2,
-h3 {
-  margin: 5px 0;
-}
-
 ul {
   list-style: none;
   padding-left: 0;
 }
 
 li {
-  padding: 8px;
+  padding: 10px;
   border-bottom: 1px solid #ccc;
 }
 
@@ -76,9 +72,9 @@ li:last-child {
   margin: 10px;
   padding: 10px 20px;
   cursor: pointer;
-  background-color: #36aa97;
+  background-color: #3fa0ca;
   border: none;
-  border-radius: 5px;
+  border-radius: 8px;
   color: white;
 }
 
@@ -93,14 +89,14 @@ li:last-child {
   align-items: center;
   background-color: #ebebeb;
   border-bottom: 1px solid #ddd;
-  border-radius: 5px;
-  padding: 25px 18px;
+  border-radius: 8px;
+  padding: 20px 10px;
   position: relative;
   min-width: 15rem;
   background-color: white;
   margin-bottom: 10px;
-  border-radius: 5px;
-  box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+  border-radius: 8px;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
 }
 
 .responsibility-content {
@@ -131,15 +127,9 @@ li:last-child {
 }
 
 .responsibilities-container .delete-button:hover {
-  background: #36aa97;
+  background: #3fa0ca;
   color: white;
   transition: 0.3s;
-}
-
-.sidebar {
-  padding: 20px;
-  height: 100vh;
-  box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
 }
 
 .main-content {

@@ -4,13 +4,13 @@
   flex-direction: column;
   justify-content: center;
   align-items: start;
-  padding: 4rem 4rem;
+  padding: 20px;
   position: relative;
   bottom: 3rem;
 }
 
 .signup h1 span {
-  color: #36aa97;
+  color: #3fa0ca;
 }
 
 .signup label {
@@ -29,9 +29,9 @@
 
 .signup .joining-one,
 .signup .new-family-hub {
-  padding: 0.4rem 0.8rem;
+  padding: 10px 20px;
   border: none;
-  background-color: #36aa97;
+  background-color: #3fa0ca;
   color: white;
   border-radius: 100rem;
 }
@@ -39,15 +39,13 @@
 .signup input {
   height: 3.2rem;
   width: 30rem;
-  padding-top: 13px;
-  padding-left: 8px;
+  padding: 5px 10px;
 }
 
 .signup .parent-input {
   height: 1.2rem;
   width: 1.2rem;
-  padding-top: 0;
-  padding-left: 0;
+  padding: 5px 10px;
 }
 
 .signup .eye {
@@ -61,12 +59,12 @@
 }
 
 .signup p a {
-  padding: 12px 0px;
+  padding: 20px 0px;
 }
 
 .signup p a::before {
   height: 3px;
-  background-color: #36aa97;
+  background-color: #3fa0ca;
   width: 0%;
   bottom: 5px;
 }
@@ -76,11 +74,11 @@
 }
 
 .signup .signup-button {
-  background-color: #36aa97;
+  background-color: #3fa0ca;
   color: white;
   text-align: center;
   font-size: 1.5rem;
-  padding: 0.7rem 4rem;
+  padding: 10px 20px;
   border-radius: 100rem;
   margin-top: 1rem;
   border: none;

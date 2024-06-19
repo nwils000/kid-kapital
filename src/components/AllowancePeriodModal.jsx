@@ -1,6 +1,7 @@
 import React, { useContext, useState } from 'react';
-import '../styles/responsibility-modal.css';
 import { MainContext } from '../context/context';
+import '../styles/responsibility-modal.css';
+import '../styles/allowance-modal.css';
 
 function AllowancePeriodModal({
   showAllowancePeriodModal,
@@ -8,19 +9,32 @@ function AllowancePeriodModal({
   setTheAllowancePeriod,
 }) {
   const { main } = useContext(MainContext);
-  const [periodType, setPeriodType] = useState(
+
+  const initialPeriodType =
     main.state.profile.family.allowance_period_type === 'Weekly'
       ? 'weeks'
-      : 'months'
-  );
-  const [day, setDay] = useState(main.state.profile.family.allowance_day);
+      : 'months';
+  const initialDay = main.state.profile.family.allowance_day;
+
+  const [periodType, setPeriodType] = useState(initialPeriodType);
+  const [day, setDay] = useState(initialDay);
+
+  const weekDays = [
+    'Monday',
+    'Tuesday',
+    'Wednesday',
+    'Thursday',
+    'Friday',
+    'Saturday',
+    'Sunday',
+  ];
+
+  const handleDayChange = (event) => {
+    setDay(event.target.value);
+  };
 
   const handleSubmit = () => {
-    console.log(
-      'ASDSDA',
-      main.state.profile.family.allowance_period_type,
-      main.state.profile.family.allowance_day
-    );
+    console.log('Submitted', periodType, day);
     setTheAllowancePeriod({
       periodType: periodType === 'weeks' ? 'Weekly' : 'Monthly',
       allowanceDay: day,
@@ -32,7 +46,7 @@ function AllowancePeriodModal({
 
   return (
     <div
-      className="modal-overlay"
+      className="modal-overlay allowance-modal"
       onClick={() => setShowAllowancePeriodModal(false)}
     >
       <div className="modal-content" onClick={(e) => e.stopPropagation()}>
@@ -42,15 +56,25 @@ function AllowancePeriodModal({
         >
           X
         </button>
-        <span>day </span>
-        <input
-          type="number"
-          min="1"
-          max={periodType === 'weeks' ? 7 : 31}
-          value={day}
-          onChange={(e) => setDay(e.target.value)}
-          required
-        />
+        <span>Day: </span>
+        {periodType === 'weeks' ? (
+          <select value={day} onChange={handleDayChange}>
+            {weekDays.map((weekDay) => (
+              <option key={weekDay} value={weekDay}>
+                {weekDay}
+              </option>
+            ))}
+          </select>
+        ) : (
+          <input
+            type="number"
+            min="1"
+            max="31"
+            value={day}
+            onChange={handleDayChange}
+            required
+          />
+        )}
         <label> of the </label>
         <select
           value={periodType}

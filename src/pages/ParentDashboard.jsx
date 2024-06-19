@@ -89,13 +89,6 @@ export default function ParentDashboard() {
           <UnapprovedPurchases />
         </div>
         <div className="family-members">
-          <h1 className="family-name">{main.state.profile.family.name}</h1>
-          <div className="invitation-code">
-            Invitation Code:
-            <span style={{ fontWeight: '500' }}>
-              {main.state.profile.family.invitation_code}
-            </span>
-          </div>
           <h2>Responsibilities Needing Approval</h2>
           <select
             onChange={(e) => setSelectedChildIdNeedingApproval(e.target.value)}

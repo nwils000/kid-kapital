@@ -583,3 +583,39 @@ export const investMoney = async ({ main, accountId, amount }) => {
     console.error('Error with investMoney api call: ', error);
   }
 };
+
+export const viewInvestments = async ({ main }) => {
+  try {
+    const response = await axios({
+      method: 'get',
+      url: `${baseUrl}/view-investments/`,
+      headers: {
+        Authorization: `Bearer ${main.state.accessToken}`,
+      },
+    });
+    console.log('VIEW INVESTMENTS: ', response);
+    return response.data;
+  } catch (error) {
+    console.error('Error with viewInvestments api call: ', error);
+  }
+};
+
+export const cashOut = async ({ main, investmentId }) => {
+  try {
+    const response = await axios({
+      method: 'put',
+      url: `${baseUrl}/cash-out/`,
+      headers: {
+        Authorization: `Bearer ${main.state.accessToken}`,
+      },
+      data: {
+        id: investmentId,
+      },
+    });
+    await fetchUser({ accessToken: main.state.accessToken, main });
+    console.log('CASH OUT: ', response);
+    return response.data;
+  } catch (error) {
+    console.error('Error with cashOut api call: ', error);
+  }
+};

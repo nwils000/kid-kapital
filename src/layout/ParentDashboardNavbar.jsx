@@ -1,33 +1,54 @@
 import '../styles/navbar.css';
-import '../styles/parent-navbar.css';
 import { Link } from 'react-router-dom';
+import { FaHome, FaUserFriends, FaStore, FaTasks } from 'react-icons/fa';
+import { GiTakeMyMoney, GiPayMoney } from 'react-icons/gi';
 
 export default function ParentDashboardNavbar() {
   return (
-    <>
-      <div className="navbar parent-navbar">
-        <Link to="/">
-          <span className="logo-text">Kid Kapital</span>
-        </Link>
-        <div className="nav-links-wrapper">
-          <Link className="nav-link" to="/parent-dashboard">
-            Dashboard
+    <div>
+      <div className="navbar-wrapper">
+        <div className="navbar parent-navbar">
+          <Link to="/" className="nav-item">
+            <div className="logo-wrapper">
+              <GiTakeMyMoney className="logo-icon" />
+              <span className="logo-text">Kid Kapital</span>
+            </div>
           </Link>
-          <Link to="/family" className="nav-link">
-            Family Manager
-          </Link>
-          <Link to="/family-store" className="nav-link">
-            Family Store
-          </Link>
-          <Link to="/responsibilities" className="nav-link">
-            My Responsibilities
-          </Link>
-          <Link to="/parent-financial-accounts" className="nav-link">
-            Parent Financial Accounts
-          </Link>
+          <div className="nav-links-wrapper">
+            <Link className="nav-link" to="/parent-dashboard">
+              <div className="icon-wrapper">
+                <FaHome />
+                <span>Dashboard</span>
+              </div>
+            </Link>
+            <Link className="nav-link" to="/family">
+              <div className="icon-wrapper">
+                <FaUserFriends />
+                <span>Family</span>
+              </div>
+            </Link>
+            <Link className="nav-link" to="/family-store">
+              <div className="icon-wrapper">
+                <FaStore />
+                <span>Store</span>
+              </div>
+            </Link>
+            <Link className="nav-link" to="/finances">
+              <div className="icon-wrapper">
+                <GiPayMoney />
+                <span>Finances</span>
+              </div>
+            </Link>
+            <Link className="nav-link" to="/responsibilities">
+              <div className="icon-wrapper">
+                <FaTasks />
+                <span>Responsibilities</span>
+              </div>
+            </Link>
+          </div>
         </div>
       </div>
-      <div style={{ height: '6rem' }}></div>
-    </>
+      <div style={{ height: '5rem' }}></div>
+    </div>
   );
 }

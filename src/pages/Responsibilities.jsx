@@ -11,6 +11,7 @@ import ParentDashboardNavbar from '../layout/ParentDashboardNavbar';
 import ChildDashboardNavbar from '../layout/ChildDashboardNavbar';
 import AddResponsibilityModal from '../components/AddResponsibilityModal';
 import EditResponsibilityModal from '../components/EditResponsibilityModal';
+import { FaLongArrowAltLeft, FaLongArrowAltRight } from 'react-icons/fa';
 
 function Responsibilities() {
   const { main } = useContext(MainContext);
@@ -258,14 +259,14 @@ function Responsibilities() {
           </ul>
         </div>
         <div className="responsibilities-container">
+          <h1 style={{ fontSize: '2rem' }}>
+            {main.state.profile.first_name}'s Responsibilities
+          </h1>
           <h2>{currentMonth}</h2>
-          <div className="week-navigation">
-            <button onClick={() => handleWeekChange(false)}>
-              Previous Week
-            </button>
-            <button onClick={() => handleWeekChange(true)}>Next Week</button>
-          </div>
           <div className="week-days">
+            <button onClick={() => handleWeekChange(false)}>
+              <FaLongArrowAltLeft />
+            </button>
             {daysOfWeek.map((day, index) => {
               return (
                 <div
@@ -281,6 +282,9 @@ function Responsibilities() {
                 </div>
               );
             })}
+            <button onClick={() => handleWeekChange(true)}>
+              <FaLongArrowAltRight />
+            </button>
           </div>
           <div className="selected-day-responsibilities">
             <h3>Responsibilities for {formatDateForDisplay(selectedDay)}:</h3>

@@ -4,13 +4,13 @@
   flex-direction: column;
   justify-content: center;
   align-items: start;
-  padding: 4rem 4rem;
+  padding: 20px;
   position: relative;
   bottom: 3rem;
 }
 
 .login h1 span {
-  color: #36aa97;
+  color: #3fa0ca;
 }
 
 .login label {
@@ -24,8 +24,7 @@
 .login input {
   height: 3.2rem;
   width: 30rem;
-  padding-top: 13px;
-  padding-left: 8px;
+  padding: 5px 10px;
 }
 
 .login .eye {
@@ -39,12 +38,12 @@
 }
 
 .login p a {
-  padding: 12px 0px;
+  padding: 20px 0px;
 }
 
 .login p a::before {
   height: 3px;
-  background-color: #36aa97;
+  background-color: #3fa0ca;
   width: 0%;
   bottom: 5px;
 }
@@ -54,11 +53,11 @@
 }
 
 .login .login-button {
-  background-color: #36aa97;
+  background-color: #3fa0ca;
   color: white;
   text-align: center;
   font-size: 1.5rem;
-  padding: 0.7rem 4rem;
+  padding: 10px 20px;
   border-radius: 100rem;
   margin-top: 1rem;
 }
