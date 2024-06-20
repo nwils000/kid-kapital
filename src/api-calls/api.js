@@ -168,6 +168,7 @@ export const deleteResponsibilitySeries = async ({ seriesId, main }) => {
     });
 
     console.log('DELETE RESPONSIBILITY SERIES: ', response);
+    fetchUser({ accessToken: main.state.accessToken, main });
 
     return response.data;
   } catch (error) {
@@ -233,6 +234,7 @@ export const deleteResponsibility = async ({ main, id, profileId }) => {
       },
     });
     console.log('DELETE RESPONSIBILITIES: ', response);
+    fetchUser({ accessToken: main.state.accessToken, main });
     return response;
   } catch (error) {
     console.log('Error with deleteResponsibility api call: ', error);
@@ -274,6 +276,8 @@ export const updateResponsibility = async ({
 
 export const approveResponsibility = async ({
   main,
+  title,
+  description,
   difficulty,
   approved,
   id,
@@ -286,6 +290,8 @@ export const approveResponsibility = async ({
         Authorization: `Bearer ${main.state.accessToken}`,
       },
       data: {
+        title,
+        description,
         id,
         difficulty,
         verified: approved,
@@ -296,6 +302,47 @@ export const approveResponsibility = async ({
     return response;
   } catch (error) {
     console.log('Error with approveResponsibility api call: ', error);
+  }
+};
+
+export const approveWholeSeries = async ({
+  main,
+  title,
+  description,
+  profile,
+  difficulty,
+  approved,
+  repeatInfo,
+  startDate,
+  id,
+  seriesId,
+  justApprove = false,
+}) => {
+  try {
+    const response = await axios({
+      method: 'put',
+      url: `${baseUrl}/approve-whole-series/`,
+      headers: {
+        Authorization: `Bearer ${main.state.accessToken}`,
+      },
+      data: {
+        title,
+        profile_id: profile,
+        description,
+        series_id: seriesId,
+        id,
+        repeat: repeatInfo,
+        start_date: startDate,
+        difficulty,
+        verified: approved,
+        just_approve: justApprove,
+      },
+    });
+    fetchUser({ accessToken: main.state.accessToken, main });
+    console.log('APPROVE WHOLE SERIES: ', response);
+    return response;
+  } catch (error) {
+    console.log('Error with approveWholeSeries api call: ', error);
   }
 };
 

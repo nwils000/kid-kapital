@@ -40,8 +40,10 @@ function ChildResponsibilities() {
             description: element.description,
             title: element.title,
             id: element.id,
+            single: element.single,
             difficulty: element.difficulty,
             verified: element.verified,
+            series: element.series,
             completed: element.completed,
             date: element.date,
           });
@@ -59,6 +61,7 @@ function ChildResponsibilities() {
 
   useEffect(() => {
     fetchChildResponsibilities({ main, childId: main.state.childImSeeingsId });
+    console.log();
   }, []);
 
   function getSunday(d) {
@@ -209,6 +212,8 @@ function ChildResponsibilities() {
           difficulty: element.difficulty,
           verified: element.verified,
           completed: element.completed,
+          single: element.single,
+          series: element.series,
           date: element.date,
         });
       });
@@ -284,16 +289,19 @@ function ChildResponsibilities() {
           </ul>
         </div>
         <div className="responsibilities-container">
+          <h1 style={{ fontSize: '2rem' }}>
+            {
+              main.state.profile.family.members.filter(
+                (member) => member.id === main.state.childImSeeingsId
+              )[0].first_name
+            }
+            's Responsibilities
+          </h1>
           <h2>{currentMonth}</h2>
-          <div className="week-navigation">
+          <div className="week-days">
             <button onClick={() => handleWeekChange(false)}>
               <FaLongArrowAltLeft />
             </button>
-            <button onClick={() => handleWeekChange(true)}>
-              <FaLongArrowAltRight />
-            </button>
-          </div>
-          <div className="week-days">
             {daysOfWeek.map((day, index) => {
               return (
                 <div
@@ -309,6 +317,9 @@ function ChildResponsibilities() {
                 </div>
               );
             })}
+            <button onClick={() => handleWeekChange(true)}>
+              <FaLongArrowAltRight />
+            </button>
           </div>
           <div className="selected-day-responsibilities">
             <h3>Responsibilities for {formatDateForDisplay(selectedDay)}:</h3>

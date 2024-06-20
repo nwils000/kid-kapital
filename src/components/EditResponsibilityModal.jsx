@@ -38,13 +38,8 @@ function EditResponsibilityModal({
       setTitle(currentResponsibility.title);
       setDescription(currentResponsibility.description);
       updateDifficultyString(currentResponsibility.difficulty);
-      setRepeatType(currentResponsibility.repeat?.type || 'none');
-      // Ensure repeatDetails are initialized correctly
-      setRepeatDetails(
-        currentResponsibility.repeat?.details.map((detail) =>
-          detail.toString()
-        ) || []
-      );
+      setRepeatType('none');
+      setRepeatDetails([]);
     }
   }, [showEditModal, currentResponsibility]);
 
@@ -78,32 +73,38 @@ function EditResponsibilityModal({
 
   const handleDelete = async (deleteSeries = false) => {
     if (deleteSeries) {
+      console.log(currentResponsibility);
       await deleteResponsibilitySeries({
         seriesId: currentResponsibility.series,
         main,
       });
+      setIsEditing(false);
+      setShowEditModal(false);
     } else {
       handleDeleteResponsibility(currentResponsibility.id);
     }
+    setIsEditing(false);
     setShowEditModal(false);
   };
 
   const handleEditTheSeries = async () => {
-    repeatType === 'none'
-      ? alert('You have to select days for this responsibility to repeat')
-      : await handleEditSeries({
-          seriesId: currentResponsibility.series,
-          main,
-          title,
-          startDate: currentResponsibility.startDate,
-          repeatInfo: {
-            type: repeatType,
-            details: repeatDetails,
-          },
-          description,
-          difficulty,
-          verified: currentResponsibility.verified,
-        });
+    if (repeatType === 'none') {
+      alert('You have to select days for this responsibility to repeat');
+    } else {
+      await handleEditSeries({
+        seriesId: currentResponsibility.series,
+        main,
+        title,
+        startDate: currentResponsibility.startDate,
+        repeatInfo: {
+          type: repeatType,
+          details: repeatDetails,
+        },
+        description,
+        difficulty,
+        verified: currentResponsibility.verified,
+      });
+    }
     setIsEditing(false);
   };
 
@@ -127,28 +128,39 @@ function EditResponsibilityModal({
         'Saturday',
         'Sunday',
       ].map((day) => (
-        <label key={day}>
+        <label key={day} className="day-checkbox">
           <input
             type="checkbox"
             value={day}
             checked={repeatDetails.includes(day)}
             onChange={handleRepeatDetailsChange}
-          />{' '}
+          />
           {day}
         </label>
       ));
     } else if (repeatType === 'monthly') {
-      return Array.from({ length: 31 }, (_, i) => i + 1).map((day) => (
-        <label key={day}>
-          <input
-            type="checkbox"
-            value={day.toString()}
-            checked={repeatDetails.includes(day.toString())}
-            onChange={handleRepeatDetailsChange}
-          />{' '}
-          {day}
-        </label>
-      ));
+      return (
+        <div
+          style={{
+            display: 'flex',
+            flexWrap: 'wrap',
+            justifyContent: 'center',
+          }}
+        >
+          {' '}
+          {Array.from({ length: 31 }, (_, i) => i + 1).map((day) => (
+            <label key={day} className="day-checkbox">
+              <input
+                type="checkbox"
+                value={day.toString()}
+                checked={repeatDetails.includes(day.toString())}
+                onChange={handleRepeatDetailsChange}
+              />
+              {day}
+            </label>
+          ))}
+        </div>
+      );
     }
     return null;
   };
@@ -160,7 +172,13 @@ function EditResponsibilityModal({
     : 'modal-content';
 
   return (
-    <div className="modal-overlay" onClick={() => setShowEditModal(false)}>
+    <div
+      className="modal-overlay"
+      onClick={() => {
+        setIsEditing(false);
+        setShowEditModal(false);
+      }}
+    >
       <div className={modalClass} onClick={(e) => e.stopPropagation()}>
         <button className="close-btn" onClick={() => setShowEditModal(false)}>
           X
@@ -201,6 +219,7 @@ function EditResponsibilityModal({
                 ))}
               </select>
               <select
+                className="repeat-type-select"
                 value={repeatType}
                 onChange={(e) => setRepeatType(e.target.value)}
               >
@@ -209,21 +228,68 @@ function EditResponsibilityModal({
                 <option value="monthly">Monthly</option>
               </select>
               {repeatOptions()}
-              <button className="save-btn" onClick={handleSubmit}>
-                Save Changes
-              </button>
-              <button
-                className="delete-btn"
-                onClick={() => handleDelete(false)}
-              >
-                Delete This
-              </button>
-              <button className="delete-btn" onClick={() => handleDelete(true)}>
-                Delete Series
-              </button>
-              <button className="edit-btn" onClick={handleEditTheSeries}>
-                <FiEdit /> Edit Series
-              </button>
+
+              {repeatType !== 'none' && !currentResponsibility.single ? (
+                <div>
+                  <button
+                    className="delete-btn"
+                    onClick={() => handleDelete(false)}
+                  >
+                    Delete this
+                  </button>
+                  <button
+                    className="delete-btn"
+                    onClick={() => handleDelete(true)}
+                  >
+                    Delete series
+                  </button>
+                  <button className="edit-btn" onClick={handleEditTheSeries}>
+                    Apply changes to series
+                  </button>
+                </div>
+              ) : repeatType !== 'none' && currentResponsibility.single ? (
+                <div>
+                  <button
+                    className="delete-btn"
+                    onClick={() => handleDelete(false)}
+                  >
+                    Delete
+                  </button>
+                  <button className="edit-btn" onClick={handleEditTheSeries}>
+                    Save changes
+                  </button>
+                </div>
+              ) : repeatType === 'none' && !currentResponsibility.single ? (
+                <div>
+                  <button
+                    className="delete-btn"
+                    onClick={() => handleDelete(false)}
+                  >
+                    Delete this
+                  </button>
+                  <button
+                    className="delete-btn"
+                    onClick={() => handleDelete(true)}
+                  >
+                    Delete series
+                  </button>
+                  <button className="edit-btn" onClick={handleSubmit}>
+                    Save changes
+                  </button>
+                </div>
+              ) : (
+                <div>
+                  <button className="save-btn" onClick={handleSubmit}>
+                    Save changes
+                  </button>
+                  <button
+                    className="delete-btn"
+                    onClick={() => handleDelete(false)}
+                  >
+                    delete
+                  </button>
+                </div>
+              )}
             </>
           ) : (
             <>

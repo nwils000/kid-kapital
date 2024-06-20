@@ -29,7 +29,7 @@ export default function ParentDashboard() {
 
   function formatDate(dateString) {
     const date = new Date(dateString);
-    return `${date.getMonth() + 1}/${date.getDate()}`;
+    return `${date.getMonth() + 1}/${date.getDate() + 1}`;
   }
 
   useEffect(() => {

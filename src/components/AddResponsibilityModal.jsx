@@ -33,7 +33,7 @@ function AddResponsibilityModal({
           'Saturday',
           'Sunday',
         ].map((day) => (
-          <label key={day}>
+          <label key={day} className="day-checkbox">
             <input
               type="checkbox"
               value={day}
@@ -44,17 +44,27 @@ function AddResponsibilityModal({
           </label>
         ));
       case 'monthly':
-        return Array.from({ length: 31 }, (_, i) => i + 1).map((day) => (
-          <label key={day}>
-            <input
-              type="checkbox"
-              value={day}
-              checked={repeatDetails.includes(String(day))}
-              onChange={handleRepeatDetailsChange}
-            />{' '}
-            {day}
-          </label>
-        ));
+        return (
+          <div
+            style={{
+              display: 'flex',
+              flexWrap: 'wrap',
+              justifyContent: 'center',
+            }}
+          >
+            {Array.from({ length: 31 }, (_, i) => i + 1).map((day) => (
+              <label key={day} className="day-checkbox">
+                <input
+                  type="checkbox"
+                  value={day.toString()}
+                  checked={repeatDetails.includes(String(day))}
+                  onChange={handleRepeatDetailsChange}
+                />{' '}
+                {day}
+              </label>
+            ))}
+          </div>
+        );
       default:
         return null;
     }
@@ -92,22 +102,21 @@ function AddResponsibilityModal({
         >
           X
         </button>
-        <div>
-          <label>Title:</label>
+        <div className="modal-body">
           <input
-            type="text"
+            className="title-input"
             value={title}
             onChange={(e) => setTitle(e.target.value)}
-            required
+            placeholder="Title"
           />
-          <label>Description:</label>
           <textarea
+            className="description-textarea"
             value={description}
             onChange={(e) => setDescription(e.target.value)}
-            required
+            placeholder="Description"
           />
-          <label>Difficulty:</label>
           <select
+            className="difficulty-select"
             value={difficulty}
             onChange={(e) => setDifficulty(Number(e.target.value))}
           >
@@ -119,8 +128,8 @@ function AddResponsibilityModal({
             <option value={5}>Very Hard</option>
             <option value={6}>Extremely Hard</option>
           </select>
-          <label>Repeat:</label>
           <select
+            className="repeat-type-select"
             value={repeatType}
             onChange={(e) => setRepeatType(e.target.value)}
           >
@@ -129,7 +138,9 @@ function AddResponsibilityModal({
             <option value="monthly">Monthly</option>
           </select>
           {repeatOptions()}
-          <button onClick={handleSubmit}>Add Responsibility</button>
+          <button className="save-btn" onClick={handleSubmit}>
+            Add Responsibility
+          </button>
         </div>
       </div>
     </div>

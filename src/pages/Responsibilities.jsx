@@ -43,6 +43,7 @@ function Responsibilities() {
             verified: element.verified,
             completed: element.completed,
             series: element.series,
+            single: element.single,
             date: element.date,
           });
         });
@@ -81,10 +82,9 @@ function Responsibilities() {
   }
 
   function formatDateForDisplay(date) {
-    return `${String(date.getMonth() + 1)}/${String(date.getDate()).padStart(
-      2,
-      '0'
-    )}`;
+    return `${String(date.getMonth() + 1)}/${String(
+      date.getDate() + 1
+    ).padStart(2, '0')}`;
   }
 
   function generateWeekDays(start) {
@@ -203,6 +203,7 @@ function Responsibilities() {
           description: element.description,
           title: element.title,
           id: element.id,
+          single: element.single,
           difficulty: element.difficulty,
           verified: element.verified,
           completed: element.completed,
