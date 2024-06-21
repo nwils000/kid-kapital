@@ -1,7 +1,7 @@
 import axios from 'axios';
 
-// const baseUrl = 'http://127.0.0.1:8000';
-const baseUrl = 'https://family-finance-server.fly.dev';
+const baseUrl = 'http://127.0.0.1:8000';
+// const baseUrl = 'https://family-finance-server.fly.dev';
 
 export const getToken = async ({ main, username, password }) => {
   try {
@@ -109,6 +109,10 @@ export const createResponsibility = async ({
       },
     });
     fetchUser({ accessToken: main.state.accessToken, main });
+    main.dispatch({
+      type: 'SET_CHILD_IM_SEEINGS_RESPONSIBILITIES',
+      childImSeeingsResponsibilities: main.state.childImSeeingsResponsibilities,
+    });
     console.log('CREATE RESPONSIBILITY: ', response);
     return response.data;
   } catch (error) {

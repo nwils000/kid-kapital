@@ -375,11 +375,13 @@ function Responsibilities() {
               Add Responsibility
             </button>
             <AddResponsibilityModal
+            parentalControl={false}
               showAddResponsibilityModal={showAddResponsibilityModal}
               setShowAddResponsibilityModal={setShowAddResponsibilityModal}
               addResponsibility={addResponsibility}
             />
             <EditResponsibilityModal
+             parentalControl={false}
               showEditModal={showEditModal}
               setShowEditModal={setShowEditModal}
               currentResponsibility={currentResponsibility}
