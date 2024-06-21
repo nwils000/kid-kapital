@@ -207,12 +207,12 @@ function ApproveResponsibilityModal({
   return (
     <div
       className="modal-overlay"
-      onClick={() => {
+      onMouseDown={() => {
         setShowApproveModal(false);
         setIsEditing(false);
       }}
     >
-      <div className="modal-content" onClick={(e) => e.stopPropagation()}>
+      <div className="modal-content" onMouseDown={(e) => e.stopPropagation()}>
         <p style={{ textAlign: 'center', color: '#1DA1F2' }}>
           Awaiting Your Approval...
         </p>

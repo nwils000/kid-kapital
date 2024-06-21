@@ -69,17 +69,20 @@ export default function ParentDashboard() {
     }
   }
 
-  async function handleDeleteResponsibility(id) {
+  async function handleDeleteResponsibility(id, profileId) {
     try {
       await deleteResponsibility({
         main,
-        profileId: main.state.profile.id,
+        profileId,
         id,
       });
     } catch (e) {
       console.log(e);
     }
   }
+  useEffect(() => {
+    console.log('IN DASHBOARD', currentResponsibility);
+  }, [currentResponsibility]);
 
   return (
     <>
@@ -89,6 +92,13 @@ export default function ParentDashboard() {
           <UnapprovedPurchases />
         </div>
         <div className="family-members">
+          <h1 className="family-name">{main.state.profile.first_name}</h1>
+
+          <div className="invitation-code">
+            <span style={{ fontWeight: '500' }}>
+              {main.state.profile.family.name}
+            </span>
+          </div>
           <h2>Responsibilities Needing Approval</h2>
           <select
             onChange={(e) => setSelectedChildIdNeedingApproval(e.target.value)}
@@ -103,7 +113,7 @@ export default function ParentDashboard() {
                 </option>
               ))}
           </select>
-          <div style={{ maxWidth: '35rem' }}>
+          <div className="dropdown-container" style={{ maxWidth: '35rem' }}>
             {selectedChildIdNeedingApproval === 'all'
               ? main.state.profile.family.members.map((child) =>
                   child.responsibilities
@@ -114,14 +124,40 @@ export default function ParentDashboard() {
                     )
                     .map((responsibility) => (
                       <div
+                        style={{
+                          display: 'flex',
+                          flexDirection: 'column',
+                          alignItems: 'stretch',
+                        }}
+                        className="hover responsibility-item"
                         onClick={() =>
                           handleApprovalClick(responsibility, child.first_name)
                         }
-                        className="child-responsibility-to-approve"
                         key={responsibility.id}
                       >
-                        {child.first_name}: {formatDate(responsibility.date)} -{' '}
-                        {responsibility.title}
+                        <div
+                          style={{
+                            position: 'relative',
+                            top: 5,
+                            display: 'inline',
+                            paddingRight: 5,
+                            fontSize: '.5rem',
+                          }}
+                        >
+                          {child.first_name}
+                        </div>
+                        <div className="responsibility-content">
+                          <h4 className="responsibility-title">
+                            {responsibility.title}
+                          </h4>
+                          <span>
+                            {responsibility.date
+                              ? parseInt(responsibility.date.slice(5, 7)) +
+                                '/' +
+                                parseInt(responsibility.date.slice(8, 10))
+                              : ''}
+                          </span>
+                        </div>
                       </div>
                     ))
                 )
@@ -145,16 +181,26 @@ export default function ParentDashboard() {
                               child.first_name
                             )
                           }
-                          className="child-responsibility-to-approve"
+                          className="child-responsibility-to-approve responsibility-item"
                           key={responsibility.id}
                         >
-                          {formatDate(responsibility.date)} -{' '}
-                          {responsibility.title}
+                          <div className="responsibility-content">
+                            <h4 className="responsibility-title">
+                              {responsibility.title}
+                            </h4>
+                            <span>
+                              {responsibility.date
+                                ? parseInt(responsibility.date.slice(5, 7)) +
+                                  '/' +
+                                  parseInt(responsibility.date.slice(8, 10))
+                                : ''}
+                            </span>
+                          </div>
                         </div>
                       ))
                   )}
           </div>
-          <h2>All Incomplete Responsibilities</h2>
+          <h2>Childrens Upcoming Responsibilities</h2>
           <select
             onChange={(e) =>
               setSelectedChildIdIncompleteResponsibilities(e.target.value)
@@ -172,9 +218,15 @@ export default function ParentDashboard() {
             ? main.state.profile.family.members.map((child) =>
                 child.responsibilities
                   .filter((responsibility) => !responsibility.completed)
+                  .slice(0, 3)
                   .map((responsibility) => (
                     <div
-                      className="hover"
+                      style={{
+                        display: 'flex',
+                        flexDirection: 'column',
+                        alignItems: 'stretch',
+                      }}
+                      className="hover responsibility-item"
                       onClick={() =>
                         handleResponsibilityClick(
                           responsibility,
@@ -183,8 +235,29 @@ export default function ParentDashboard() {
                       }
                       key={responsibility.id}
                     >
-                      {child.first_name}: {formatDate(responsibility.date)} -{' '}
-                      {responsibility.title}
+                      <div
+                        style={{
+                          position: 'relative',
+                          top: 5,
+                          display: 'inline',
+                          paddingRight: 5,
+                          fontSize: '.5rem',
+                        }}
+                      >
+                        {child.first_name}
+                      </div>
+                      <div className="responsibility-content">
+                        <h4 className="responsibility-title">
+                          {responsibility.title}
+                        </h4>
+                        <span>
+                          {responsibility.date
+                            ? parseInt(responsibility.date.slice(5, 7)) +
+                              '/' +
+                              parseInt(responsibility.date.slice(8, 10))
+                            : ''}
+                        </span>
+                      </div>
                     </div>
                   ))
               )
@@ -194,12 +267,14 @@ export default function ParentDashboard() {
                     child.id.toString() ===
                     selectedChildIdIncompleteResponsibilities
                 )
+
                 .map((child) =>
                   child.responsibilities
                     .filter((responsibility) => !responsibility.completed)
+                    .slice(0, 8)
                     .map((responsibility) => (
                       <div
-                        className="hover"
+                        className="hover responsibility-item"
                         onClick={() =>
                           handleResponsibilityClick(
                             responsibility,
@@ -208,25 +283,53 @@ export default function ParentDashboard() {
                         }
                         key={responsibility.id}
                       >
-                        {formatDate(responsibility.date)} -{' '}
-                        {responsibility.title}
+                        <div className="responsibility-content">
+                          <h4 className="responsibility-title">
+                            {responsibility.title}
+                          </h4>
+                          <span>
+                            {responsibility.date
+                              ? parseInt(responsibility.date.slice(5, 7)) +
+                                '/' +
+                                parseInt(responsibility.date.slice(8, 10))
+                              : ''}
+                          </span>
+                        </div>
                       </div>
                     ))
                 )}
         </div>
         <div className="responsibilities">
           <h2 className="hover" onClick={() => navigate('/responsibilities')}>
-            My Responsibilities
+            My Upcoming Responsibilities
           </h2>
           {main.state.profile.responsibilities
-            .filter((resp) => !resp.completed)
-            .map((responsibility) => (
+            .filter((responsibility) => !responsibility.completed)
+            .sort((a, b) => new Date(a.date) - new Date(b.date))
+            .slice(0, 6)
+            .map((responsibility, index) => (
               <div
-                className="hover"
-                onClick={() => handleResponsibilityClick(responsibility)}
-                key={responsibility.id}
+                className="hover responsibility-item-big"
+                onClick={() =>
+                  handleResponsibilityClick(
+                    responsibility,
+                    main.state.profile.id
+                  )
+                }
+                key={index}
               >
-                {formatDate(responsibility.date)} - {responsibility.title}
+                <div className="responsibility-content-big">
+                  <h4 className="responsibility-title-big">
+                    {responsibility.title}
+                  </h4>
+                  <span>
+                    {responsibility.date
+                      ? parseInt(responsibility.date.slice(5, 7)) +
+                        '/' +
+                        parseInt(responsibility.date.slice(8, 10))
+                      : ''}
+                  </span>
+                </div>
               </div>
             ))}
         </div>

@@ -78,16 +78,18 @@ export default function ChildDashboard() {
       <div className="child-dashboard">
         <Wallet />
         <div className="family-members">
-          <h1 className="family-name">{main.state.profile.family.name}</h1>
+          <h1 className="family-name">{main.state.profile.first_name}</h1>
+
           <div className="invitation-code">
-            Invitation Code:
             <span style={{ fontWeight: '500' }}>
-              {main.state.profile.family.invitation_code}
+              {main.state.profile.family.name}
             </span>
           </div>
-          <div style={{ maxWidth: '35rem', marginTop: '20px' }}>
+          <div
+            style={{ maxWidth: '35rem', marginTop: '20px', maxHeight: '100%' }}
+          >
             <h2>Family Responsibilities</h2>
-            <h2>All Incomplete Responsibilities</h2>
+
             <select
               onChange={(e) => setSelectedChildId(e.target.value)}
               value={selectedChildId}
@@ -99,52 +101,90 @@ export default function ChildDashboard() {
                 </option>
               ))}
             </select>
-            {selectedChildId === 'all'
-              ? main.state.profile.family.members.map((child) =>
-                  child.responsibilities
-                    .filter((responsibility) => !responsibility.completed)
-                    .map((responsibility) => (
-                      <div
-                        className="hover"
-                        onClick={() =>
-                          handleResponsibilityClick(responsibility, child.id)
-                        }
-                        key={responsibility.id}
-                      >
-                        {child.first_name}: {formatDate(responsibility.date)} -{' '}
-                        {responsibility.title}
-                      </div>
-                    ))
-                )
-              : main.state.profile.family.members
-                  .filter((child) => child.id.toString() === selectedChildId)
-                  .map((child) =>
+            <div className="dropdown-container">
+              {selectedChildId === 'all'
+                ? main.state.profile.family.members.map((child) =>
                     child.responsibilities
                       .filter((responsibility) => !responsibility.completed)
+
                       .map((responsibility) => (
                         <div
-                          className="hover"
+                          style={{
+                            display: 'flex',
+                            flexDirection: 'column',
+                            alignItems: 'stretch',
+                          }}
+                          className="hover responsibility-item"
                           onClick={() =>
-                            handleResponsibilityClick(responsibility, child.id)
+                            handleResponsibilityClick(
+                              responsibility,
+                              child.first_name
+                            )
                           }
                           key={responsibility.id}
                         >
-                          {formatDate(responsibility.date)} -{' '}
-                          {responsibility.title}
+                          <div
+                            style={{
+                              position: 'relative',
+                              top: 5,
+                              display: 'inline',
+                              paddingRight: 5,
+                              fontSize: '.5rem',
+                            }}
+                          >
+                            {child.first_name}
+                          </div>
+                          <div className="responsibility-content">
+                            <h4 className="responsibility-title">
+                              {responsibility.title}
+                            </h4>
+                            <span>
+                              {responsibility.date
+                                ? parseInt(responsibility.date.slice(5, 7)) +
+                                  '/' +
+                                  parseInt(responsibility.date.slice(8, 10))
+                                : ''}
+                            </span>
+                          </div>
                         </div>
                       ))
-                  )}
+                  )
+                : main.state.profile.family.members
+                    .filter((child) => child.id.toString() === selectedChildId)
+                    .map((child) =>
+                      child.responsibilities
+                        .filter((responsibility) => !responsibility.completed)
+                        .slice(0, 8)
+                        .map((responsibility) => (
+                          <div
+                            className="hover"
+                            onClick={() =>
+                              handleResponsibilityClick(
+                                responsibility,
+                                child.id
+                              )
+                            }
+                            key={responsibility.id}
+                          >
+                            {formatDate(responsibility.date)} -{' '}
+                            {responsibility.title}
+                          </div>
+                        ))
+                    )}
+            </div>
           </div>
         </div>
         <div className="responsibilities">
           <h2 className="hover" onClick={() => navigate('/responsibilities')}>
-            My Responsibilities
+            My Upcoming Responsibilities
           </h2>
           {main.state.profile.responsibilities
             .filter((responsibility) => !responsibility.completed)
+            .sort((a, b) => new Date(a.date) - new Date(b.date))
+            .slice(0, 6)
             .map((responsibility, index) => (
               <div
-                className="hover"
+                className="hover responsibility-item-big"
                 onClick={() =>
                   handleResponsibilityClick(
                     responsibility,
@@ -153,7 +193,16 @@ export default function ChildDashboard() {
                 }
                 key={index}
               >
-                {formatDate(responsibility.date)} - {responsibility.title}
+                <div className="responsibility-content-big">
+                  <h4 className="responsibility-title-big">
+                    {responsibility.title}
+                  </h4>
+                  <span>{responsibility.date
+                          ? parseInt(responsibility.date.slice(5, 7)) +
+                            '/' +
+                            parseInt(responsibility.date.slice(8, 10))
+                          : ''}</span>
+                </div>
               </div>
             ))}
         </div>

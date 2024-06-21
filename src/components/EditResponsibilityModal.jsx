@@ -12,7 +12,6 @@ function EditResponsibilityModal({
   showEditModal,
   setShowEditModal,
   currentResponsibility,
-  handleEditSeries,
   editResponsibility,
   handleDeleteResponsibility,
   parentalControl,
@@ -31,6 +30,10 @@ function EditResponsibilityModal({
   const [repeatType, setRepeatType] = useState('none');
   const [repeatDetails, setRepeatDetails] = useState([]);
   const [difficultyString, setDifficultyString] = useState('');
+
+  useEffect(() => {
+    console.log(currentResponsibility);
+  }, [currentResponsibility]);
 
   useEffect(() => {
     if (showEditModal) {
@@ -81,7 +84,10 @@ function EditResponsibilityModal({
       setIsEditing(false);
       setShowEditModal(false);
     } else {
-      handleDeleteResponsibility(currentResponsibility.id);
+      handleDeleteResponsibility(
+        currentResponsibility.id,
+        currentResponsibility.profile
+      );
     }
     setIsEditing(false);
     setShowEditModal(false);
@@ -91,7 +97,7 @@ function EditResponsibilityModal({
     if (repeatType === 'none') {
       alert('You have to select days for this responsibility to repeat');
     } else {
-      await handleEditSeries({
+      await editResponsibilitySeries({
         seriesId: currentResponsibility.series,
         main,
         title,
@@ -103,6 +109,7 @@ function EditResponsibilityModal({
         description,
         difficulty,
         verified: currentResponsibility.verified,
+        profileId: currentResponsibility.profile,
       });
     }
     setIsEditing(false);
@@ -174,12 +181,12 @@ function EditResponsibilityModal({
   return (
     <div
       className="modal-overlay"
-      onClick={() => {
+      onMouseDown={() => {
         setIsEditing(false);
         setShowEditModal(false);
       }}
     >
-      <div className={modalClass} onClick={(e) => e.stopPropagation()}>
+      <div className={modalClass} onMouseDown={(e) => e.stopPropagation()}>
         <button className="close-btn" onClick={() => setShowEditModal(false)}>
           X
         </button>
@@ -296,6 +303,7 @@ function EditResponsibilityModal({
               <h3>{title}</h3>
               <p>{description}</p>
               <p>{difficultyString}</p>
+
               {!parentalControl && currentChildId === main.state.profile.id && (
                 <button
                   className="complete-btn"

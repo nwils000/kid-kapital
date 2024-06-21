@@ -93,9 +93,9 @@ function AddResponsibilityModal({
   return (
     <div
       className="modal-overlay"
-      onClick={() => setShowAddResponsibilityModal(false)}
+      onMouseDown={() => setShowAddResponsibilityModal(false)}
     >
-      <div className="modal-content" onClick={(e) => e.stopPropagation()}>
+      <div className="modal-content" onMouseDown={(e) => e.stopPropagation()}>
         <button
           className="close-btn"
           onClick={() => setShowAddResponsibilityModal(false)}

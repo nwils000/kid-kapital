@@ -20,13 +20,13 @@ function AllowancePeriodModal({
   const [day, setDay] = useState(initialDay);
 
   const weekDays = [
+    'Sunday',
     'Monday',
     'Tuesday',
     'Wednesday',
     'Thursday',
     'Friday',
     'Saturday',
-    'Sunday',
   ];
 
   const handleDayChange = (event) => {
@@ -47,9 +47,9 @@ function AllowancePeriodModal({
   return (
     <div
       className="modal-overlay allowance-modal"
-      onClick={() => setShowAllowancePeriodModal(false)}
+      onMouseDown={() => setShowAllowancePeriodModal(false)}
     >
-      <div className="modal-content" onClick={(e) => e.stopPropagation()}>
+      <div className="modal-content" onMouseDown={(e) => e.stopPropagation()}>
         <button
           className="close-btn"
           onClick={() => setShowAllowancePeriodModal(false)}
@@ -60,7 +60,7 @@ function AllowancePeriodModal({
         {periodType === 'weeks' ? (
           <select value={day} onChange={handleDayChange}>
             {weekDays.map((weekDay) => (
-              <option key={weekDay} value={weekDay}>
+              <option key={weekDay} value={weekDays.indexOf(weekDay)}>
                 {weekDay}
               </option>
             ))}

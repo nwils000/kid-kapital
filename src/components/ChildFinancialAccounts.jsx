@@ -6,6 +6,7 @@ import {
   cashOut,
 } from '../api-calls/api';
 import { MainContext } from '../context/context';
+import ChildDashboardNavbar from '../layout/ChildDashboardNavbar';
 
 export default function ChildFinancialAccounts() {
   const { main } = useContext(MainContext);
@@ -44,6 +45,7 @@ export default function ChildFinancialAccounts() {
 
   return (
     <div>
+      <ChildDashboardNavbar />
       <h2>Child Component</h2>
       <div>
         <h3>Invest Money</h3>

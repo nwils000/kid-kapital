@@ -42,8 +42,8 @@ export default function PurchaseItemModal({
   if (!showPurchaseModal) return null;
 
   return (
-    <div className="modal-overlay" onClick={() => setShowPurchaseModal(false)}>
-      <div className="modal-content" onClick={(e) => e.stopPropagation()}>
+    <div className="modal-overlay" onMouseDown={() => setShowPurchaseModal(false)}>
+      <div className="modal-content" onMouseDown={(e) => e.stopPropagation()}>
         <div className="modal-header">
           <h5>Purchase {name}</h5>
           <button onClick={() => setShowPurchaseModal(false)}>Close</button>

@@ -17,12 +17,11 @@
 }
 
 .day-button {
-  width: 40px;
-  height: 40px;
+  width: 50px;
+  height: 70px;
   text-align: center;
   border: none;
-  border-radius: 50%;
-  background-color: lightgray;
+  border-radius: 10px;
   display: flex;
   justify-content: center;
   align-items: center;
@@ -35,9 +34,15 @@
   margin: 0;
 }
 
-.day-button.selected {
+.day-button p:last-of-type {
+  padding: 2px 5px;
+}
+
+.day-button.selected p:last-of-type {
   background-color: #3fa0ca;
   color: white;
+  border-radius: 5px;
+  padding: 2px 8px;
 }
 
 .selected-day-tasks {
@@ -83,14 +88,15 @@ li:last-child {
   padding: 0;
 }
 
-.responsibility-item {
+.responsibility-item,
+.responsibility-item-big {
   display: flex;
   justify-content: space-between;
   align-items: center;
   background-color: #ebebeb;
   border-bottom: 1px solid #ddd;
   border-radius: 8px;
-  padding: 20px 10px;
+  padding: 10px 20px;
   position: relative;
   min-width: 15rem;
   background-color: white;
@@ -99,20 +105,78 @@ li:last-child {
   box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
 }
 
-.responsibility-content {
-  flex-grow: 1;
+.parent-dashboard .dropdown-container,
+.child-dashboard .dropdown-container {
+  overflow-y: auto;
+  overflow-x: hidden;
 }
 
-.responsibility-title {
+.parent-dashboard .dropdown-container::-webkit-scrollbar-track,
+.child-dashboard .dropdown-container::-webkit-scrollbar-track {
+  background: #f1f1f1;
+}
+
+.parent-dashboard .dropdown-container::-webkit-scrollbar-thumb,
+.child-dashboard .dropdown-container::-webkit-scrollbar-thumb {
+  background-color: #888;
+  border-radius: 10px;
+}
+
+.parent-dashboard .dropdown-container::-webkit-scrollbar,
+.child-dashboard .dropdown-container::-webkit-scrollbar {
+  width: 5px;
+}
+
+.parent-dashboard .responsibility-item,
+.child-dashboard .responsibility-item {
+  padding: 2px 8px;
+  font-size: 0.8rem;
+  width: 10rem;
+}
+
+.parent-dashboard .responsibility-title,
+.child-dashboard .responsibility-title {
+  font-size: 0.8rem;
+}
+
+.parent-dashboard .responsibility-content,
+.child-dashboard .responsibility-content,
+.parent-dashboard .responsibility-content-big {
+  display: flex;
+  justify-content: space-between;
+}
+
+.parent-dashboard .responsibility-content span,
+.child-dashboard .responsibility-content span,
+.parent-dashboard .responsibility-content-big span {
+  position: relative;
+}
+
+.responsibility-content,
+.responsibility-content-big {
+  flex-grow: 1;
+  position: relative;
+}
+
+.responsibility-content span,
+.responsibility-content-big span {
+  position: absolute;
+  top: 5px;
+  right: 0;
+}
+
+.responsibility-title,
+.responsibility-title-big {
   font-size: 1.1rem;
   color: #333;
   margin: 0;
+  padding-top: 5px !important;
 }
 
 .responsibility-description {
   font-size: 0.9rem;
+  font-weight: 400;
   color: #666;
-  margin-top: 5px;
 }
 
 .responsibilities-container .delete-button {

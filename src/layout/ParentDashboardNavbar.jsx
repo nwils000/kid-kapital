@@ -7,7 +7,7 @@ export default function ParentDashboardNavbar() {
   return (
     <div>
       <div className="navbar-wrapper">
-        <div className="navbar parent-navbar">
+        <div className="navbar ">
           <Link to="/" className="nav-item">
             <div className="logo-wrapper">
               <GiTakeMyMoney className="logo-icon" />
@@ -48,7 +48,7 @@ export default function ParentDashboardNavbar() {
           </div>
         </div>
       </div>
-      <div style={{ height: '5rem' }}></div>
+      <div style={{ height: '107px' }}></div>
     </div>
   );
 }

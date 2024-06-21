@@ -35,9 +35,9 @@ export default function ApproveItemModal({
   return (
     <div
       className="modal-overlay"
-      onClick={() => setShowApproveItemModal(false)}
+      onMouseDown={() => setShowApproveItemModal(false)}
     >
-      <div className="modal-content" onClick={(e) => e.stopPropagation()}>
+      <div className="modal-content" onMouseDown={(e) => e.stopPropagation()}>
         <div className="modal-header">
           <h5>Approve Item</h5>
           <button onClick={() => setShowApproveItemModal(false)}>Close</button>

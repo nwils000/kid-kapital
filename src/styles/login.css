@@ -1,12 +1,11 @@
 .login {
-  height: calc(100vh - 6rem);
+  height: calc(100vh - 14rem);
   display: flex;
   flex-direction: column;
   justify-content: center;
   align-items: start;
   padding: 20px;
   position: relative;
-  bottom: 3rem;
 }
 
 .login h1 span {
