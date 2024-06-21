@@ -1,7 +1,5 @@
 import React, { useContext, useEffect, useState } from 'react';
 import { MainContext } from '../context/context';
-import ParentDashboardNavbar from '../layout/ParentDashboardNavbar';
-import ChildDashboardNavbar from '../layout/ChildDashboardNavbar';
 import StoreItemModal from '../components/StoreItemModal';
 import ApproveItemModal from '../components/ApproveItemModal';
 import PurchaseItemModal from '../components/PurchaseItemModal';
@@ -12,6 +10,8 @@ import {
   handleApproveStoreItemRequest,
 } from '../api-calls/api';
 import '../styles/family-store.css';
+import ParentNavbar from '../layout/ParentNavbar';
+import ChildNavbar from '../layout/ChildNavbar';
 
 function FamilyStore() {
   const { main } = useContext(MainContext);
@@ -43,9 +43,9 @@ function FamilyStore() {
   return (
     <>
       {main.state.profile.parent ? (
-        <ParentDashboardNavbar />
+        <ParentNavbar />
       ) : (
-        <ChildDashboardNavbar />
+        <ChildNavbar />
       )}
       <h1 style={{ fontSize: '2rem', margin: '20px', textAlign: 'center' }}>
         Family Store

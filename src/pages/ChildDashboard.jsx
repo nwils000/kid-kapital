@@ -1,7 +1,6 @@
 import React, { useContext, useEffect, useState } from 'react';
 import { MainContext } from '../context/context';
 import '../styles/child-dashboard.css';
-import ChildDashboardNavbar from '../layout/ChildDashboardNavbar';
 import {
   fetchUser,
   getFamilyStoreItems,
@@ -11,6 +10,7 @@ import {
 import EditResponsibilityModal from '../components/EditResponsibilityModal';
 import { useNavigate } from 'react-router-dom';
 import Wallet from '../components/Wallet';
+import ChildNavbar from '../layout/ChildNavbar';
 
 function formatDate(dateString) {
   const date = new Date(dateString);
@@ -74,7 +74,7 @@ export default function ChildDashboard() {
 
   return (
     <>
-      <ChildDashboardNavbar />
+      <ChildNavbar />
       <div className="child-dashboard">
         <Wallet />
         <div className="family-members">
@@ -197,11 +197,13 @@ export default function ChildDashboard() {
                   <h4 className="responsibility-title-big">
                     {responsibility.title}
                   </h4>
-                  <span>{responsibility.date
-                          ? parseInt(responsibility.date.slice(5, 7)) +
-                            '/' +
-                            parseInt(responsibility.date.slice(8, 10))
-                          : ''}</span>
+                  <span>
+                    {responsibility.date
+                      ? parseInt(responsibility.date.slice(5, 7)) +
+                        '/' +
+                        parseInt(responsibility.date.slice(8, 10))
+                      : ''}
+                  </span>
                 </div>
               </div>
             ))}

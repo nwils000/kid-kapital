@@ -5,6 +5,8 @@ import { fetchChildResponsibilities, fetchUser } from '../api-calls/api';
 import { useNavigate } from 'react-router-dom';
 import ChildDashboardNavbar from '../layout/ChildDashboardNavbar';
 import '../styles/family-manager.css';
+import ParentNavbar from '../layout/ParentNavbar';
+import ChildNavbar from '../layout/ChildNavbar';
 
 export default function FamilyManager() {
   const { main } = useContext(MainContext);
@@ -47,11 +49,7 @@ export default function FamilyManager() {
 
   return (
     <>
-      {main.state.profile.parent ? (
-        <ParentDashboardNavbar />
-      ) : (
-        <ChildDashboardNavbar />
-      )}
+      {main.state.profile.parent ? <ParentNavbar /> : <ChildNavbar />}
       <h1
         style={{
           fontSize: '2rem',

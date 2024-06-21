@@ -6,16 +6,16 @@ export default function MyMoney() {
 
   const [allowanceDetails, setAllowanceDetails] = useState({
     lastPeriodEarnings: 0,
-    currentBalance: 200, // Assuming $200 as initial available balance
+    currentBalance: 200,
     savings: 100,
     totalMoney: 0,
   });
 
   useEffect(() => {
-    const totalInvestments = 250; // Fixed sum of the hardcoded investments
+    const totalInvestments = 250;
     setAllowanceDetails((prev) => ({
       ...prev,
-      totalMoney: prev.currentBalance + totalInvestments - 50, // Adding investments and subtracting loan
+      totalMoney: prev.currentBalance + totalInvestments - 50,
     }));
   }, []);
 

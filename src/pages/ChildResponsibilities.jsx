@@ -8,10 +8,10 @@ import {
   fetchChildResponsibilities,
   updateResponsibility,
 } from '../api-calls/api';
-import ParentDashboardNavbar from '../layout/ParentDashboardNavbar';
 import AddResponsibilityModal from '../components/AddResponsibilityModal';
 import EditResponsibilityModal from '../components/EditResponsibilityModal';
 import { FaLongArrowAltLeft, FaLongArrowAltRight } from 'react-icons/fa';
+import ParentNavbar from '../layout/ParentNavbar';
 
 function ChildResponsibilities() {
   const { main } = useContext(MainContext);
@@ -256,7 +256,7 @@ function ChildResponsibilities() {
 
   return (
     <>
-      <ParentDashboardNavbar />
+      <ParentNavbar />
 
       <div style={{ display: 'flex', justifyContent: 'center', gap: '8rem' }}>
         <div className="sidebar left">

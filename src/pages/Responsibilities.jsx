@@ -8,11 +8,11 @@ import {
   fetchResponsibilities,
   updateResponsibility,
 } from '../api-calls/api';
-import ParentDashboardNavbar from '../layout/ParentDashboardNavbar';
-import ChildDashboardNavbar from '../layout/ChildDashboardNavbar';
 import AddResponsibilityModal from '../components/AddResponsibilityModal';
 import EditResponsibilityModal from '../components/EditResponsibilityModal';
 import { FaLongArrowAltLeft, FaLongArrowAltRight } from 'react-icons/fa';
+import ParentNavbar from '../layout/ParentNavbar';
+import ChildNavbar from '../layout/ChildNavbar';
 
 function Responsibilities() {
   const { main } = useContext(MainContext);
@@ -227,11 +227,6 @@ function Responsibilities() {
     }
   }
 
-  // const handleEditResponsibility = (id) => {
-  //   setCurrentResponsibility(responsibility);
-  //   setShowEditModal(true);
-  // };
-
   const daysOfWeek = generateWeekDays(weekStart);
   const dayNames = ['S', 'M', 'T', 'W', 'T', 'F', 'S'];
   const monthNames = [
@@ -257,11 +252,7 @@ function Responsibilities() {
 
   return (
     <>
-      {main.state.profile.parent ? (
-        <ParentDashboardNavbar />
-      ) : (
-        <ChildDashboardNavbar />
-      )}
+      {main.state.profile.parent ? <ParentNavbar /> : <ChildNavbar />}
       <div style={{ display: 'flex', justifyContent: 'center', gap: '8rem' }}>
         <div className="sidebar left">
           <h2>Upcoming Responsibilities</h2>

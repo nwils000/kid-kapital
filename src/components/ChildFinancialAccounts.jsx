@@ -6,7 +6,7 @@ import {
   cashOut,
 } from '../api-calls/api';
 import { MainContext } from '../context/context';
-import ChildDashboardNavbar from '../layout/ChildDashboardNavbar';
+import ChildDashboardNavbar from '../layout/ChildNavbar';
 
 export default function ChildFinancialAccounts() {
   const { main } = useContext(MainContext);

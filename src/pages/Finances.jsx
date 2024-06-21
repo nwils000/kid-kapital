@@ -8,8 +8,8 @@ import {
   updateDifficultyPointValue,
 } from '../api-calls/api';
 import { MainContext } from '../context/context';
-import ChildDashboardNavbar from '../layout/ChildDashboardNavbar';
-import ParentDashboardNavbar from '../layout/ParentDashboardNavbar';
+import ParentNavbar from '../layout/ParentNavbar';
+import ChildNavbar from '../layout/ChildNavbar';
 
 export default function Finances() {
   const { main } = useContext(MainContext);
@@ -56,11 +56,7 @@ export default function Finances() {
 
   return (
     <div className="finances">
-      {main.state.profile.parent ? (
-        <ParentDashboardNavbar />
-      ) : (
-        <ChildDashboardNavbar />
-      )}
+      {main.state.profile.parent ? <ParentNavbar /> : <ChildNavbar />}
 
       <h1 style={{ textAlign: 'center', fontSize: '2rem', margin: '20px' }}>
         Manage {main.state.profile.family.name} Finances

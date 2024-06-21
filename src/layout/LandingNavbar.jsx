@@ -2,7 +2,7 @@ import '../styles/navbar.css';
 import { Link } from 'react-router-dom';
 import { GiTakeMyMoney } from 'react-icons/gi';
 
-export default function LandingPageNavbar() {
+export default function LandingNavbar() {
   return (
     <div>
       <div className="navbar-wrapper">

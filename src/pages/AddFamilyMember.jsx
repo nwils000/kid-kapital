@@ -3,8 +3,8 @@ import { Link, useNavigate } from 'react-router-dom';
 import { FaEye, FaEyeSlash } from 'react-icons/fa';
 import { useContext, useEffect, useState } from 'react';
 import { createUser, fetchUser } from '../api-calls/api.js';
-import ParentDashboardNavbar from '../layout/ParentDashboardNavbar.jsx';
 import { MainContext } from '../context/context.js';
+import ParentNavbar from '../layout/ParentNavbar.jsx';
 
 export default function AddFamilyMember() {
   const { main } = useContext(MainContext);
@@ -62,7 +62,7 @@ export default function AddFamilyMember() {
 
   return (
     <>
-      <ParentDashboardNavbar />
+      <ParentNavbar />
       <div className="signup">
         <h1>
           Create family member<span>.</span>

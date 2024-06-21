@@ -1,7 +1,6 @@
 import React, { useContext, useEffect, useState } from 'react';
 import { MainContext } from '../context/context';
 import '../styles/parent-dashboard.css';
-import ParentDashboardNavbar from '../layout/ParentDashboardNavbar';
 import {
   deleteResponsibility,
   fetchUser,
@@ -12,6 +11,7 @@ import ApproveResponsibilityModal from '../components/ApproveResponsibilityModal
 import { useNavigate } from 'react-router-dom';
 import UnapprovedPurchases from '../components/UnapprovedPurchases';
 import EditResponsibilityModal from '../components/EditResponsibilityModal';
+import ParentNavbar from '../layout/ParentNavbar';
 
 export default function ParentDashboard() {
   const { main } = useContext(MainContext);
@@ -86,7 +86,7 @@ export default function ParentDashboard() {
 
   return (
     <>
-      <ParentDashboardNavbar />
+      <ParentNavbar />
       <div className="parent-dashboard">
         <div className="family-store">
           <UnapprovedPurchases />
