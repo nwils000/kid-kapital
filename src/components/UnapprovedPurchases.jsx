@@ -1,7 +1,7 @@
 import React, { useEffect, useState, useContext } from 'react';
 import { MainContext } from '../context/context';
 import {
-  getunnaprovedPurchases,
+  getUnnaprovedPurchases,
   updatePurchaseApproval,
 } from '../api-calls/api';
 
@@ -12,7 +12,7 @@ function UnapprovedPurchases() {
   useEffect(() => {
     const fetchUnapprovedPurchases = async () => {
       try {
-        const purchasesData = await getunnaprovedPurchases({ main });
+        const purchasesData = await getUnnaprovedPurchases({ main });
         setPurchases(purchasesData);
       } catch (error) {
         console.error(error);

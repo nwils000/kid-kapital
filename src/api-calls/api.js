@@ -1,7 +1,7 @@
 import axios from 'axios';
 
-// const baseUrl = 'http://127.0.0.1:8000';
-const baseUrl = 'https://family-finance-server.fly.dev';
+const baseUrl = 'http://127.0.0.1:8000';
+// const baseUrl = 'https://family-finance-server.fly.dev';
 
 export const getToken = async ({ main, username, password }) => {
   try {
@@ -545,7 +545,7 @@ export const purchaseStoreItem = async ({ main, itemId }) => {
   }
 };
 
-export const getunnaprovedPurchases = async ({ main }) => {
+export const getUnnaprovedPurchases = async ({ main }) => {
   try {
     const response = await axios({
       method: 'get',
@@ -554,7 +554,7 @@ export const getunnaprovedPurchases = async ({ main }) => {
         Authorization: `Bearer ${main.state.accessToken}`,
       },
     });
-    await fetchUser({ accessToken: main.state.accessToken, main });
+
     console.log('GET PURCHASES: ', response);
     return response.data;
   } catch (error) {
