@@ -2,8 +2,9 @@
   width: 100%;
   background: #3fa0ca;
   position: absolute;
+  left: 50%;
   left: 0;
-  height: 5rem;
+  top: 0;
 }
 
 .navbar {
@@ -13,13 +14,10 @@
   padding: 0 20px;
   font-size: 1.2rem;
   font-weight: 500;
-  height: 5rem;
+
   width: 100%;
-  left: 50%;
-  transform: translate(-50%);
   max-width: 90rem;
-  position: absolute;
-  top: 0;
+  margin: auto;
   z-index: 2;
 }
 
@@ -65,14 +63,14 @@
   justify-content: center;
   text-decoration: none;
   color: rgba(255, 255, 255, 0.842);
-  padding: 14px 2rem;
+  padding: 18px 2rem;
   font-size: 1rem;
   transition: 0.5s;
   border-left: 1px solid rgba(0, 0, 0, 0.13);
 }
 
 .landing-page-link {
-  padding: 28px 2rem;
+  padding: 31px 2rem;
 }
 
 .nav-link:last-of-type {

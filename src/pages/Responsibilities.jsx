@@ -3,7 +3,8 @@ import { MainContext } from '../context/context';
 import '../styles/my-responsibilities.css';
 import {
   createResponsibility,
-  deleteResponsibilities,
+  deleteResponsibility,
+  editResponsibilitySeries,
   fetchResponsibilities,
   updateResponsibility,
 } from '../api-calls/api';
@@ -30,6 +31,7 @@ function Responsibilities() {
         let allResponsibilities = {};
 
         fetchedResponsibilities.data.forEach((element) => {
+          console.log('THE ELEMENT', element);
           if (!allResponsibilities[element.date]) {
             allResponsibilities[element.date] = [];
           }
@@ -37,10 +39,13 @@ function Responsibilities() {
           allResponsibilities[element.date].push({
             description: element.description,
             title: element.title,
+            profile: element.profile,
             id: element.id,
             difficulty: element.difficulty,
             verified: element.verified,
             completed: element.completed,
+            series: element.series,
+            single: element.single,
             date: element.date,
           });
         });
@@ -54,6 +59,10 @@ function Responsibilities() {
 
     getResponsibilities();
   }, [main.state.profile]);
+
+  useEffect(() => {
+    console.log('IN RESPONSIBILITIES', currentResponsibility);
+  }, [currentResponsibility]);
 
   function getSunday(d) {
     const date = new Date(d);
@@ -78,7 +87,8 @@ function Responsibilities() {
     )}-${String(date.getDate()).padStart(2, '0')}`;
   }
 
-  function formatDateForDisplay(date) {
+  function formatDateForLocalDisplay(dateString) {
+    const date = new Date(dateString);
     return `${String(date.getMonth() + 1)}/${String(date.getDate()).padStart(
       2,
       '0'
@@ -97,7 +107,7 @@ function Responsibilities() {
     return days;
   }
 
-  async function addResponsibility({ title, description, difficulty }) {
+  async function addResponsibility({ title, description, difficulty, repeat }) {
     const formattedDate = formatDate(selectedDay);
     try {
       let newResponsibility = await createResponsibility({
@@ -108,6 +118,7 @@ function Responsibilities() {
         verified: main.state.profile.parent ? true : false,
         profileId: main.state.profile.id,
         date: formattedDate,
+        repeat,
       });
 
       const updatedResponsibilities = responsibilities[formattedDate]
@@ -120,6 +131,28 @@ function Responsibilities() {
     } catch (e) {
       console.log(e);
     }
+  }
+
+  async function handleEditSeries({
+    seriesId,
+    title,
+    startDate,
+    repeatInfo,
+    description,
+    difficulty,
+    verified,
+  }) {
+    await editResponsibilitySeries({
+      main,
+      profileId: main.state.profile.id,
+      seriesId,
+      title,
+      startDate,
+      repeatInfo,
+      description,
+      difficulty,
+      verified,
+    });
   }
 
   async function editResponsibility({
@@ -159,11 +192,11 @@ function Responsibilities() {
     }
   }
 
-  async function handleDeleteResponsibility(id) {
+  async function handleDeleteResponsibility(id, profileId) {
     try {
-      const updatedResponsibilitiesData = await deleteResponsibilities({
+      const updatedResponsibilitiesData = await deleteResponsibility({
         main,
-        profileId: main.state.profile.id,
+        profileId,
         id,
       });
 
@@ -178,9 +211,12 @@ function Responsibilities() {
           description: element.description,
           title: element.title,
           id: element.id,
+          single: element.single,
           difficulty: element.difficulty,
           verified: element.verified,
           completed: element.completed,
+          profile: element.profile,
+          series: element.series,
           date: element.date,
         });
       });
@@ -197,6 +233,7 @@ function Responsibilities() {
   // };
 
   const daysOfWeek = generateWeekDays(weekStart);
+  const dayNames = ['S', 'M', 'T', 'W', 'T', 'F', 'S'];
   const monthNames = [
     'January',
     'February',
@@ -213,6 +250,11 @@ function Responsibilities() {
   ];
   const currentMonth = monthNames[selectedDay.getMonth()];
 
+  function parseDate(dateString) {
+    const [year, month, day] = dateString.split('-');
+    return new Date(year, month - 1, day);
+  }
+
   return (
     <>
       {main.state.profile.parent ? (
@@ -222,7 +264,7 @@ function Responsibilities() {
       )}
       <div style={{ display: 'flex', justifyContent: 'center', gap: '8rem' }}>
         <div className="sidebar left">
-          <h2>All Responsibilities</h2>
+          <h2>Upcoming Responsibilities</h2>
           <ul className="responsibilities-list">
             {Object.values(responsibilities)
               .flat()
@@ -234,6 +276,7 @@ function Responsibilities() {
                 .filter((resp) => {
                   return !resp.completed;
                 })
+                .slice(0, 5)
                 .map((responsibility, index) => (
                   <li
                     onClick={() => {
@@ -241,20 +284,24 @@ function Responsibilities() {
                       setShowEditModal(true);
                     }}
                     key={index}
-                    className="responsibility-item"
+                    className="hover responsibility-item-big"
                   >
-                    <div className="responsibility-content">
-                      <h4 className="responsibility-title">
+                    <div className="responsibility-content-big">
+                      <h4 className="responsibility-title-big">
                         {responsibility.title}
                       </h4>
                       <span>
-                        {formatDateForDisplay(new Date(responsibility.date))}
+                        {responsibility.date
+                          ? parseInt(responsibility.date.slice(5, 7)) +
+                            '/' +
+                            parseInt(responsibility.date.slice(8, 10))
+                          : ''}
                       </span>
                     </div>
                   </li>
                 ))
             ) : (
-              <li>No Responsibilities</li>
+              <li>No upcoming responsibilities</li>
             )}
           </ul>
         </div>
@@ -278,7 +325,20 @@ function Responsibilities() {
                   }`}
                   onClick={() => setSelectedDay(day)}
                 >
-                  <p>{day.getDate()}</p>
+                  <div
+                    style={{
+                      display: 'flex',
+                      gap: '2px',
+                      flexDirection: 'column',
+                    }}
+                  >
+                    <p style={{ fontSize: '.7rem', fontWeight: '400' }}>
+                      {dayNames[day.getDay()]}
+                    </p>
+                    <p style={{ fontWeight: '600', fontSize: '1.2rem' }}>
+                      {day.getDate()}
+                    </p>
+                  </div>
                 </div>
               );
             })}
@@ -287,7 +347,9 @@ function Responsibilities() {
             </button>
           </div>
           <div className="selected-day-responsibilities">
-            <h3>Responsibilities for {formatDateForDisplay(selectedDay)}:</h3>
+            <h3>
+              Responsibilities for {formatDateForLocalDisplay(selectedDay)}:
+            </h3>
             <ul>
               {responsibilities[formatDate(selectedDay)] &&
               responsibilities[formatDate(selectedDay)].filter((resp) => {
@@ -302,17 +364,20 @@ function Responsibilities() {
                         setShowEditModal(true);
                       }}
                       key={index}
-                      className="responsibility-item"
+                      className="hover responsibility-item"
                     >
                       <div className="responsibility-content">
                         <h4 className="responsibility-title">
                           {responsibility.title}
+                          <p className="responsibility-description">
+                            {responsibility.description}
+                          </p>
                         </h4>
                       </div>
                     </li>
                   ))
               ) : (
-                <li>No Responsibilities</li>
+                <li>No responsibilities for today</li>
               )}
             </ul>
             <button onClick={() => setShowAddResponsibilityModal(true)}>
@@ -330,6 +395,7 @@ function Responsibilities() {
               setCurrentResponsibility={setCurrentResponsibility}
               editResponsibility={editResponsibility}
               handleDeleteResponsibility={handleDeleteResponsibility}
+              handleEditSeries={handleEditSeries}
             />
           </div>
         </div>

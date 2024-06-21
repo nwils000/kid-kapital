@@ -1,7 +1,12 @@
 import React, { useContext, useEffect, useState } from 'react';
 import { FiEdit } from 'react-icons/fi';
 import '../styles/responsibility-modal.css';
-import { approveResponsibility } from '../api-calls/api';
+import {
+  approveResponsibility,
+  approveWholeSeries,
+  deleteResponsibility,
+  deleteResponsibilitySeries,
+} from '../api-calls/api';
 import { MainContext } from '../context/context';
 
 function ApproveResponsibilityModal({
@@ -17,67 +22,184 @@ function ApproveResponsibilityModal({
     currentResponsibility.description
   );
   const [isEditing, setIsEditing] = useState(false);
-  const [difficulty, setDifficulty] = useState(0);
+  const [difficulty, setDifficulty] = useState(
+    currentResponsibility.difficulty || 0
+  );
   const [difficultyString, setDifficultyString] = useState('');
   const [approved, setApproved] = useState(false);
-
-  useEffect(() => {
-    if (approved) {
-      handleSave();
-    }
-  }, [approved]);
+  const [approvedSeries, setApprovedSeries] = useState(false);
+  const [justApprove, setJustApprove] = useState(false);
+  const [repeatType, setRepeatType] = useState('none');
+  const [repeatDetails, setRepeatDetails] = useState([]);
 
   useEffect(() => {
     if (showApproveModal) {
+      console.log('CURRENT RESP', currentResponsibility);
       setDifficulty(currentResponsibility.difficulty);
       setTitle(currentResponsibility.title);
       setDescription(currentResponsibility.description);
       setApproved(currentResponsibility.verified);
-
-      switch (currentResponsibility.difficulty) {
-        case 0:
-          setDifficultyString('Too Easy');
-          break;
-        case 1:
-          setDifficultyString('Very Easy');
-          break;
-        case 2:
-          setDifficultyString('Easy');
-          break;
-        case 3:
-          setDifficultyString('Medium');
-          break;
-        case 4:
-          setDifficultyString('Hard');
-          break;
-        case 5:
-          setDifficultyString('Very Hard');
-          break;
-        case 6:
-          setDifficultyString('Extremely Hard');
-          break;
-      }
+      updateDifficultyString(currentResponsibility.difficulty);
+      setRepeatDetails([]);
     }
   }, [showApproveModal, currentResponsibility]);
 
-  //   useEffect(() => {set}, [currentResponsibility])
+  useEffect(() => {
+    handleSave();
+  }, [approved]);
+
+  useEffect(() => {
+    console.log('APPROVED SERIES', approvedSeries);
+    handleSave();
+  }, [approvedSeries]);
+
+  const updateDifficultyString = (difficultyLevel) => {
+    const difficulties = [
+      'Too Easy',
+      'Very Easy',
+      'Easy',
+      'Medium',
+      'Hard',
+      'Very Hard',
+      'Extremely Hard',
+    ];
+    setDifficultyString(difficulties[difficultyLevel] || '');
+  };
 
   const handleSave = async () => {
-    try {
+    console.log('SAVING', approvedSeries);
+    if (approvedSeries && justApprove) {
+      await approveWholeSeries({
+        profile: currentResponsibility.profile,
+        id: currentResponsibility.id,
+        seriesId: currentResponsibility.series,
+        title,
+        description,
+        difficulty,
+        startDate: currentResponsibility.startDate,
+        main,
+        approved,
+        repeatType,
+        repeatDetails,
+        justApprove: true,
+      });
+      setIsEditing(false);
+      setApprovedSeries(false);
+      setShowApproveModal(false);
+      setJustApprove(false);
+      return;
+    }
+    if (repeatType !== 'none' && approvedSeries) {
+      console.log('NOT NONE');
+      let editedResponsibility = await approveWholeSeries({
+        profile: currentResponsibility.profile,
+        id: currentResponsibility.id,
+        seriesId: currentResponsibility.series,
+        title,
+        description,
+        difficulty,
+        startDate: currentResponsibility.startDate,
+        main,
+        approved,
+        repeatInfo: {
+          type: repeatType,
+          details: repeatDetails,
+        },
+      });
+      setCurrentResponsibility(editedResponsibility.data);
+      setIsEditing(false);
+    }
+    if (repeatType === 'none' && approved) {
+      console.log('NONE', currentResponsibility, approved);
+
       let editedResponsibility = await approveResponsibility({
         id: currentResponsibility.id,
+        title,
+        description,
         difficulty,
         main,
         approved,
       });
-
-      console.log(editedResponsibility);
-
       setCurrentResponsibility(editedResponsibility.data);
       setIsEditing(false);
-    } catch (e) {
-      console.log(e);
+      console.log('NONE', editedResponsibility);
     }
+    if (approved) {
+      console.log('ASDHASJD');
+      setApproved(false);
+      setShowApproveModal(false);
+    }
+    if (approvedSeries) {
+      console.log('zzzzzzzzzzzzzzzz');
+      setApprovedSeries(false);
+      setShowApproveModal(false);
+    }
+    setIsEditing(false);
+  };
+
+  const handleDelete = async (deleteSeries = false) => {
+    if (deleteSeries) {
+      await deleteResponsibilitySeries({
+        seriesId: currentResponsibility.series,
+        main,
+      });
+    } else {
+      await deleteResponsibility({
+        main: main,
+        profileId: currentResponsibility.profile,
+        id: currentResponsibility.id,
+      });
+    }
+    setShowApproveModal(false);
+  };
+
+  const handleRepeatDetailsChange = (e) => {
+    const { value, checked } = e.target;
+    if (checked) {
+      setRepeatDetails([...repeatDetails, value]);
+    } else {
+      setRepeatDetails(repeatDetails.filter((day) => day !== value));
+    }
+  };
+
+  const repeatOptions = () => {
+    return repeatType === 'weekly' ? (
+      [
+        'Monday',
+        'Tuesday',
+        'Wednesday',
+        'Thursday',
+        'Friday',
+        'Saturday',
+        'Sunday',
+      ].map((day) => (
+        <label key={day} className="day-checkbox">
+          <input
+            type="checkbox"
+            value={day}
+            checked={repeatDetails.includes(day)}
+            onChange={handleRepeatDetailsChange}
+          />
+          {day}
+        </label>
+      ))
+    ) : repeatType === 'monthly' ? (
+      <div
+        style={{ display: 'flex', flexWrap: 'wrap', justifyContent: 'center' }}
+      >
+        {Array.from({ length: 31 }, (_, i) => i + 1).map((day) => (
+          <label key={day} className="day-checkbox">
+            <input
+              type="checkbox"
+              value={day.toString()}
+              checked={repeatDetails.includes(day.toString())}
+              onChange={handleRepeatDetailsChange}
+            />
+            {day}
+          </label>
+        ))}
+      </div>
+    ) : null;
   };
 
   if (!showApproveModal) return null;
@@ -85,12 +207,12 @@ function ApproveResponsibilityModal({
   return (
     <div
       className="modal-overlay"
-      onClick={() => {
+      onMouseDown={() => {
         setShowApproveModal(false);
         setIsEditing(false);
       }}
     >
-      <div className="modal-content" onClick={(e) => e.stopPropagation()}>
+      <div className="modal-content" onMouseDown={(e) => e.stopPropagation()}>
         <p style={{ textAlign: 'center', color: '#1DA1F2' }}>
           Awaiting Your Approval...
         </p>
@@ -104,66 +226,126 @@ function ApproveResponsibilityModal({
           X
         </button>
         <div className="modal-body">
-          <div className="title-section">
-            <h3>{title}</h3>
-          </div>
-
-          <div className="description-section">
-            <p>{description}</p>
-
-            {isEditing ? (
+          {isEditing ? (
+            <>
+              <input
+                className="title-input"
+                value={title}
+                onChange={(e) => setTitle(e.target.value)}
+                placeholder="Title"
+              />
+              <textarea
+                className="description-textarea"
+                value={description}
+                onChange={(e) => setDescription(e.target.value)}
+                placeholder="Description"
+              />
               <select
                 className="difficulty-select"
-                defaultValue={difficulty}
-                onChange={(e) => setDifficulty(e.target.value)}
+                value={difficulty}
+                onChange={(e) => setDifficulty(Number(e.target.value))}
               >
-                <option value={0}>Too Easy</option>
-                <option value={1}>Very Easy</option>
-                <option value={2}>Easy</option>
-                <option value={3}>Medium</option>
-                <option value={4}>Hard</option>
-                <option value={5}>Very Hard</option>
-                <option value={6}>Extremely Hard</option>
+                {[
+                  'Too Easy',
+                  'Very Easy',
+                  'Easy',
+                  'Medium',
+                  'Hard',
+                  'Very Hard',
+                  'Extremely Hard',
+                ].map((option, index) => (
+                  <option key={index} value={index}>
+                    {option}
+                  </option>
+                ))}
               </select>
-            ) : (
-              <p>{difficultyString}</p>
-            )}
-          </div>
-          <div className="buttons-section">
-            {!isEditing && (
-              <button
-                className="edit-btn"
-                onClick={() => {
-                  setIsEditing(true);
-                }}
+              <select
+                className="repeat-type-select"
+                value={repeatType}
+                onChange={(e) => setRepeatType(e.target.value)}
               >
+                <option value="none">Do not repeat</option>
+                <option value="weekly">Weekly</option>
+                <option value="monthly">Monthly</option>
+              </select>
+              {repeatOptions()}
+              {repeatType === 'none' ? (
+                <button
+                  className="save-btn"
+                  onClick={() => {
+                    setApproved(true);
+                    handleSave();
+                  }}
+                >
+                  Save changes & approve
+                </button>
+              ) : (
+                <button
+                  className="save-btn"
+                  onClick={() => {
+                    setApprovedSeries(true);
+                    handleSave();
+                  }}
+                >
+                  Save changes & approve series
+                </button>
+              )}
+            </>
+          ) : (
+            <>
+              <h3>{title}</h3>
+              <p>{description}</p>
+              <p>{difficultyString}</p>
+              <button className="edit-btn" onClick={() => setIsEditing(true)}>
                 <FiEdit /> Edit
               </button>
-            )}
-
-            {!isEditing && (
-              <div>
+              {currentResponsibility.single && (
                 <button
                   className="complete-btn"
                   onClick={() => {
                     setApproved(true);
-
-                    setShowApproveModal(false);
+                    // setShowApproveModal(false);
                   }}
                 >
-                  Mark as Approved
+                  Mark as approved
                 </button>
-              </div>
-            )}
-
-            {isEditing && (
-              <>
-                <button className="save-btn" onClick={() => handleSave()}>
-                  Save Changes
-                </button>
-              </>
-            )}
-          </div>
+              )}
+              {!currentResponsibility.single && (
+                <>
+                  {' '}
+                  <button
+                    className="complete-btn"
+                    onClick={() => {
+                      setApproved(true);
+                      // setShowApproveModal(false);
+                    }}
+                  >
+                    Mark as approved
+                  </button>
+                  <button
+                    className="complete-btn"
+                    onClick={() => {
+                      console.log('HI');
+                      setJustApprove(true);
+                      setApprovedSeries(true);
+                      // setShowApproveModal(false);
+                    }}
+                  >
+                    Approve Series
+                  </button>
+                </>
+              )}
+              <button
+                className="delete-btn"
+                onClick={() => handleDelete(false)}
+              >
+                Delete this
+              </button>
+              <button className="delete-btn" onClick={() => handleDelete(true)}>
+                Delete series
+              </button>
+            </>
+          )}
         </div>
       </div>
     </div>

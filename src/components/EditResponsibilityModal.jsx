@@ -1,14 +1,17 @@
 import React, { useContext, useEffect, useState } from 'react';
 import { FiEdit } from 'react-icons/fi';
 import '../styles/responsibility-modal.css';
-import { completeResponsibility, fetchUser } from '../api-calls/api';
+import {
+  completeResponsibility,
+  deleteResponsibilitySeries,
+  editResponsibilitySeries,
+} from '../api-calls/api';
 import { MainContext } from '../context/context';
 
 function EditResponsibilityModal({
   showEditModal,
   setShowEditModal,
   currentResponsibility,
-  setCurrentResponsibility,
   editResponsibility,
   handleDeleteResponsibility,
   parentalControl,
@@ -21,96 +24,43 @@ function EditResponsibilityModal({
     currentResponsibility.description
   );
   const [isEditing, setIsEditing] = useState(false);
-  const [difficulty, setDifficulty] = useState(0);
+  const [difficulty, setDifficulty] = useState(
+    currentResponsibility.difficulty || 0
+  );
+  const [repeatType, setRepeatType] = useState('none');
+  const [repeatDetails, setRepeatDetails] = useState([]);
   const [difficultyString, setDifficultyString] = useState('');
-  const [completed, setCompleted] = useState(false);
-
-  const completeIt = async (complete) => {
-    try {
-      let editedResponsibility = await completeResponsibility({
-        id: currentResponsibility.id,
-        main,
-        completed: complete,
-      });
-
-      fetchUser({ accessToken: main.state.accessToken, main });
-      setCurrentResponsibility(editedResponsibility.data);
-      setCompleted(editedResponsibility.data.completed);
-      setIsEditing(false);
-      setShowEditModal(false);
-    } catch (e) {
-      console.error(e);
-    }
-  };
 
   useEffect(() => {
-    console.log('SDSDSDDS', currentResponsibility);
+    console.log(currentResponsibility);
+  }, [currentResponsibility]);
+
+  useEffect(() => {
     if (showEditModal) {
-      setIsEditing(false);
       setDifficulty(currentResponsibility.difficulty);
       setTitle(currentResponsibility.title);
       setDescription(currentResponsibility.description);
-      setCompleted(currentResponsibility.completed);
-      switch (currentResponsibility.difficulty) {
-        case 0:
-          setDifficultyString('Too Easy');
-          break;
-        case 1:
-          setDifficultyString('Very Easy');
-          break;
-        case 2:
-          setDifficultyString('Easy');
-          break;
-        case 3:
-          setDifficultyString('Medium');
-          break;
-        case 4:
-          setDifficultyString('Hard');
-          break;
-        case 5:
-          setDifficultyString('Very Hard');
-          break;
-        case 6:
-          setDifficultyString('Extremely Hard');
-          break;
-      }
+      updateDifficultyString(currentResponsibility.difficulty);
+      setRepeatType('none');
+      setRepeatDetails([]);
     }
-    console.log(
-      'STUFFFFF',
-      currentChildId,
-      main.state.profile.id,
-      parentalControl
-    );
   }, [showEditModal, currentResponsibility]);
 
-  const setTheDifficulty = () => {
-    switch (difficulty) {
-      case 0:
-        setDifficultyString('Too Easy');
-        break;
-      case 1:
-        setDifficultyString('Very Easy');
-        break;
-      case 2:
-        setDifficultyString('Easy');
-        break;
-      case 3:
-        setDifficultyString('Medium');
-        break;
-      case 4:
-        setDifficultyString('Hard');
-        break;
-      case 5:
-        setDifficultyString('Very Hard');
-        break;
-      case 6:
-        setDifficultyString('Extremely Hard');
-        break;
-    }
+  const updateDifficultyString = (difficultyLevel) => {
+    const difficulties = [
+      'Too Easy',
+      'Very Easy',
+      'Easy',
+      'Medium',
+      'Hard',
+      'Very Hard',
+      'Extremely Hard',
+    ];
+    setDifficultyString(difficulties[difficultyLevel] || '');
   };
 
   useEffect(() => {
-    console.log('THIS IS THE DIFFICULTY', difficulty);
+    updateDifficultyString(difficulty);
   }, [difficulty]);
 
   const handleSubmit = () => {
@@ -119,15 +69,107 @@ function EditResponsibilityModal({
       title,
       description,
       difficulty,
-      completed,
+      completed: currentResponsibility.completed,
     });
-    setTheDifficulty();
     setIsEditing(false);
   };
 
-  const handleDelete = () => {
-    handleDeleteResponsibility(currentResponsibility.id);
+  const handleDelete = async (deleteSeries = false) => {
+    if (deleteSeries) {
+      console.log(currentResponsibility);
+      await deleteResponsibilitySeries({
+        seriesId: currentResponsibility.series,
+        main,
+      });
+      setIsEditing(false);
+      setShowEditModal(false);
+    } else {
+      handleDeleteResponsibility(
+        currentResponsibility.id,
+        currentResponsibility.profile
+      );
+    }
+    setIsEditing(false);
     setShowEditModal(false);
+  };
+
+  const handleEditTheSeries = async () => {
+    if (repeatType === 'none') {
+      alert('You have to select days for this responsibility to repeat');
+    } else {
+      await editResponsibilitySeries({
+        seriesId: currentResponsibility.series,
+        main,
+        title,
+        startDate: currentResponsibility.startDate,
+        repeatInfo: {
+          type: repeatType,
+          details: repeatDetails,
+        },
+        description,
+        difficulty,
+        verified: currentResponsibility.verified,
+        profileId: currentResponsibility.profile,
+      });
+    }
+    setIsEditing(false);
+  };
+
+  const handleRepeatDetailsChange = (e) => {
+    const { value, checked } = e.target;
+    if (checked) {
+      setRepeatDetails([...repeatDetails, value]);
+    } else {
+      setRepeatDetails(repeatDetails.filter((day) => day !== value));
+    }
+  };
+
+  const repeatOptions = () => {
+    if (repeatType === 'weekly') {
+      return [
+        'Monday',
+        'Tuesday',
+        'Wednesday',
+        'Thursday',
+        'Friday',
+        'Saturday',
+        'Sunday',
+      ].map((day) => (
+        <label key={day} className="day-checkbox">
+          <input
+            type="checkbox"
+            value={day}
+            checked={repeatDetails.includes(day)}
+            onChange={handleRepeatDetailsChange}
+          />
+          {day}
+        </label>
+      ));
+    } else if (repeatType === 'monthly') {
+      return (
+        <div
+          style={{
+            display: 'flex',
+            flexWrap: 'wrap',
+            justifyContent: 'center',
+          }}
+        >
+          {' '}
+          {Array.from({ length: 31 }, (_, i) => i + 1).map((day) => (
+            <label key={day} className="day-checkbox">
+              <input
+                type="checkbox"
+                value={day.toString()}
+                checked={repeatDetails.includes(day.toString())}
+                onChange={handleRepeatDetailsChange}
+              />
+              {day}
+            </label>
+          ))}
+        </div>
+      );
+    }
+    return null;
   };
 
   if (!showEditModal) return null;
@@ -137,17 +179,14 @@ function EditResponsibilityModal({
     : 'modal-content';
 
   return (
-    <div className="modal-overlay" onClick={() => setShowEditModal(false)}>
-      <div className={modalClass} onClick={(e) => e.stopPropagation()}>
-        {currentResponsibility.verified ? (
-          <p style={{ color: 'rgb(49, 154, 199)', textAlign: 'center' }}>
-            Approved
-          </p>
-        ) : (
-          <p style={{ color: 'rgb(49, 154, 199)', textAlign: 'center' }}>
-            Waiting for parent approval
-          </p>
-        )}
+    <div
+      className="modal-overlay"
+      onMouseDown={() => {
+        setIsEditing(false);
+        setShowEditModal(false);
+      }}
+    >
+      <div className={modalClass} onMouseDown={(e) => e.stopPropagation()}>
         <button className="close-btn" onClick={() => setShowEditModal(false)}>
           X
         </button>
@@ -172,20 +211,92 @@ function EditResponsibilityModal({
                 value={difficulty}
                 onChange={(e) => setDifficulty(Number(e.target.value))}
               >
-                <option value={0}>Too Easy</option>
-                <option value={1}>Very Easy</option>
-                <option value={2}>Easy</option>
-                <option value={3}>Medium</option>
-                <option value={4}>Hard</option>
-                <option value={5}>Very Hard</option>
-                <option value={6}>Extremely Hard</option>
+                {[
+                  'Too Easy',
+                  'Very Easy',
+                  'Easy',
+                  'Medium',
+                  'Hard',
+                  'Very Hard',
+                  'Extremely Hard',
+                ].map((option, index) => (
+                  <option key={index} value={index}>
+                    {option}
+                  </option>
+                ))}
               </select>
-              <button className="save-btn" onClick={() => handleSubmit()}>
-                Save Changes
-              </button>
-              <button className="delete-btn" onClick={() => handleDelete()}>
-                Delete
-              </button>
+              <select
+                className="repeat-type-select"
+                value={repeatType}
+                onChange={(e) => setRepeatType(e.target.value)}
+              >
+                <option value="none">Do not repeat</option>
+                <option value="weekly">Weekly</option>
+                <option value="monthly">Monthly</option>
+              </select>
+              {repeatOptions()}
+
+              {repeatType !== 'none' && !currentResponsibility.single ? (
+                <div>
+                  <button
+                    className="delete-btn"
+                    onClick={() => handleDelete(false)}
+                  >
+                    Delete this
+                  </button>
+                  <button
+                    className="delete-btn"
+                    onClick={() => handleDelete(true)}
+                  >
+                    Delete series
+                  </button>
+                  <button className="edit-btn" onClick={handleEditTheSeries}>
+                    Apply changes to series
+                  </button>
+                </div>
+              ) : repeatType !== 'none' && currentResponsibility.single ? (
+                <div>
+                  <button
+                    className="delete-btn"
+                    onClick={() => handleDelete(false)}
+                  >
+                    Delete
+                  </button>
+                  <button className="edit-btn" onClick={handleEditTheSeries}>
+                    Save changes
+                  </button>
+                </div>
+              ) : repeatType === 'none' && !currentResponsibility.single ? (
+                <div>
+                  <button
+                    className="delete-btn"
+                    onClick={() => handleDelete(false)}
+                  >
+                    Delete this
+                  </button>
+                  <button
+                    className="delete-btn"
+                    onClick={() => handleDelete(true)}
+                  >
+                    Delete series
+                  </button>
+                  <button className="edit-btn" onClick={handleSubmit}>
+                    Save changes
+                  </button>
+                </div>
+              ) : (
+                <div>
+                  <button className="save-btn" onClick={handleSubmit}>
+                    Save changes
+                  </button>
+                  <button
+                    className="delete-btn"
+                    onClick={() => handleDelete(false)}
+                  >
+                    delete
+                  </button>
+                </div>
+              )}
             </>
           ) : (
             <>
@@ -193,27 +304,25 @@ function EditResponsibilityModal({
               <p>{description}</p>
               <p>{difficultyString}</p>
 
-              {!parentalControl &&
-              currentChildId !== main.state.profile.id ? null : (
-                <>
-                  {!parentalControl && (
-                    <button
-                      className="complete-btn"
-                      onClick={() => completeIt(true)}
-                    >
-                      Mark as Completed
-                    </button>
-                  )}
-                  {(!currentResponsibility.verified ||
-                    main.state.profile.parent) && (
-                    <button
-                      className="edit-btn"
-                      onClick={() => setIsEditing(true)}
-                    >
-                      <FiEdit /> Edit
-                    </button>
-                  )}
-                </>
+              {!parentalControl && currentChildId === main.state.profile.id && (
+                <button
+                  className="complete-btn"
+                  onClick={() =>
+                    completeResponsibility({
+                      id: currentResponsibility.id,
+                      main,
+                      completed: true,
+                    })
+                  }
+                >
+                  Mark as Completed
+                </button>
+              )}
+              {(!currentResponsibility.verified ||
+                main.state.profile.parent) && (
+                <button className="edit-btn" onClick={() => setIsEditing(true)}>
+                  <FiEdit /> Edit
+                </button>
               )}
             </>
           )}

@@ -73,6 +73,7 @@ export const createUser = async ({
         parent,
       },
     });
+
     console.log('CREATE USER: ', response);
   } catch (error) {
     console.log('Error with createUser api call: ', error);
@@ -87,6 +88,7 @@ export const createResponsibility = async ({
   profileId,
   verified,
   date,
+  repeat,
 }) => {
   console.log(main);
   try {
@@ -103,12 +105,80 @@ export const createResponsibility = async ({
         difficulty,
         description,
         profile_id: profileId,
+        repeat,
       },
     });
+    fetchUser({ accessToken: main.state.accessToken, main });
     console.log('CREATE RESPONSIBILITY: ', response);
     return response.data;
   } catch (error) {
     console.log('Error with createResponsibility api call: ', error);
+  }
+};
+
+export const editResponsibilitySeries = async ({
+  seriesId,
+  main,
+  title,
+  startDate,
+  repeatInfo,
+  description,
+  difficulty,
+  verified,
+  profileId,
+}) => {
+  try {
+    console.log('PROFILE ID AT API CALL', profileId);
+    const response = await axios({
+      method: 'put',
+      url: `${baseUrl}/edit-responsibility-series/`,
+      headers: {
+        Authorization: `Bearer ${main.state.accessToken}`,
+      },
+      data: {
+        series_id: seriesId,
+        title,
+        start_date: startDate,
+        repeat: repeatInfo,
+        description,
+        difficulty,
+        profile_id: profileId,
+        verified,
+      },
+    });
+    fetchUser({ accessToken: main.state.accessToken, main });
+    console.log('EDIT RESPONSIBILITY SERIES: ', response);
+
+    return response.data;
+  } catch (error) {
+    console.log('Error with editResponsibilitySeries api call: ', error);
+  }
+};
+
+export const deleteResponsibilitySeries = async ({ seriesId, main }) => {
+  try {
+    const response = await axios({
+      method: 'delete',
+      url: `${baseUrl}/delete-responsibility-series/`,
+      headers: {
+        Authorization: `Bearer ${main.state.accessToken}`,
+      },
+      data: {
+        series_id: seriesId,
+      },
+    });
+
+    console.log('DELETE RESPONSIBILITY SERIES: ', response);
+    fetchUser({ accessToken: main.state.accessToken, main });
+
+    return response.data;
+  } catch (error) {
+    console.log('Error with deleteResponsibilitySeries api call: ', error);
+
+    main.dispatch({
+      type: 'ERROR',
+      message: 'Failed to delete responsibility series',
+    });
   }
 };
 
@@ -121,6 +191,7 @@ export const fetchResponsibilities = async ({ main }) => {
         Authorization: `Bearer ${main.state.accessToken}`,
       },
     });
+    await fetchUser({ accessToken: main.state.accessToken, main });
     console.log('FETCH RESPONSIBILITIES: ', response);
     return response;
   } catch (error) {
@@ -144,6 +215,7 @@ export const fetchChildResponsibilities = async ({ main, childId }) => {
       type: 'SET_CHILD_IM_SEEINGS_RESPONSIBILITIES',
       childImSeeingsResponsibilities: response.data,
     });
+    await fetchUser({ accessToken: main.state.accessToken, main });
     console.log('FETCHED CHILD RESPONSIBILITIES: ', response);
     return response;
   } catch (error) {
@@ -151,7 +223,7 @@ export const fetchChildResponsibilities = async ({ main, childId }) => {
   }
 };
 
-export const deleteResponsibilities = async ({ main, id, profileId }) => {
+export const deleteResponsibility = async ({ main, id, profileId }) => {
   try {
     const response = await axios({
       method: 'delete',
@@ -165,6 +237,7 @@ export const deleteResponsibilities = async ({ main, id, profileId }) => {
       },
     });
     console.log('DELETE RESPONSIBILITIES: ', response);
+    fetchUser({ accessToken: main.state.accessToken, main });
     return response;
   } catch (error) {
     console.log('Error with deleteResponsibility api call: ', error);
@@ -206,6 +279,8 @@ export const updateResponsibility = async ({
 
 export const approveResponsibility = async ({
   main,
+  title,
+  description,
   difficulty,
   approved,
   id,
@@ -218,6 +293,8 @@ export const approveResponsibility = async ({
         Authorization: `Bearer ${main.state.accessToken}`,
       },
       data: {
+        title,
+        description,
         id,
         difficulty,
         verified: approved,
@@ -228,6 +305,47 @@ export const approveResponsibility = async ({
     return response;
   } catch (error) {
     console.log('Error with approveResponsibility api call: ', error);
+  }
+};
+
+export const approveWholeSeries = async ({
+  main,
+  title,
+  description,
+  profile,
+  difficulty,
+  approved,
+  repeatInfo,
+  startDate,
+  id,
+  seriesId,
+  justApprove = false,
+}) => {
+  try {
+    const response = await axios({
+      method: 'put',
+      url: `${baseUrl}/approve-whole-series/`,
+      headers: {
+        Authorization: `Bearer ${main.state.accessToken}`,
+      },
+      data: {
+        title,
+        profile_id: profile,
+        description,
+        series_id: seriesId,
+        id,
+        repeat: repeatInfo,
+        start_date: startDate,
+        difficulty,
+        verified: approved,
+        just_approve: justApprove,
+      },
+    });
+    fetchUser({ accessToken: main.state.accessToken, main });
+    console.log('APPROVE WHOLE SERIES: ', response);
+    return response;
+  } catch (error) {
+    console.log('Error with approveWholeSeries api call: ', error);
   }
 };
 
@@ -270,6 +388,7 @@ export const establishAllowancePeriod = async ({
         allowance_day: allowanceDay,
       },
     });
+    fetchUser({ accessToken: main.state.accessToken, main });
     console.log('ALLOWANCE PERIOD: ', response);
     return response.data;
   } catch (error) {
@@ -294,6 +413,7 @@ export const createStoreItem = async ({ main, name, price }) => {
       type: 'SET_FAMILY_STORE_ITEMS',
       familyStoreItems: response.data,
     });
+    await fetchUser({ accessToken: main.state.accessToken, main });
     console.log('CREATE STORE ITEM: ', response);
     return response.data;
   } catch (error) {
@@ -319,6 +439,7 @@ export const updateStoreItem = async ({ main, id, name, price }) => {
       type: 'SET_FAMILY_STORE_ITEMS',
       familyStoreItems: response.data,
     });
+    await fetchUser({ accessToken: main.state.accessToken, main });
     console.log('UPDATE STORE ITEMS: ', response);
     return response.data;
   } catch (error) {
@@ -339,6 +460,7 @@ export const getFamilyStoreItems = async ({ main }) => {
       type: 'SET_FAMILY_STORE_ITEMS',
       familyStoreItems: response.data,
     });
+    await fetchUser({ accessToken: main.state.accessToken, main });
     console.log('GET STORE ITEMS: ', response);
     return response.data;
   } catch (error) {
@@ -359,6 +481,7 @@ export const deleteFamilyStoreItems = async ({ main, itemId }) => {
       },
     });
     console.log('DELETE STORE ITEMS: ', response);
+    await fetchUser({ accessToken: main.state.accessToken, main });
     main.dispatch({
       type: 'SET_FAMILY_STORE_ITEMS',
       familyStoreItems: response.data,
@@ -385,7 +508,9 @@ export const handleApproveStoreItemRequest = async ({ main, itemId }) => {
       type: 'SET_FAMILY_STORE_ITEMS',
       familyStoreItems: response.data,
     });
+    await fetchUser({ accessToken: main.state.accessToken, main });
     console.log('APPROVE STORE ITEM: ', response);
+
     return response.data;
   } catch (error) {
     console.error('Error with handleApproveStoreItemRequest api call: ', error);
@@ -404,6 +529,7 @@ export const purchaseStoreItem = async ({ main, itemId }) => {
         id: itemId,
       },
     });
+    await fetchUser({ accessToken: main.state.accessToken, main });
     console.log('PURCHASE STORE ITEM: ', response);
     main.dispatch({
       type: 'SET_PROFILE',
@@ -424,6 +550,7 @@ export const getunnaprovedPurchases = async ({ main }) => {
         Authorization: `Bearer ${main.state.accessToken}`,
       },
     });
+    await fetchUser({ accessToken: main.state.accessToken, main });
     console.log('GET PURCHASES: ', response);
     return response.data;
   } catch (error) {
@@ -448,6 +575,7 @@ export const updatePurchaseApproval = async ({
         approved: newStatus,
       },
     });
+    await fetchUser({ accessToken: main.state.accessToken, main });
     console.log('UPDATE PURCHASE APPROVAL: ', response);
     return response.data;
   } catch (error) {
@@ -464,6 +592,7 @@ export const listAccountTypes = async ({ main }) => {
         Authorization: `Bearer ${main.state.accessToken}`,
       },
     });
+    await fetchUser({ accessToken: main.state.accessToken, main });
     console.log('LIST ACCOUNT TYPES: ', response);
     return response.data;
   } catch (error) {
@@ -477,8 +606,11 @@ export const createFinancialAccount = async ({
   interestRate,
   interestPeriodType,
   interestDay,
+  potentialLoss,
+  potentialGain,
 }) => {
   try {
+    console.log('POTENTIALLLLL', interestDay);
     const response = await axios({
       method: 'post',
       url: `${baseUrl}/create-account/`,
@@ -490,8 +622,11 @@ export const createFinancialAccount = async ({
         interest_rate: interestRate,
         interest_period_type: interestPeriodType,
         interest_day: interestDay,
+        potential_loss: potentialLoss,
+        potential_gain: potentialGain,
       },
     });
+    await fetchUser({ accessToken: main.state.accessToken, main });
     console.log('CREATE FINANCIAL ACCOUNT: ', response);
     return response.data;
   } catch (error) {
@@ -523,6 +658,7 @@ export const updateFinancialAccount = async ({
       },
     });
     console.log('UPDATE FINANCIAL ACCOUNT: ', response);
+    await fetchUser({ accessToken: main.state.accessToken, main });
     return response.data;
   } catch (error) {
     console.error('Error with updateFinancialAccount api call: ', error);
@@ -539,6 +675,7 @@ export const viewAvailableAccounts = async ({ main }) => {
       },
     });
     console.log('VIEW AVAILABLE ACCOUNTS: ', response);
+    await fetchUser({ accessToken: main.state.accessToken, main });
     return response.data;
   } catch (error) {
     console.error('Error with viewAvailableAccounts api call: ', error);
@@ -558,6 +695,7 @@ export const deleteFinancialAccount = async ({ main, accountId }) => {
       },
     });
     console.log('DELETE FINANCIAL ACCOUNT: ', response);
+    await fetchUser({ accessToken: main.state.accessToken, main });
     return response.data;
   } catch (error) {
     console.error('Error with deleteFinancialAccount api call: ', error);
@@ -578,6 +716,7 @@ export const investMoney = async ({ main, accountId, amount }) => {
       },
     });
     console.log('INVEST MONEY: ', response);
+    await fetchUser({ accessToken: main.state.accessToken, main });
     return response.data;
   } catch (error) {
     console.error('Error with investMoney api call: ', error);
@@ -617,5 +756,26 @@ export const cashOut = async ({ main, investmentId }) => {
     return response.data;
   } catch (error) {
     console.error('Error with cashOut api call: ', error);
+  }
+};
+
+export const updateDifficultyPointValue = async ({ main, price }) => {
+  try {
+    console.log('PRICE', price);
+    const response = await axios({
+      method: 'put',
+      url: `${baseUrl}/update-difficulty-point-value/`,
+      headers: {
+        Authorization: `Bearer ${main.state.accessToken}`,
+      },
+      data: {
+        price,
+      },
+    });
+    await fetchUser({ accessToken: main.state.accessToken, main });
+    console.log('updateDifficultyPointValue: ', response);
+    return response.data;
+  } catch (error) {
+    console.error('Error with updateDifficultyPointValue api call: ', error);
   }
 };

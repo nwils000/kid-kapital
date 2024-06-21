@@ -49,8 +49,8 @@ function StoreItemModal({
   if (!showItemModal) return null;
 
   return (
-    <div className="modal-overlay" onClick={() => setShowItemModal(false)}>
-      <div className="modal-content" onClick={(e) => e.stopPropagation()}>
+    <div className="modal-overlay" onMouseDown={() => setShowItemModal(false)}>
+      <div className="modal-content" onMouseDown={(e) => e.stopPropagation()}>
         <div className="modal-header">
           <h5>{currentItem ? 'Edit Item' : 'Add New Item'}</h5>
         </div>

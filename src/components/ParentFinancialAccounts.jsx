@@ -23,8 +23,10 @@ export default function ParentFinancialAccounts() {
   const [selectedAccount, setSelectedAccount] = useState(null);
   const [accountType, setAccountType] = useState('Savings');
   const [interestRate, setInterestRate] = useState(0);
-  const [interestPeriodType, setInterestPeriodType] = useState('Weekly');
-  const [interestDay, setInterestDay] = useState(0);
+  const [interestPeriodType, setInterestPeriodType] = useState('Monthly');
+  const [interestDay, setInterestDay] = useState(1);
+  const [potentialGain, setPotentialGain] = useState(6);
+  const [potentialLoss, setPotentialLoss] = useState(3);
 
   useEffect(() => {
     fetchAccounts();
@@ -35,6 +37,10 @@ export default function ParentFinancialAccounts() {
     setAccounts(response);
   };
 
+  useEffect(() => {
+    setInterestDay(1);
+  }, [interestPeriodType]);
+
   const handleCreateAccount = async () => {
     await createFinancialAccount({
       main,
@@ -42,6 +48,8 @@ export default function ParentFinancialAccounts() {
       interestRate,
       interestPeriodType,
       interestDay,
+      potentialGain,
+      potentialLoss,
     });
     fetchAccounts();
     resetInputs();
@@ -56,6 +64,8 @@ export default function ParentFinancialAccounts() {
       interestRate,
       interestPeriodType,
       interestDay,
+      potentialGain,
+      potentialLoss,
     });
     fetchAccounts();
     setEditMode(false);
@@ -73,6 +83,8 @@ export default function ParentFinancialAccounts() {
     setInterestRate(account.interest_rate);
     setInterestPeriodType(account.interest_period_type);
     setInterestDay(account.interest_day);
+    setPotentialGain(account.potential_gain || 0); // Set potential gain if present
+    setPotentialLoss(account.potential_loss || 0); // Set potential loss if present
     setEditMode(true);
     setShowCreateForm(false);
   };
@@ -82,6 +94,8 @@ export default function ParentFinancialAccounts() {
     setInterestRate(0);
     setInterestPeriodType('Weekly');
     setInterestDay(0);
+    setPotentialGain(0);
+    setPotentialLoss(0);
     setSelectedAccount(null);
   };
 
@@ -89,6 +103,16 @@ export default function ParentFinancialAccounts() {
     setShowCreateForm(!showCreateForm);
     setEditMode(false);
   };
+
+  const weekDays = [
+    'Sunday',
+    'Monday',
+    'Tuesday',
+    'Wednesday',
+    'Thursday',
+    'Friday',
+    'Saturday',
+  ];
 
   return (
     <div className="financial-accounts">
@@ -102,8 +126,8 @@ export default function ParentFinancialAccounts() {
         <div>
           <h2 className="title">Manage Financial Accounts</h2>
           <p className="description">
-            Manage and configure financial accounts including savings,
-            investments, and loans.
+            Manage and configure financial accounts including savings and
+            investments.
           </p>
         </div>
       </div>
@@ -126,7 +150,7 @@ export default function ParentFinancialAccounts() {
               </div>
             </div>
 
-            <label>Account Type (e.g., Savings, Investment, Loan)</label>
+            <label>Account Type (e.g., Savings, Investment)</label>
             <select
               className="input-text"
               value={accountType}
@@ -134,37 +158,132 @@ export default function ParentFinancialAccounts() {
             >
               <option value="Savings">Savings</option>
               <option value="Investment">Investment</option>
-              <option value="Loan">Loan</option>
             </select>
-            <label>Interest Rate (%)</label>
-            <input
-              className="input-number"
-              type="number"
-              placeholder="Interest Rate"
-              value={interestRate}
-              onChange={(e) => setInterestRate(e.target.value)}
-            />
-            <label>Interest Period</label>
-            <select
-              className="select-input"
-              value={interestPeriodType}
-              onChange={(e) => setInterestPeriodType(e.target.value)}
-            >
-              <option value="Weekly">Weekly</option>
-              <option value="Monthly">Monthly</option>
-              <option value="Yearly">Yearly</option>
-            </select>
-            <label>Interest Day</label>
-            <input
-              className="input-number"
-              type="number"
-              min="1"
-              max={interestPeriodType === 'Monthly' ? 31 : 365}
-              placeholder="Day of the month/year"
-              value={interestDay}
-              onChange={(e) => setInterestDay(e.target.value)}
-              required
-            />
+            {accountType === 'Savings' && (
+              <>
+                <label>Interest Rate (%)</label>
+                <input
+                  min={0}
+                  className="input-number"
+                  type="number"
+                  placeholder="Interest Rate"
+                  value={interestRate}
+                  onChange={(e) => setInterestRate(e.target.value)}
+                />
+              </>
+            )}
+            {accountType === 'Savings' && (
+              <>
+                <label>Interest Period</label>
+                <select
+                  className="select-input"
+                  value={`${interestPeriodType}`}
+                  onChange={(e) => setInterestPeriodType(e.target.value)}
+                >
+                  <option value="Weekly">Weekly</option>
+                  <option value="Monthly">Monthly</option>
+                  <option value="Yearly">Yearly</option>
+                </select>
+                <label>Interest Day</label>
+                {interestPeriodType === 'Weekly' ? (
+                  <select
+                    className="input-number"
+                    value={weekDays[interestDay]}
+                    onChange={(e) => setInterestDay(e.target.value)}
+                  >
+                    {weekDays.map((weekDay) => (
+                      <option key={weekDay} value={weekDays.indexOf(weekDay)}>
+                        {weekDay}
+                      </option>
+                    ))}
+                  </select>
+                ) : (
+                  <input
+                    className="input-number"
+                    type="number"
+                    min="1"
+                    max={
+                      interestPeriodType === 'Monthly'
+                        ? 31
+                        : interestPeriodType === 'Yearly'
+                        ? 365
+                        : 7
+                    }
+                    placeholder="Day of the month/year"
+                    value={interestDay}
+                    onChange={(e) => setInterestDay(e.target.value)}
+                    required
+                  />
+                )}
+              </>
+            )}
+            {accountType === 'Investment' && (
+              <>
+                <label>Cash-out Period</label>
+                <select
+                  className="select-input"
+                  value={`${interestPeriodType}`}
+                  onChange={(e) => setInterestPeriodType(e.target.value)}
+                >
+                  <option value="Weekly">Weekly</option>
+                  <option value="Monthly">Monthly</option>
+                  <option value="Yearly">Yearly</option>
+                </select>
+                <label>Cash-out Day</label>
+                {interestPeriodType === 'Weekly' ? (
+                  <select
+                    className="input-number"
+                    value={weekDays[interestDay]}
+                    onChange={(e) => setInterestDay(e.target.value)}
+                  >
+                    {weekDays.map((weekDay) => (
+                      <option key={weekDay} value={weekDays.indexOf(weekDay)}>
+                        {weekDay}
+                      </option>
+                    ))}
+                  </select>
+                ) : (
+                  <input
+                    className="input-number"
+                    type="number"
+                    min="1"
+                    max={
+                      interestPeriodType === 'Monthly'
+                        ? 31
+                        : interestPeriodType === 'Yearly'
+                        ? 365
+                        : 7
+                    }
+                    placeholder="Day of the month/year"
+                    value={interestDay}
+                    onChange={(e) => setInterestDay(e.target.value)}
+                    required
+                  />
+                )}
+              </>
+            )}
+            {accountType === 'Investment' && (
+              <>
+                <label>Potential Gain (%)</label>
+                <input
+                  className="input-number"
+                  type="number"
+                  placeholder="Potential Gain"
+                  value={potentialGain}
+                  min={0}
+                  onChange={(e) => setPotentialGain(parseFloat(e.target.value))}
+                />
+                <label>Potential Loss (%)</label>
+                <input
+                  className="input-number"
+                  min={0}
+                  type="number"
+                  placeholder="Potential Loss"
+                  value={potentialLoss}
+                  onChange={(e) => setPotentialLoss(parseFloat(e.target.value))}
+                />
+              </>
+            )}
             <button className="button-create" onClick={handleCreateAccount}>
               Create Account
             </button>
@@ -181,7 +300,7 @@ export default function ParentFinancialAccounts() {
                 X
               </div>
             </div>
-            <label>Account Type (e.g., Savings, Investment, Loan)</label>
+            <label>Account Type (e.g., Savings, Investment)</label>
             <select
               className="input-text"
               value={accountType}
@@ -189,16 +308,20 @@ export default function ParentFinancialAccounts() {
             >
               <option value="Savings">Savings</option>
               <option value="Investment">Investment</option>
-              <option value="Loan">Loan</option>
             </select>
-            <label>Interest Rate (%)</label>
-            <input
-              className="input-number"
-              type="number"
-              placeholder="Interest Rate"
-              value={interestRate}
-              onChange={(e) => setInterestRate(e.target.value)}
-            />
+            {accountType === 'Savings' && (
+              <>
+                <label>Interest Rate (%)</label>
+                <input
+                  min={0}
+                  className="input-number"
+                  type="number"
+                  placeholder="Interest Rate"
+                  value={interestRate}
+                  onChange={(e) => setInterestRate(e.target.value)}
+                />
+              </>
+            )}
             <label>Interest Period</label>
             <select
               className="select-input"
@@ -220,6 +343,28 @@ export default function ParentFinancialAccounts() {
               onChange={(e) => setInterestDay(e.target.value)}
               required
             />
+            {accountType === 'Investment' && (
+              <>
+                <label>Potential Gain (%)</label>
+                <input
+                  min={0}
+                  className="input-number"
+                  type="number"
+                  placeholder="Potential Gain"
+                  value={potentialGain}
+                  onChange={(e) => setPotentialGain(parseFloat(e.target.value))}
+                />
+                <label>Potential Loss (%)</label>
+                <input
+                  min={0}
+                  className="input-number"
+                  type="number"
+                  placeholder="Potential Loss"
+                  value={potentialLoss}
+                  onChange={(e) => setPotentialLoss(parseFloat(e.target.value))}
+                />
+              </>
+            )}
             <div>Editing Account ID: {selectedAccount.id}</div>
             <button className="button-update" onClick={handleUpdateAccount}>
               Update Account
@@ -253,7 +398,6 @@ export default function ParentFinancialAccounts() {
                       style={{ fontSize: '1.2rem', color: '#3fa0ca' }}
                       onClick={() => editAccount(account)}
                     />
-
                     <FaTrash
                       className="hover"
                       style={{ fontSize: '1.2rem', color: '#3fa0ca' }}

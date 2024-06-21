@@ -1,12 +1,11 @@
 .signup {
-  min-height: calc(100vh - 6rem);
+  min-height: calc(100vh - 14rem);
   display: flex;
   flex-direction: column;
   justify-content: center;
   align-items: start;
   padding: 20px;
   position: relative;
-  bottom: 3rem;
 }
 
 .signup h1 span {

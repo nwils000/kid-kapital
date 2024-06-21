@@ -3,7 +3,8 @@ import { MainContext } from '../context/context';
 import '../styles/my-responsibilities.css';
 import {
   createResponsibility,
-  deleteResponsibilities,
+  deleteResponsibility,
+  editResponsibilitySeries,
   fetchChildResponsibilities,
   updateResponsibility,
 } from '../api-calls/api';
@@ -31,6 +32,7 @@ function ChildResponsibilities() {
         console.log('AFASFASFSAFSA', fetchedResponsibilities);
 
         fetchedResponsibilities.forEach((element) => {
+          console.log('THE ELEMENT', element);
           if (!allResponsibilities[element.date]) {
             allResponsibilities[element.date] = [];
           }
@@ -38,9 +40,12 @@ function ChildResponsibilities() {
           allResponsibilities[element.date].push({
             description: element.description,
             title: element.title,
+            profile: element.profile,
             id: element.id,
+            single: element.single,
             difficulty: element.difficulty,
             verified: element.verified,
+            series: element.series,
             completed: element.completed,
             date: element.date,
           });
@@ -57,7 +62,12 @@ function ChildResponsibilities() {
   }, [main.state.childImSeeingsResponsibilities]);
 
   useEffect(() => {
+    console.log('IN CHILDRESPONSIBILITIES', currentResponsibility);
+  }, [currentResponsibility]);
+
+  useEffect(() => {
     fetchChildResponsibilities({ main, childId: main.state.childImSeeingsId });
+    console.log();
   }, []);
 
   function getSunday(d) {
@@ -127,6 +137,28 @@ function ChildResponsibilities() {
     }
   }
 
+  async function handleEditSeries({
+    seriesId,
+    title,
+    startDate,
+    repeatInfo,
+    description,
+    difficulty,
+    verified,
+  }) {
+    await editResponsibilitySeries({
+      main,
+      profileId: main.state.childImSeeingsId,
+      seriesId,
+      title,
+      startDate,
+      repeatInfo,
+      description,
+      difficulty,
+      verified,
+    });
+  }
+
   async function editResponsibility({
     id,
     title,
@@ -164,12 +196,12 @@ function ChildResponsibilities() {
     }
   }
 
-  async function handleDeleteResponsibility(id) {
+  async function handleDeleteResponsibility(id, profileId) {
     try {
-      const updatedResponsibilitiesData = await deleteResponsibilities({
+      const updatedResponsibilitiesData = await deleteResponsibility({
         main,
         id,
-        profileId: main.state.childImSeeingsId,
+        profileId,
       });
 
       let allResponsibilities = {};
@@ -184,8 +216,11 @@ function ChildResponsibilities() {
           title: element.title,
           id: element.id,
           difficulty: element.difficulty,
+          profile: element.profile,
           verified: element.verified,
           completed: element.completed,
+          single: element.single,
+          series: element.series,
           date: element.date,
         });
       });
@@ -202,6 +237,7 @@ function ChildResponsibilities() {
   // };
 
   const daysOfWeek = generateWeekDays(weekStart);
+  const dayNames = ['S', 'M', 'T', 'W', 'T', 'F', 'S'];
   const monthNames = [
     'January',
     'February',
@@ -224,7 +260,7 @@ function ChildResponsibilities() {
 
       <div style={{ display: 'flex', justifyContent: 'center', gap: '8rem' }}>
         <div className="sidebar left">
-          <h2>All Responsibilities</h2>
+          <h2>Upcoming responsibilities</h2>
           <ul className="responsibilities-list">
             {Object.values(responsibilities)
               .flat()
@@ -236,6 +272,7 @@ function ChildResponsibilities() {
                 .filter((resp) => {
                   return !resp.completed;
                 })
+                .slice(0, 5)
                 .map((responsibility, index) => (
                   <li
                     onClick={() => {
@@ -243,34 +280,42 @@ function ChildResponsibilities() {
                       setShowEditModal(true);
                     }}
                     key={index}
-                    className="responsibility-item"
+                    className="hover responsibility-item-big"
                   >
-                    <div className="responsibility-content">
-                      <h4 className="responsibility-title">
+                    <div className="responsibility-content-big">
+                      <h4 className="responsibility-title-big">
                         {responsibility.title}
                       </h4>
+
                       <span>
-                        {formatDateForDisplay(new Date(responsibility.date))}
+                        {responsibility.date
+                          ? parseInt(responsibility.date.slice(5, 7)) +
+                            '/' +
+                            parseInt(responsibility.date.slice(8, 10))
+                          : ''}
                       </span>
                     </div>
                   </li>
                 ))
             ) : (
-              <li>No Responsibilities</li>
+              <li>No upcoming responsibilities</li>
             )}
           </ul>
         </div>
         <div className="responsibilities-container">
+          <h1 style={{ fontSize: '2rem' }}>
+            {
+              main.state.profile.family.members.filter(
+                (member) => member.id === main.state.childImSeeingsId
+              )[0].first_name
+            }
+            's Responsibilities
+          </h1>
           <h2>{currentMonth}</h2>
-          <div className="week-navigation">
+          <div className="week-days">
             <button onClick={() => handleWeekChange(false)}>
               <FaLongArrowAltLeft />
             </button>
-            <button onClick={() => handleWeekChange(true)}>
-              <FaLongArrowAltRight />
-            </button>
-          </div>
-          <div className="week-days">
             {daysOfWeek.map((day, index) => {
               return (
                 <div
@@ -282,10 +327,26 @@ function ChildResponsibilities() {
                   }`}
                   onClick={() => setSelectedDay(day)}
                 >
-                  <p>{day.getDate()}</p>
+                  <div
+                    style={{
+                      display: 'flex',
+                      gap: '2px',
+                      flexDirection: 'column',
+                    }}
+                  >
+                    <p style={{ fontSize: '.7rem', fontWeight: '400' }}>
+                      {dayNames[day.getDay()]}
+                    </p>
+                    <p style={{ fontWeight: '600', fontSize: '1.2rem' }}>
+                      {day.getDate()}
+                    </p>
+                  </div>
                 </div>
               );
             })}
+            <button onClick={() => handleWeekChange(true)}>
+              <FaLongArrowAltRight />
+            </button>
           </div>
           <div className="selected-day-responsibilities">
             <h3>Responsibilities for {formatDateForDisplay(selectedDay)}:</h3>
@@ -303,17 +364,20 @@ function ChildResponsibilities() {
                         setShowEditModal(true);
                       }}
                       key={index}
-                      className="responsibility-item"
+                      className="responsibility-item hover"
                     >
                       <div className="responsibility-content">
                         <h4 className="responsibility-title">
                           {responsibility.title}
+                          <p className="responsibility-description">
+                            {responsibility.description}
+                          </p>
                         </h4>
                       </div>
                     </li>
                   ))
               ) : (
-                <li>No Responsibilities</li>
+                <li>No responsibilities for today</li>
               )}
             </ul>
             <button onClick={() => setShowAddResponsibilityModal(true)}>
@@ -333,6 +397,7 @@ function ChildResponsibilities() {
               setCurrentResponsibility={setCurrentResponsibility}
               editResponsibility={editResponsibility}
               handleDeleteResponsibility={handleDeleteResponsibility}
+              handleEditSeries={handleEditSeries}
             />
           </div>
         </div>
