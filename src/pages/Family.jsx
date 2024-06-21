@@ -1,9 +1,7 @@
 import React, { useContext, useState, useEffect } from 'react';
 import { MainContext } from '../context/context';
-import ParentDashboardNavbar from '../layout/ParentDashboardNavbar';
 import { fetchChildResponsibilities, fetchUser } from '../api-calls/api';
 import { useNavigate } from 'react-router-dom';
-import ChildDashboardNavbar from '../layout/ChildDashboardNavbar';
 import '../styles/family-manager.css';
 import ParentNavbar from '../layout/ParentNavbar';
 import ChildNavbar from '../layout/ChildNavbar';
