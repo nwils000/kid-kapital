@@ -6,6 +6,9 @@
   align-items: start;
   padding: 20px;
   position: relative;
+  max-width: 90rem;
+  margin: auto;
+  margin-left: 10rem;
 }
 
 .signup h1 span {
@@ -38,7 +41,7 @@
 .signup input {
   height: 3.2rem;
   width: 30rem;
-  padding: 5px 10px;
+  padding: 20px 10px 10px 9px;
 }
 
 .signup .parent-input {
@@ -58,7 +61,7 @@
 }
 
 .signup p a {
-  padding: 20px 0px;
+  padding: 12px 0px;
 }
 
 .signup p a::before {

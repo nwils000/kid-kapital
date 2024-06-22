@@ -64,7 +64,7 @@ export default function Register() {
         </p>
         <div className="signup-input-wrapper">
           <div className="label-input-wrapper" style={{ position: 'relative' }}>
-            <span style={{ display: 'flex', gap: '5px' }}>
+            <span style={{ display: 'flex', gap: '5px', alignItems: 'center' }}>
               Create a{' '}
               <button
                 onClick={() => setHubInputType('new')}
