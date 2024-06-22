@@ -57,7 +57,7 @@ export default function LandingPage() {
               }`}
             >
               {' '}
-              ={phrases[phraseIndex].second}
+              {phrases[phraseIndex].second}
             </div>
           </div>
         </h1>

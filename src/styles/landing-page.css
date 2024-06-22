@@ -24,7 +24,6 @@
 
 .first-word,
 .second-word {
-  width: 250px;
   font-size: 4rem;
   text-align: center;
 }
@@ -35,6 +34,7 @@
 /* #4d7bc4 dark blue */
 
 .first-word {
+  width: 160px;
   color: #4d7bc4;
 }
 
@@ -80,7 +80,41 @@
   }
 }
 
-@media screen and (max-width: 920px) {
+@media screen and (max-width: 1210px) {
+  .first-word {
+    width: 130px;
+    color: #4d7bc4;
+  }
+
+  .second-word {
+    margin-left: 15px;
+    text-align: left;
+  }
+  .first-word,
+  .second-word {
+    font-size: 3rem;
+    text-align: center;
+  }
+  .second-word {
+    text-align: left;
+    margin-left: 10px;
+  }
+}
+
+@media screen and (max-width: 945px) {
+  .first-word {
+    width: 80px;
+    color: #4d7bc4;
+  }
+  .first-word,
+  .second-word {
+    font-size: 2rem;
+    text-align: center;
+  }
+  .second-word {
+    text-align: left;
+    margin-left: 10px;
+  }
   .landing-page .hero-heading {
     font-size: 1.6rem;
   }
@@ -90,7 +124,7 @@
   }
 }
 
-@media screen and (max-width: 620px) {
+@media screen and (max-width: 680px) {
   .landing-page {
     flex-direction: column;
     justify-content: center;
