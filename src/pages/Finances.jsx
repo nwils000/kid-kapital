@@ -54,6 +54,20 @@ export default function Finances() {
     }
   };
 
+  function getSuffix(day) {
+    if (day > 3 && day < 21) return 'th';
+    switch (day % 10) {
+      case 1:
+        return 'st';
+      case 2:
+        return 'nd';
+      case 3:
+        return 'rd';
+      default:
+        return 'th';
+    }
+  }
+
   return (
     <div className="finances">
       {main.state.profile.parent ? <ParentNavbar /> : <ChildNavbar />}
@@ -64,75 +78,123 @@ export default function Finances() {
       <div className="allowance-details">
         <h2>Manage Allowance Details</h2>
         <div style={{ display: 'flex', alignItems: 'center' }}>
-          <h3 style={{ display: 'flex', alignItems: 'center' }}>
-            Current reward per difficulty point: $
-            {!editMode ? (
-              <>
-                {rewardValue}
-                <FaEdit
-                  onClick={() => setEditMode(true)}
-                  className="hover"
-                  style={{
-                    marginLeft: 7,
-                    fontSize: '1.2rem',
-                    color: '#4CB2C2',
-                  }}
-                />
-              </>
-            ) : (
-              <>
-                <input
-                  style={{
-                    background: 'none',
-                    width: '3.3rem',
-                    height: '2rem',
-                    paddingLeft: '5px',
-                    marginLeft: '1px',
-                  }}
-                  value={rewardValue}
-                  onChange={handleInput}
-                  onBlur={() => {
-                    setEditMode(false);
-                    handleUpdateDifficultyPoint();
-                  }}
-                  autoFocus
-                />
-                <button
-                  style={{
-                    padding: '5px 10px',
-                    fontSize: '1rem',
-                    marginLeft: 7,
-                  }}
-                >
-                  Submit
-                </button>
-              </>
-            )}
+          <h3
+            style={{
+              display: 'flex',
+              alignItems: 'center',
+              fontWeight: '500',
+              display: 'block',
+            }}
+          >
+            Current reward per difficulty point:{' '}
+            <span
+              style={{
+                marginLeft: 5,
+                fontWeight: '700',
+                display: 'block',
+                display: 'flex',
+                alignItems: 'center',
+              }}
+            >
+              $
+              {!editMode ? (
+                <>
+                  {rewardValue}
+                  <FaEdit
+                    onClick={() => setEditMode(true)}
+                    className="hover"
+                    style={{
+                      marginLeft: 7,
+                      fontSize: '1.2rem',
+                      color: '#4CB2C2',
+                    }}
+                  />
+                </>
+              ) : (
+                <>
+                  <input
+                    style={{
+                      background: 'none',
+                      width: '3.3rem',
+                      height: '2rem',
+                      paddingLeft: '5px',
+                      marginLeft: '1px',
+                    }}
+                    value={rewardValue}
+                    onChange={handleInput}
+                    onBlur={() => {
+                      setEditMode(false);
+                      handleUpdateDifficultyPoint();
+                    }}
+                    autoFocus
+                  />
+                  <button
+                    style={{
+                      padding: '5px 10px',
+                      fontSize: '1rem',
+                      marginLeft: 7,
+                    }}
+                  >
+                    Submit
+                  </button>
+                </>
+              )}
+            </span>
           </h3>
         </div>
         <div style={{ display: 'flex', alignItems: 'center' }}>
           {main.state.profile.family.allowance_period_type === 'Monthly' ? (
-            <h3>
-              Current Allowance Period: Day{' '}
-              {main.state.profile.family.allowance_day},{' '}
-              {main.state.profile.family.allowance_period_type}
-            </h3>
+            <>
+              <h3>
+                <span style={{ fontWeight: '500', display: 'block' }}>
+                  Current Allowance Period:
+                  <span
+                    style={{
+                      fontWeight: '700',
+                      display: 'block',
+                      display: 'flex',
+                      alignItems: 'center',
+                    }}
+                  >
+                    {main.state.profile.family.allowance_day +
+                      getSuffix(main.state.profile.family.allowance_day)}
+                    , {main.state.profile.family.allowance_period_type}
+                    <FaEdit
+                      onClick={() => setShowAllowancePeriodModal(true)}
+                      className="hover"
+                      style={{
+                        marginLeft: 7,
+                        fontSize: '1.2rem',
+                        color: '#4CB2C2',
+                      }}
+                    />
+                  </span>
+                </span>
+              </h3>
+            </>
           ) : (
-            <h3>
-              Current Allowance Period:{' '}
-              {dayNames[main.state.profile.family.allowance_day]},{' '}
-              {main.state.profile.family.allowance_period_type}
-            </h3>
+            <>
+              {' '}
+              <h3>
+                <span style={{ fontWeight: '500', display: 'block' }}>
+                  Current Allowance Period:{' '}
+                  <span style={{ fontWeight: '700' }}>
+                    {dayNames[main.state.profile.family.allowance_day]},{' '}
+                    {main.state.profile.family.allowance_period_type}
+                  </span>
+                  <FaEdit
+                    onClick={() => setShowAllowancePeriodModal(true)}
+                    className="hover"
+                    style={{
+                      marginLeft: 7,
+                      fontSize: '1.2rem',
+                      color: '#4CB2C2',
+                    }}
+                  />
+                </span>
+              </h3>
+            </>
           )}
-          <FaEdit
-            onClick={() => setShowAllowancePeriodModal(true)}
-            className="hover"
-            style={{
-              marginLeft: 7,
-              fontSize: '1.2rem',
-              color: '#4CB2C2',
-            }}
-          />
         </div>
       </div>
 

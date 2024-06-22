@@ -372,8 +372,8 @@ export default function ParentFinancialAccounts() {
           </div>
         )}
         <div className="account-list">
-          <h3>Existing Accounts</h3>
-          <ul>
+          <h3 style={{ paddingBottom: 0 }}>Existing Accounts: </h3>
+          <ul style={{ marginTop: 0 }}>
             {accounts.map((account) => (
               <li key={account.id}>
                 <div
