@@ -42,7 +42,7 @@ function StoreItemModal({
   };
 
   const handleDelete = () => {
-    handleDeleteStoreItem({ itemId: currentItem.id });
+    handleDeleteStoreItem({ main, itemId: currentItem.id });
     setShowItemModal(false);
   };
 

@@ -1,14 +1,16 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useContext } from 'react';
+import { MainContext } from '../context/context';
+import { deleteFamilyStoreItems } from '../api-calls/api';
 
 export default function ApproveItemModal({
   showApproveItemModal,
   setShowApproveItemModal,
   handleApproveStoreItem,
-  handleDeleteStoreItem,
   currentItem,
 }) {
   const [name, setName] = useState('');
   const [price, setPrice] = useState(0);
+  const { main } = useContext(MainContext);
 
   useEffect(() => {
     if (currentItem) {
@@ -21,12 +23,12 @@ export default function ApproveItemModal({
   }, [currentItem]);
 
   const handleApprove = async () => {
-    handleApproveStoreItem({ itemId: currentItem.id });
+    handleApproveStoreItem({ main, itemId: currentItem.id });
     setShowApproveItemModal(false);
   };
 
   const handleDelete = () => {
-    handleDeleteStoreItem({ itemId: currentItem.id });
+    deleteFamilyStoreItems({ main, itemId: currentItem.id });
     setShowApproveItemModal(false);
   };
 

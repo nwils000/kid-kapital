@@ -3,6 +3,7 @@ import { FiEdit } from 'react-icons/fi';
 import '../styles/responsibility-modal.css';
 import {
   completeResponsibility,
+  completeWholeSeries,
   deleteResponsibilitySeries,
   editResponsibilitySeries,
 } from '../api-calls/api';
@@ -124,6 +125,18 @@ function EditResponsibilityModal({
     }
   };
 
+  const completeResponsibilitySeries = async () => {
+    try {
+      completeWholeSeries({
+        main,
+        profileId: currentChildId,
+        seriesId: currentResponsibility.series,
+      });
+    } catch (error) {
+      console.error(error);
+    }
+  };
+
   const repeatOptions = () => {
     if (repeatType === 'weekly') {
       return [
@@ -187,6 +200,13 @@ function EditResponsibilityModal({
       }}
     >
       <div className={modalClass} onMouseDown={(e) => e.stopPropagation()}>
+        {currentResponsibility.verified && (
+          <p
+            style={{ fontWeight: '500', textAlign: 'center', color: '#4cb2c2' }}
+          >
+            Approved
+          </p>
+        )}
         <button className="close-btn" onClick={() => setShowEditModal(false)}>
           X
         </button>
@@ -305,18 +325,33 @@ function EditResponsibilityModal({
               <p>{difficultyString}</p>
 
               {currentChildId === main.state.profile.id && (
-                <button
-                  className="complete-btn"
-                  onClick={() =>
-                    completeResponsibility({
-                      id: currentResponsibility.id,
-                      main,
-                      completed: true,
-                    })
-                  }
-                >
-                  Mark as Completed
-                </button>
+                <>
+                  {' '}
+                  <button
+                    className="complete-btn"
+                    onClick={() => {
+                      completeResponsibility({
+                        id: currentResponsibility.id,
+                        main,
+                        completed: true,
+                      });
+                      setShowEditModal(false);
+                    }}
+                  >
+                    Completed
+                  </button>
+                  {!currentResponsibility.single && (
+                    <button
+                      className="complete-btn"
+                      onClick={() => {
+                        completeResponsibilitySeries();
+                        setShowEditModal(false);
+                      }}
+                    >
+                      Complete series
+                    </button>
+                  )}
+                </>
               )}
               {(!currentResponsibility.verified ||
                 main.state.profile.parent) && (

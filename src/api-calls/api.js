@@ -782,3 +782,24 @@ export const updateDifficultyPointValue = async ({ main, price }) => {
     console.error('Error with updateDifficultyPointValue api call: ', error);
   }
 };
+
+export const completeWholeSeries = async ({ main, profileId, seriesId }) => {
+  try {
+    const response = await axios({
+      method: 'put',
+      url: `${baseUrl}/complete-responsibility-series/`,
+      headers: {
+        Authorization: `Bearer ${main.state.accessToken}`,
+      },
+      data: {
+        profile_id: profileId,
+        series_id: seriesId,
+      },
+    });
+    await fetchUser({ accessToken: main.state.accessToken, main });
+    console.log('completeWholeSeries: ', response);
+    return response.data;
+  } catch (error) {
+    console.error('Error with updateDifficultyPointValue api call: ', error);
+  }
+};

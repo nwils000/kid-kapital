@@ -23,6 +23,7 @@ function Responsibilities() {
   const [responsibilities, setResponsibilities] = useState([]);
   const [showEditModal, setShowEditModal] = useState(false);
   const [currentResponsibility, setCurrentResponsibility] = useState({});
+  const [currentChildId, setCurrentChildId] = useState();
 
   useEffect(() => {
     async function getResponsibilities() {
@@ -111,6 +112,16 @@ function Responsibilities() {
 
   async function addResponsibility({ title, description, difficulty, repeat }) {
     const formattedDate = formatDate(selectedDay);
+    console.log('RIGHT HERE', {
+      main,
+      title,
+      description,
+      difficulty,
+      verified: main.state.profile.parent ? true : false,
+      profileId: main.state.profile.id,
+      date: formattedDate,
+      repeat,
+    });
     try {
       let newResponsibility = await createResponsibility({
         main,
@@ -274,6 +285,7 @@ function Responsibilities() {
                   <li
                     onClick={() => {
                       setCurrentResponsibility(responsibility);
+                      setCurrentChildId(responsibility.profile);
                       setShowEditModal(true);
                     }}
                     key={index}
@@ -350,6 +362,7 @@ function Responsibilities() {
                     <li
                       onClick={() => {
                         setCurrentResponsibility(responsibility);
+                        setCurrentChildId(responsibility.profile);
                         setShowEditModal(true);
                       }}
                       key={index}
@@ -379,6 +392,7 @@ function Responsibilities() {
               addResponsibility={addResponsibility}
             />
             <EditResponsibilityModal
+              currentChildId={currentChildId}
               parentalControl={false}
               showEditModal={showEditModal}
               setShowEditModal={setShowEditModal}
