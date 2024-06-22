@@ -53,6 +53,8 @@ function Responsibilities() {
 
         setResponsibilities(allResponsibilities);
       } catch (e) {
+        const navigate = useNavigate();
+
         console.error(e);
       }
     }

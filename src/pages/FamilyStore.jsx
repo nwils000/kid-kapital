@@ -65,6 +65,8 @@ function FamilyStore() {
       }
     } catch (e) {
       console.error(e);
+      const navigate = useNavigate();
+
       alert('An error occurred while trying to make the purchase.');
     }
   };
@@ -93,7 +95,7 @@ function FamilyStore() {
                         className="item-card"
                         onClick={() => openApproveItemModal(item)}
                         onMouseEnter={() => {
-                          setOverlayText('Approve');
+                          setOverlayText('View Details');
                           setHoveredItemId(item.id);
                         }}
                         onMouseLeave={() => {

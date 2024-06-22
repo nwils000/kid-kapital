@@ -57,6 +57,7 @@ export default function ChildDashboard() {
       });
     } catch (e) {
       console.error(e);
+      navigate('/');
     }
   }
 

@@ -12,6 +12,7 @@ import AddResponsibilityModal from '../components/AddResponsibilityModal';
 import EditResponsibilityModal from '../components/EditResponsibilityModal';
 import { FaLongArrowAltLeft, FaLongArrowAltRight } from 'react-icons/fa';
 import ParentNavbar from '../layout/ParentNavbar';
+import { useNavigate } from 'react-router-dom';
 
 function ChildResponsibilities() {
   const { main } = useContext(MainContext);
@@ -22,6 +23,8 @@ function ChildResponsibilities() {
   const [responsibilities, setResponsibilities] = useState([]);
   const [showEditModal, setShowEditModal] = useState(false);
   const [currentResponsibility, setCurrentResponsibility] = useState({});
+
+  const navigate = useNavigate();
 
   useEffect(() => {
     async function getResponsibilities() {
@@ -55,6 +58,7 @@ function ChildResponsibilities() {
         setResponsibilities(allResponsibilities);
       } catch (e) {
         console.error(e);
+        const navigate = useNavigate();
       }
     }
 

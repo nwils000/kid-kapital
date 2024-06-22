@@ -17,6 +17,7 @@
   box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
   margin: 20px;
   padding: 20px;
+  max-width: 33rem;
 }
 
 .input-text,
@@ -42,6 +43,18 @@
   margin-bottom: 40px;
 }
 
+.button-create {
+  margin-left: 20px;
+}
+
+.finanacial-account-header {
+  margin-left: 20px;
+}
+
+.finanacial-account-header h2 {
+  text-align: left;
+}
+
 .account-list ul {
   list-style-type: none;
   padding: 0;
@@ -55,7 +68,7 @@
 
 .cancel-edit {
   height: 2rem;
-  width: 2rem;
+  width: 1rem;
   background: none;
   border: none;
   font-size: 1.3rem;
@@ -72,4 +85,26 @@
   font-size: 0.9em;
   margin: 0;
   padding: 10px 0;
+}
+
+@media screen and (max-width: 476px) {
+  .finanacial-account-header {
+    margin-left: 0;
+    text-align: center;
+  }
+  .finanacial-account-header h2 {
+    text-align: center;
+  }
+  .button-create,
+  .button-delete {
+    margin: auto;
+    background-color: #4cc283;
+    color: white;
+    padding: 10px 20px;
+    border: none;
+    border-radius: 8px;
+    cursor: pointer;
+    margin-top: 10px;
+    margin-bottom: 40px;
+  }
 }
