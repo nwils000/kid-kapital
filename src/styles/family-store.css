@@ -52,17 +52,53 @@
 }
 
 .family-store .item-card {
-  background-color: #fff;
-  padding: 20px;
-  border-radius: 8px;
-  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+  background-color: white;
+  padding: 24px;
+  border: 2px solid #e2e2e2;
+  border-radius: 12px;
+  box-shadow: 0 6px 12px rgba(0, 0, 0, 0.08);
   cursor: pointer;
-  transition: 0.3s ease;
+  transition: transform 0.3s ease, box-shadow 0.3s ease;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: space-between;
+  font-size: 18px;
+  color: #000;
+  text-transform: uppercase;
+  font-weight: bold;
+  position: relative;
+  overflow: hidden;
+  height: 130px;
 }
 
 .family-store .item-card:hover {
-  transform: translateY(-1px);
-  background-color: #f1f1f1;
+  transform: translateY(-5px);
+  box-shadow: 0 12px 24px rgba(0, 0, 0, 0.12);
+  border-color: #ccc;
+}
+
+.family-store .item-card .item-card-overlay {
+  position: absolute;
+  bottom: 0;
+  left: 0;
+  width: 100%;
+  height: 0;
+  background-color: #46b378;
+  text-align: center;
+  font-size: 16px;
+  color: #fff;
+  overflow: hidden;
+  transition: height 0.3s ease, opacity 0.3s ease;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  opacity: 0;
+}
+
+.family-store .item-card:hover .item-card-overlay {
+  height: 100%;
+  opacity: 1;
 }
 
 .family-store button {
@@ -109,6 +145,12 @@
 }
 
 @media (max-width: 768px) {
+  .family-store .items-grid {
+    display: grid;
+    grid-template-columns: repeat(1, 1fr);
+    gap: 20px;
+  }
+
   .family-store .store-layout {
     align-items: center;
     flex-direction: column-reverse;

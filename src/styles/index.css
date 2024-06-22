@@ -44,7 +44,7 @@ a {
   font-weight: 400;
   position: relative;
   transition: 300ms;
-  color: #4CC283;
+  color: #4cc283;
 }
 
 a::before {
@@ -88,7 +88,7 @@ button {
 }
 
 button:hover {
-  background-color: #46B378;
+  background-color: #46b378;
 }
 
 .dots-bubble {

@@ -8,6 +8,7 @@ import {
   updateStoreItem,
   deleteFamilyStoreItems,
   handleApproveStoreItemRequest,
+  purchaseStoreItem,
 } from '../api-calls/api';
 import '../styles/family-store.css';
 import ParentNavbar from '../layout/ParentNavbar';
@@ -20,10 +21,22 @@ function FamilyStore() {
   const [showApproveItemModal, setShowApproveItemModal] = useState(false);
   const [showPurchaseModal, setShowPurchaseModal] = useState(false);
   const [currentItem, setCurrentItem] = useState(null);
+  const [overlayText, setOverlayText] = useState('');
+  const [hoveredItemId, setHoveredItemId] = useState(null);
 
   useEffect(() => {
     setItems(main.state.familyStoreItems);
   }, [main.state.familyStoreItems]);
+
+  const handleMouseEnter = (item) => {
+    setOverlayText(main.state.profile.parent ? 'View Details' : 'Purchase');
+    setHoveredItemId(item.id);
+  };
+
+  const handleMouseLeave = () => {
+    setOverlayText('');
+    setHoveredItemId(null);
+  };
 
   const openItemModal = (item) => {
     setCurrentItem(item);
@@ -38,6 +51,22 @@ function FamilyStore() {
   const openPurchaseModal = (item) => {
     setCurrentItem(item);
     setShowPurchaseModal(true);
+  };
+
+  const handlePurchase = async (item) => {
+    try {
+      if (main.state.profile.total_money >= item.price) {
+        await purchaseStoreItem({ main, itemId: item.id });
+        setShowPurchaseModal(false);
+      } else {
+        alert(
+          `You do not have enough money. Your balance is $${main.state.profile.total_money}, but this item costs $${item.price}.`
+        );
+      }
+    } catch (e) {
+      console.error(e);
+      alert('An error occurred while trying to make the purchase.');
+    }
   };
 
   return (
@@ -59,16 +88,30 @@ function FamilyStore() {
                   items
                     .filter((item) => !item.approved)
                     .map((item) => (
-                      <li
+                      <div
                         key={item.id}
-                        className="hover"
+                        className="item-card"
                         onClick={() => openApproveItemModal(item)}
+                        onMouseEnter={() => {
+                          setOverlayText('Approve');
+                          setHoveredItemId(item.id);
+                        }}
+                        onMouseLeave={() => {
+                          setOverlayText('');
+                          setHoveredItemId(null);
+                        }}
                       >
-                        {item.name} - ${item.price}
-                      </li>
+                        <div>{item.name}</div>
+                        <div>${item.price}</div>
+                        <div className="item-card-overlay">
+                          {hoveredItemId === item.id ? overlayText : ''}
+                        </div>
+                      </div>
                     ))
                 ) : (
-                  <li style={{ textAlign: 'center' }}>No items to approve</li>
+                  <li style={{ textAlign: 'center', padding: '24px' }}>
+                    No items to approve
+                  </li>
                 )}
               </ul>
             </div>
@@ -80,7 +123,7 @@ function FamilyStore() {
             >
               {main.state.profile.parent ? 'Add New Item' : 'Request New Item'}
             </button>
-            <h2 style={{ textAlign: 'center', margin: '20px' }}>
+            <h2 style={{ textAlign: 'center', margin: '40px 20px 20px 20px' }}>
               Available Items
             </h2>
             <div className="items-grid">
@@ -89,14 +132,20 @@ function FamilyStore() {
                 .map((item) => (
                   <div
                     key={item.id}
-                    className="item-card hover"
+                    className="item-card"
                     onClick={() => {
                       main.state.profile.parent
                         ? openItemModal(item)
-                        : openPurchaseModal(item);
+                        : handlePurchase(item);
                     }}
+                    onMouseEnter={() => handleMouseEnter(item)}
+                    onMouseLeave={handleMouseLeave}
                   >
-                    {item.name} - ${item.price}
+                    <div>{item.name}</div>
+                    <div>${item.price}</div>
+                    <div className="item-card-overlay">
+                      {hoveredItemId === item.id ? overlayText : ''}
+                    </div>
                   </div>
                 ))}
             </div>
@@ -117,15 +166,8 @@ function FamilyStore() {
         <ApproveItemModal
           showApproveItemModal={showApproveItemModal}
           setShowApproveItemModal={setShowApproveItemModal}
+          currentItem={currentItem}
           handleApproveStoreItem={handleApproveStoreItemRequest}
-          currentItem={currentItem}
-        />
-      )}
-      {showPurchaseModal && (
-        <PurchaseItemModal
-          showPurchaseModal={showPurchaseModal}
-          setShowPurchaseModal={setShowPurchaseModal}
-          currentItem={currentItem}
         />
       )}
     </>

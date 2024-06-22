@@ -80,7 +80,6 @@ export default function Finances() {
         <div style={{ display: 'flex', alignItems: 'center' }}>
           <h3
             style={{
-              display: 'flex',
               alignItems: 'center',
               fontWeight: '500',
               display: 'block',
@@ -91,7 +90,7 @@ export default function Finances() {
               style={{
                 marginLeft: 5,
                 fontWeight: '700',
-                display: 'block',
+
                 display: 'flex',
                 alignItems: 'center',
               }}
@@ -151,7 +150,7 @@ export default function Finances() {
                   <span
                     style={{
                       fontWeight: '700',
-                      display: 'block',
+
                       display: 'flex',
                       alignItems: 'center',
                     }}
