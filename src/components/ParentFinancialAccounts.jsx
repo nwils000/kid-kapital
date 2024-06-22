@@ -83,8 +83,8 @@ export default function ParentFinancialAccounts() {
     setInterestRate(account.interest_rate);
     setInterestPeriodType(account.interest_period_type);
     setInterestDay(account.interest_day);
-    setPotentialGain(account.potential_gain || 0); // Set potential gain if present
-    setPotentialLoss(account.potential_loss || 0); // Set potential loss if present
+    setPotentialGain(account.potential_gain || 0);
+    setPotentialLoss(account.potential_loss || 0);
     setEditMode(true);
     setShowCreateForm(false);
   };
@@ -395,12 +395,12 @@ export default function ParentFinancialAccounts() {
                   >
                     <FaEdit
                       className="hover"
-                      style={{ fontSize: '1.2rem', color: '#3fa0ca' }}
+                      style={{ fontSize: '1.2rem', color: '#4CB2C2' }}
                       onClick={() => editAccount(account)}
                     />
                     <FaTrash
                       className="hover"
-                      style={{ fontSize: '1.2rem', color: '#3fa0ca' }}
+                      style={{ fontSize: '1.2rem', color: '#4CB2C2' }}
                       onClick={() => handleDeleteAccount(account.id)}
                     />
                   </div>

@@ -18,7 +18,7 @@
 }
 
 .login h1 span {
-  color: #3fa0ca;
+  color: #4cc283;
 }
 
 .login label {
@@ -51,7 +51,7 @@
 
 .login p a::before {
   height: 3px;
-  background-color: #3fa0ca;
+  background-color: #4cc283;
   width: 0%;
   bottom: 5px;
 }
@@ -61,7 +61,7 @@
 }
 
 .login .login-button {
-  background-color: #3fa0ca;
+  background-color: #4cc283;
   color: white;
   text-align: center;
   font-size: 1.5rem;

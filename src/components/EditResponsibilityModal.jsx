@@ -304,7 +304,7 @@ function EditResponsibilityModal({
               <p>{description}</p>
               <p>{difficultyString}</p>
 
-              {!parentalControl && currentChildId === main.state.profile.id && (
+              {currentChildId === main.state.profile.id && (
                 <button
                   className="complete-btn"
                   onClick={() =>

@@ -13,7 +13,7 @@
 }
 
 .family-manager button {
-  background-color: #3fa0ca;
+  background-color: #4cc283;
   color: white;
   border: none;
   padding: 10px 20px;
@@ -25,7 +25,7 @@
 }
 
 .family-manager button:hover {
-  background-color: #3590b5;
+  background-color: #46b378;
 }
 
 .family-manager table {
@@ -42,7 +42,7 @@
 }
 
 .family-manager table th {
-  background-color: #3fa0ca;
+  background-color: #4cc283;
   color: white;
 }
 
@@ -57,9 +57,62 @@
   font-size: 16px;
 }
 
-@media screen and (max-width: 600px) {
+@media screen and (max-width: 820px) {
+  .family-manager {
+    margin: 10px;
+    padding: 10px;
+  }
+
+  .family-manager h1 {
+    font-size: 1.5rem;
+    margin: 10px;
+  }
+
+  .family-manager button {
+    padding: 8px 16px;
+    font-size: 14px;
+  }
+
   .family-manager table {
     display: block;
     overflow-x: auto;
+    white-space: nowrap;
+  }
+
+  .family-manager table th,
+  .family-manager table td {
+    padding: 10px;
+  }
+}
+
+@media screen and (max-width: 600px) {
+  .family-manager h1 {
+    font-size: 1.25rem;
+  }
+
+  .family-manager button {
+    padding: 8px 16px;
+    font-size: 14px;
+  }
+
+  .family-manager table th,
+  .family-manager table td {
+    padding: 8px;
+  }
+}
+
+@media screen and (max-width: 400px) {
+  .family-manager h1 {
+    font-size: 1rem;
+  }
+
+  .family-manager button {
+    padding: 6px 12px;
+    font-size: 12px;
+  }
+
+  .family-manager table th,
+  .family-manager table td {
+    padding: 6px;
   }
 }

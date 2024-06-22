@@ -3,7 +3,21 @@
   margin: 20px;
 }
 
+.family-store-side {
+  width: 24rem;
+  padding: 20px;
+}
+
+@media screen and (max-width: 1305px) {
+  .family-store-side {
+    width: 24rem;
+    padding: 0px 20px;
+  }
+}
+
+.family-store-side h2,
 .family-store h1 {
+  text-align: center;
   font-size: 2rem;
 }
 
@@ -14,23 +28,21 @@
   align-items: flex-start;
 }
 
-.family-store .sidebar {
+.family-store .sidebar,
+.family-store .store-items {
   background: #ffffff;
-  padding: 0 20px 20px 20px;
+  padding: 20px;
   border-radius: 8px;
   box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
-}
-
-.family-store .sidebar h2 {
-  margin: 20px;
 }
 
 .family-store .store-items {
   flex-grow: 1;
-  padding: 0 20px 20px 20px;
-  background-color: #ffff;
-  border-radius: 8px;
-  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+}
+
+.family-store .sidebar h2,
+.family-store .store-items h2 {
+  margin: 20px;
 }
 
 .family-store .items-grid {
@@ -43,7 +55,7 @@
   background-color: #fff;
   padding: 20px;
   border-radius: 8px;
-  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.2);
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
   cursor: pointer;
   transition: 0.3s ease;
 }
@@ -54,7 +66,7 @@
 }
 
 .family-store button {
-  background-color: #3fa0ca;
+  background-color: #4cc283;
   color: white;
   padding: 10px 20px;
   border-radius: 8px;
@@ -65,7 +77,7 @@
 }
 
 .family-store button:hover {
-  background-color: #3590b5;
+  background-color: #46b378;
 }
 
 .family-store .modal-overlay {
@@ -98,7 +110,8 @@
 
 @media (max-width: 768px) {
   .family-store .store-layout {
-    flex-direction: column;
+    align-items: center;
+    flex-direction: column-reverse;
   }
 
   .family-store .sidebar {

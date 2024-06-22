@@ -253,7 +253,7 @@ function Responsibilities() {
   return (
     <>
       {main.state.profile.parent ? <ParentNavbar /> : <ChildNavbar />}
-      <div style={{ display: 'flex', justifyContent: 'center', gap: '8rem' }}>
+      <div className="responsibilities-wrapper">
         <div className="sidebar left">
           <h2>Upcoming Responsibilities</h2>
           <ul className="responsibilities-list">
@@ -297,10 +297,8 @@ function Responsibilities() {
           </ul>
         </div>
         <div className="responsibilities-container">
-          <h1 style={{ fontSize: '2rem' }}>
-            {main.state.profile.first_name}'s Responsibilities
-          </h1>
-          <h2>{currentMonth}</h2>
+          <h1>{main.state.profile.first_name}'s Responsibilities</h1>
+          <h3>{currentMonth}</h3>
           <div className="week-days">
             <button onClick={() => handleWeekChange(false)}>
               <FaLongArrowAltLeft />
@@ -326,9 +324,7 @@ function Responsibilities() {
                     <p style={{ fontSize: '.7rem', fontWeight: '400' }}>
                       {dayNames[day.getDay()]}
                     </p>
-                    <p style={{ fontWeight: '600', fontSize: '1.2rem' }}>
-                      {day.getDate()}
-                    </p>
+                    <p style={{ fontWeight: '600' }}>{day.getDate()}</p>
                   </div>
                 </div>
               );
@@ -375,13 +371,13 @@ function Responsibilities() {
               Add Responsibility
             </button>
             <AddResponsibilityModal
-            parentalControl={false}
+              parentalControl={false}
               showAddResponsibilityModal={showAddResponsibilityModal}
               setShowAddResponsibilityModal={setShowAddResponsibilityModal}
               addResponsibility={addResponsibility}
             />
             <EditResponsibilityModal
-             parentalControl={false}
+              parentalControl={false}
               showEditModal={showEditModal}
               setShowEditModal={setShowEditModal}
               currentResponsibility={currentResponsibility}

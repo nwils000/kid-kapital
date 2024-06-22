@@ -1,6 +1,6 @@
 .navbar-wrapper {
   width: 100%;
-  background: #3fa0ca;
+  background: #4cb2c2;
   position: absolute;
   left: 50%;
   left: 0;
@@ -14,13 +14,11 @@
   padding: 0 20px;
   font-size: 1.2rem;
   font-weight: 500;
-
   width: 100%;
   max-width: 90rem;
   margin: auto;
   z-index: 2;
 }
-
 .logo-wrapper {
   display: flex;
   align-items: center;
@@ -78,7 +76,7 @@
 }
 
 .nav-link:hover {
-  background-color: #3590b5;
+  background-color: #49abba;
 }
 
 .nav-links-wrapper {
@@ -92,7 +90,15 @@
 
 .create-post:hover {
   cursor: pointer;
-  color: #3fa0ca;
+  color: #4cb2c2;
+}
+
+.hamburger-menu {
+  display: none;
+  cursor: pointer;
+  font-size: 2rem;
+  color: white;
+  z-index: 3;
 }
 
 @media screen and (max-width: 1350px) {
@@ -109,7 +115,7 @@
   }
 }
 
-@media screen and (max-width: 750px) {
+@media screen and (max-width: 910px) {
   .navbar {
     font-size: 0.7rem;
   }
@@ -121,12 +127,38 @@
   .logo-image {
     width: 1.2rem;
   }
+  .hamburger-menu {
+    display: block;
+    padding: 20px;
+  }
+
+  .nav-links-wrapper {
+    position: absolute;
+    right: 0;
+    top: 80px;
+    flex-direction: column;
+    width: 100%;
+    background-color: #4cb2c2;
+    display: none;
+  }
+
+  .nav-link {
+    border: none;
+  }
+
+  .nav-link:hover {
+    background-color: #3da2b1;
+  }
+
+  .show-menu {
+    display: flex;
+    position: absolute;
+    top: 0;
+    z-index: 2;
+  }
 }
 
 @media screen and (max-width: 580px) {
-  .navbar {
-    padding: 0 0 0 1rem;
-  }
   .logo-text {
     font-size: 1.2rem;
   }
@@ -135,8 +167,5 @@
   }
   .logo-wrapper {
     gap: 0;
-  }
-  .landing-page-link {
-    padding: 20px 1rem;
   }
 }

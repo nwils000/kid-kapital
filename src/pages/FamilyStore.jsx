@@ -42,11 +42,7 @@ function FamilyStore() {
 
   return (
     <>
-      {main.state.profile.parent ? (
-        <ParentNavbar />
-      ) : (
-        <ChildNavbar />
-      )}
+      {main.state.profile.parent ? <ParentNavbar /> : <ChildNavbar />}
       <h1 style={{ fontSize: '2rem', margin: '20px', textAlign: 'center' }}>
         Family Store
       </h1>

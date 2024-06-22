@@ -236,11 +236,6 @@ function ChildResponsibilities() {
     }
   }
 
-  // const handleEditResponsibility = (id) => {
-  //   setCurrentResponsibility(responsibility);
-  //   setShowEditModal(true);
-  // };
-
   const daysOfWeek = generateWeekDays(weekStart);
   const dayNames = ['S', 'M', 'T', 'W', 'T', 'F', 'S'];
   const monthNames = [
@@ -263,7 +258,7 @@ function ChildResponsibilities() {
     <>
       <ParentNavbar />
 
-      <div style={{ display: 'flex', justifyContent: 'center', gap: '8rem' }}>
+      <div className="responsibilities-wrapper">
         <div className="sidebar left">
           <h2>Upcoming responsibilities</h2>
           <ul className="responsibilities-list">
@@ -308,7 +303,7 @@ function ChildResponsibilities() {
           </ul>
         </div>
         <div className="responsibilities-container">
-          <h1 style={{ fontSize: '2rem' }}>
+          <h1>
             {
               main.state.profile.family.members.filter(
                 (member) => member.id === main.state.childImSeeingsId
@@ -316,7 +311,7 @@ function ChildResponsibilities() {
             }
             's Responsibilities
           </h1>
-          <h2>{currentMonth}</h2>
+          <h3>{currentMonth}</h3>
           <div className="week-days">
             <button onClick={() => handleWeekChange(false)}>
               <FaLongArrowAltLeft />
@@ -342,9 +337,7 @@ function ChildResponsibilities() {
                     <p style={{ fontSize: '.7rem', fontWeight: '400' }}>
                       {dayNames[day.getDay()]}
                     </p>
-                    <p style={{ fontWeight: '600', fontSize: '1.2rem' }}>
-                      {day.getDate()}
-                    </p>
+                    <p style={{ fontWeight: '600' }}>{day.getDate()}</p>
                   </div>
                 </div>
               );

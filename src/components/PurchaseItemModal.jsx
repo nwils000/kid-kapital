@@ -27,7 +27,7 @@ export default function PurchaseItemModal({
       if (main.state.profile.total_money >= price) {
         await purchaseStoreItem({ main, itemId: currentItem.id });
         setShowPurchaseModal(false);
-        setErrorMessage(''); // Clear any previous error messages
+        setErrorMessage('');
       } else {
         setErrorMessage(
           `You do not have enough money. Your balance is $${main.state.profile.total_money}, but this item costs $${price}.`
@@ -42,7 +42,10 @@ export default function PurchaseItemModal({
   if (!showPurchaseModal) return null;
 
   return (
-    <div className="modal-overlay" onMouseDown={() => setShowPurchaseModal(false)}>
+    <div
+      className="modal-overlay"
+      onMouseDown={() => setShowPurchaseModal(false)}
+    >
       <div className="modal-content" onMouseDown={(e) => e.stopPropagation()}>
         <div className="modal-header">
           <h5>Purchase {name}</h5>

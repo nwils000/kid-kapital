@@ -2,9 +2,20 @@
   display: flex;
   justify-content: space-between;
   align-items: center;
-  height: calc(100vh - 7rem);
+  height: calc(100vh - 18rem);
   max-width: 80rem;
   margin: auto;
+}
+
+@media screen and (max-width: 1800px) {
+  .landing-page {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    height: calc(100vh - 7rem);
+    max-width: 80rem;
+    margin: auto;
+  }
 }
 
 .landing-page .hero-heading {
@@ -30,12 +41,12 @@
 
 /* #d2eaff light blue*/
 /* #c94d50  red*/
-/* #57974e  green*/
-/* #4d7bc4 dark blue */
+/* #4CC283  green*/
+/* #4CB2C2 dark blue */
 
 .first-word {
   width: 160px;
-  color: #4d7bc4;
+  color: #4cc283;
 }
 
 .second-word {
@@ -83,7 +94,7 @@
 @media screen and (max-width: 1210px) {
   .first-word {
     width: 130px;
-    color: #4d7bc4;
+    color: #4cb2c2;
   }
 
   .second-word {
@@ -104,7 +115,7 @@
 @media screen and (max-width: 945px) {
   .first-word {
     width: 80px;
-    color: #4d7bc4;
+    color: #4cb2c2;
   }
   .first-word,
   .second-word {

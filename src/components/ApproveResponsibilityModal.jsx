@@ -304,7 +304,6 @@ function ApproveResponsibilityModal({
                   className="complete-btn"
                   onClick={() => {
                     setApproved(true);
-                    // setShowApproveModal(false);
                   }}
                 >
                   Mark as approved
@@ -317,7 +316,6 @@ function ApproveResponsibilityModal({
                     className="complete-btn"
                     onClick={() => {
                       setApproved(true);
-                      // setShowApproveModal(false);
                     }}
                   >
                     Mark as approved
@@ -328,7 +326,6 @@ function ApproveResponsibilityModal({
                       console.log('HI');
                       setJustApprove(true);
                       setApprovedSeries(true);
-                      // setShowApproveModal(false);
                     }}
                   >
                     Approve Series

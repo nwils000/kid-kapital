@@ -195,7 +195,6 @@ export const fetchResponsibilities = async ({ main }) => {
         Authorization: `Bearer ${main.state.accessToken}`,
       },
     });
-    await fetchUser({ accessToken: main.state.accessToken, main });
     console.log('FETCH RESPONSIBILITIES: ', response);
     return response;
   } catch (error) {

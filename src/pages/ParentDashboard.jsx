@@ -24,6 +24,7 @@ export default function ParentDashboard() {
   const [showApproveModal, setShowApproveModal] = useState(false);
   const [showEditModal, setShowEditModal] = useState(false);
   const [currentResponsibility, setCurrentResponsibility] = useState({});
+  const [currentChildId, setCurrentChildId] = useState();
 
   const navigate = useNavigate();
 
@@ -37,7 +38,8 @@ export default function ParentDashboard() {
     getFamilyStoreItems({ main });
   }, []);
 
-  const handleResponsibilityClick = (responsibility, childName = '') => {
+  const handleResponsibilityClick = (responsibility, childId) => {
+    setCurrentChildId(childId);
     setCurrentResponsibility(responsibility);
     setShowEditModal(true);
   };
@@ -88,85 +90,52 @@ export default function ParentDashboard() {
     <>
       <ParentNavbar />
       <div className="parent-dashboard">
-        <div className="family-store">
+        <div className="family-store-side">
           <UnapprovedPurchases />
         </div>
         <div className="family-members">
-          <h1 className="family-name">{main.state.profile.first_name}</h1>
+          <div
+            style={{
+              maxWidth: '35rem',
 
-          <div className="invitation-code">
-            <span style={{ fontWeight: '500' }}>
-              {main.state.profile.family.name}
-            </span>
-          </div>
-          <h2>Responsibilities Needing Approval</h2>
-          <select
-            onChange={(e) => setSelectedChildIdNeedingApproval(e.target.value)}
-            value={selectedChildIdNeedingApproval}
+              maxHeight: '100%',
+              display: 'flex',
+              flexDirection: 'column',
+              alignItems: 'center',
+            }}
           >
-            <option value="all">All Kids</option>
-            {main.state.profile.family.members
-              .filter((member) => !member.parent)
-              .map((child) => (
-                <option key={child.id} value={child.id}>
-                  {child.first_name}
-                </option>
-              ))}
-          </select>
-          <div className="dropdown-container" style={{ maxWidth: '35rem' }}>
-            {selectedChildIdNeedingApproval === 'all'
-              ? main.state.profile.family.members.map((child) =>
-                  child.responsibilities
-                    .filter(
-                      (responsibility) =>
-                        responsibility.verified === false &&
-                        responsibility.completed === false
-                    )
-                    .map((responsibility) => (
-                      <div
-                        style={{
-                          display: 'flex',
-                          flexDirection: 'column',
-                          alignItems: 'stretch',
-                        }}
-                        className="hover responsibility-item"
-                        onClick={() =>
-                          handleApprovalClick(responsibility, child.first_name)
-                        }
-                        key={responsibility.id}
-                      >
-                        <div
-                          style={{
-                            position: 'relative',
-                            top: 5,
-                            display: 'inline',
-                            paddingRight: 5,
-                            fontSize: '.5rem',
-                          }}
-                        >
-                          {child.first_name}
-                        </div>
-                        <div className="responsibility-content">
-                          <h4 className="responsibility-title">
-                            {responsibility.title}
-                          </h4>
-                          <span>
-                            {responsibility.date
-                              ? parseInt(responsibility.date.slice(5, 7)) +
-                                '/' +
-                                parseInt(responsibility.date.slice(8, 10))
-                              : ''}
-                          </span>
-                        </div>
-                      </div>
-                    ))
-                )
-              : main.state.profile.family.members
-                  .filter(
-                    (child) =>
-                      child.id.toString() === selectedChildIdNeedingApproval
-                  )
-                  .map((child) =>
+            <h1 style={{ fontSize: '2rem' }} className="family-name">
+              {main.state.profile.family.name}
+            </h1>
+
+            <div className="invitation-code"></div>
+            <h2 className="family-heading">
+              Responsibilities Needing Approval
+            </h2>
+            <select
+              style={{
+                padding: '10px',
+                marginBottom: '8px',
+                width: '100%',
+                borderRadius: 8,
+              }}
+              onChange={(e) =>
+                setSelectedChildIdNeedingApproval(e.target.value)
+              }
+              value={selectedChildIdNeedingApproval}
+            >
+              <option value="all">All Kids</option>
+              {main.state.profile.family.members
+                .filter((member) => !member.parent)
+                .map((child) => (
+                  <option key={child.id} value={child.id}>
+                    {child.first_name}
+                  </option>
+                ))}
+            </select>
+            <div className="dropdown-container" style={{ maxWidth: '35rem' }}>
+              {selectedChildIdNeedingApproval === 'all'
+                ? main.state.profile.family.members.map((child) =>
                     child.responsibilities
                       .filter(
                         (responsibility) =>
@@ -175,138 +144,214 @@ export default function ParentDashboard() {
                       )
                       .map((responsibility) => (
                         <div
+                          style={{
+                            display: 'flex',
+                            flexDirection: 'column',
+                            alignItems: 'stretch',
+                            padding: '3px 10px',
+
+                            cursor: 'pointer',
+                          }}
+                          className="responsibility-item"
                           onClick={() =>
                             handleApprovalClick(
                               responsibility,
                               child.first_name
                             )
                           }
-                          className="child-responsibility-to-approve responsibility-item"
                           key={responsibility.id}
                         >
+                          <div
+                            style={{
+                              position: 'relative',
+                              top: 5,
+                              display: 'inline',
+                            }}
+                          >
+                            {child.first_name}
+                          </div>
                           <div className="responsibility-content">
                             <h4 className="responsibility-title">
                               {responsibility.title}
                             </h4>
                             <span>
                               {responsibility.date
-                                ? parseInt(responsibility.date.slice(5, 7)) +
-                                  '/' +
-                                  parseInt(responsibility.date.slice(8, 10))
+                                ? formatDate(responsibility.date)
                                 : ''}
                             </span>
                           </div>
                         </div>
                       ))
-                  )}
-          </div>
-          <h2>Childrens Upcoming Responsibilities</h2>
-          <select
-            onChange={(e) =>
-              setSelectedChildIdIncompleteResponsibilities(e.target.value)
-            }
-            value={selectedChildIdIncompleteResponsibilities}
-          >
-            <option value="all">Whole Family</option>
-            {main.state.profile.family.members.map((child) => (
-              <option key={child.id} value={child.id}>
-                {child.first_name}
-              </option>
-            ))}
-          </select>
-          {selectedChildIdIncompleteResponsibilities === 'all'
-            ? main.state.profile.family.members.map((child) =>
-                child.responsibilities
-                  .filter((responsibility) => !responsibility.completed)
-                  .slice(0, 3)
-                  .map((responsibility) => (
-                    <div
-                      style={{
-                        display: 'flex',
-                        flexDirection: 'column',
-                        alignItems: 'stretch',
-                      }}
-                      className="hover responsibility-item"
-                      onClick={() =>
-                        handleResponsibilityClick(
-                          responsibility,
-                          child.first_name
+                  )
+                : main.state.profile.family.members
+                    .filter(
+                      (child) =>
+                        child.id.toString() === selectedChildIdNeedingApproval
+                    )
+                    .map((child) =>
+                      child.responsibilities
+                        .filter(
+                          (responsibility) =>
+                            responsibility.verified === false &&
+                            responsibility.completed === false
                         )
-                      }
-                      key={responsibility.id}
-                    >
-                      <div
-                        style={{
-                          position: 'relative',
-                          top: 5,
-                          display: 'inline',
-                          paddingRight: 5,
-                          fontSize: '.5rem',
-                        }}
-                      >
-                        {child.first_name}
-                      </div>
-                      <div className="responsibility-content">
-                        <h4 className="responsibility-title">
-                          {responsibility.title}
-                        </h4>
-                        <span>
-                          {responsibility.date
-                            ? parseInt(responsibility.date.slice(5, 7)) +
-                              '/' +
-                              parseInt(responsibility.date.slice(8, 10))
-                            : ''}
-                        </span>
-                      </div>
-                    </div>
-                  ))
-              )
-            : main.state.profile.family.members
-                .filter(
-                  (child) =>
-                    child.id.toString() ===
-                    selectedChildIdIncompleteResponsibilities
-                )
+                        .map((responsibility) => (
+                          <div
+                            style={{
+                              display: 'flex',
+                              flexDirection: 'column',
+                              alignItems: 'stretch',
+                              padding: '3px 10px',
+                              margin: '5px 0',
+                              cursor: 'pointer',
+                            }}
+                            onClick={() =>
+                              handleApprovalClick(
+                                responsibility,
+                                child.first_name
+                              )
+                            }
+                            className="responsibility-item"
+                            key={responsibility.id}
+                          >
+                            <div className="responsibility-content">
+                              <h4 className="responsibility-title">
+                                {responsibility.title}
+                              </h4>
+                              <span>
+                                {responsibility.date
+                                  ? formatDate(responsibility.date)
+                                  : ''}
+                              </span>
+                            </div>
+                          </div>
+                        ))
+                    )}
+            </div>
+            <h2 className="family-heading">
+              Children's Upcoming Responsibilities
+            </h2>
+            <select
+              style={{
+                padding: '10px',
+                marginBottom: '8px',
+                width: '100%',
+                borderRadius: 8,
+              }}
+              onChange={(e) =>
+                setSelectedChildIdIncompleteResponsibilities(e.target.value)
+              }
+              value={selectedChildIdIncompleteResponsibilities}
+            >
+              <option value="all">Whole Family</option>
+              {main.state.profile.family.members.map((child) => (
+                <option key={child.id} value={child.id}>
+                  {child.first_name}
+                </option>
+              ))}
+            </select>
+            <div className="dropdown-container">
+              {selectedChildIdIncompleteResponsibilities === 'all'
+                ? main.state.profile.family.members.map((child) =>
+                    child.responsibilities
+                      .filter((responsibility) => !responsibility.completed)
 
-                .map((child) =>
-                  child.responsibilities
-                    .filter((responsibility) => !responsibility.completed)
-                    .slice(0, 8)
-                    .map((responsibility) => (
-                      <div
-                        className="hover responsibility-item"
-                        onClick={() =>
-                          handleResponsibilityClick(
-                            responsibility,
-                            child.first_name
-                          )
-                        }
-                        key={responsibility.id}
-                      >
-                        <div className="responsibility-content">
-                          <h4 className="responsibility-title">
-                            {responsibility.title}
-                          </h4>
-                          <span>
-                            {responsibility.date
-                              ? parseInt(responsibility.date.slice(5, 7)) +
-                                '/' +
-                                parseInt(responsibility.date.slice(8, 10))
-                              : ''}
-                          </span>
+                      .map((responsibility) => (
+                        <div
+                          style={{
+                            display: 'flex',
+                            flexDirection: 'column',
+                            alignItems: 'stretch',
+                            padding: '3px 10px',
+
+                            cursor: 'pointer',
+                          }}
+                          className="responsibility-item"
+                          onClick={() =>
+                            handleResponsibilityClick(responsibility, child.id)
+                          }
+                          key={responsibility.id}
+                        >
+                          <div
+                            style={{
+                              position: 'relative',
+                              top: 5,
+                              display: 'inline',
+                            }}
+                          >
+                            {child.first_name}
+                          </div>
+                          <div className="responsibility-content">
+                            <h4 className="responsibility-title">
+                              {responsibility.title}
+                            </h4>
+                            <span>
+                              {responsibility.date
+                                ? formatDate(responsibility.date)
+                                : ''}
+                            </span>
+                          </div>
                         </div>
-                      </div>
-                    ))
-                )}
+                      ))
+                  )
+                : main.state.profile.family.members
+                    .filter(
+                      (child) =>
+                        child.id.toString() ===
+                        selectedChildIdIncompleteResponsibilities
+                    )
+                    .map((child) =>
+                      child.responsibilities
+                        .filter((responsibility) => !responsibility.completed)
+                        .slice(0, 8)
+                        .map((responsibility) => (
+                          <div
+                            style={{
+                              display: 'flex',
+                              flexDirection: 'column',
+                              alignItems: 'stretch',
+                              padding: '10px',
+                              margin: '5px 0',
+                              cursor: 'pointer',
+                            }}
+                            className="responsibility-item"
+                            onClick={() =>
+                              handleResponsibilityClick(
+                                responsibility,
+                                child.id
+                              )
+                            }
+                            key={responsibility.id}
+                          >
+                            <div className="responsibility-content">
+                              <h4 className="responsibility-title">
+                                {responsibility.title}
+                              </h4>
+                              <span>
+                                {responsibility.date
+                                  ? formatDate(responsibility.date)
+                                  : ''}
+                              </span>
+                            </div>
+                          </div>
+                        ))
+                    )}
+            </div>
+          </div>
         </div>
+
         <div className="responsibilities">
-          <h2 className="hover" onClick={() => navigate('/responsibilities')}>
+          <h2
+            style={{ fontSize: 24 }}
+            className="hover"
+            onClick={() => navigate('/responsibilities')}
+          >
             My Upcoming Responsibilities
           </h2>
           {main.state.profile.responsibilities
             .filter((responsibility) => !responsibility.completed)
             .sort((a, b) => new Date(a.date) - new Date(b.date))
-            .slice(0, 6)
+            .slice(0, 5)
             .map((responsibility, index) => (
               <div
                 className="hover responsibility-item-big"
@@ -323,15 +368,14 @@ export default function ParentDashboard() {
                     {responsibility.title}
                   </h4>
                   <span>
-                    {responsibility.date
-                      ? parseInt(responsibility.date.slice(5, 7)) +
-                        '/' +
-                        parseInt(responsibility.date.slice(8, 10))
-                      : ''}
+                    {responsibility.date ? formatDate(responsibility.date) : ''}
                   </span>
                 </div>
               </div>
             ))}
+          {main.state.profile.responsibilities.filter(
+            (responsibility) => !responsibility.completed
+          ).length > 5 && <div className="dots-bubble"></div>}
         </div>
 
         <ApproveResponsibilityModal
@@ -343,6 +387,7 @@ export default function ParentDashboard() {
         <EditResponsibilityModal
           showEditModal={showEditModal}
           setShowEditModal={setShowEditModal}
+          currentChildId={currentChildId}
           currentResponsibility={currentResponsibility}
           setCurrentResponsibility={setCurrentResponsibility}
           editResponsibility={editResponsibility}

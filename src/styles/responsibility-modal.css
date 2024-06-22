@@ -24,8 +24,8 @@
 .modal-content {
   background: white;
   padding: 40px;
-  border-radius: 15px;
-  box-shadow: 0 10px 25px rgba(0, 0, 0, 0.2);
+  border-radius: 8px;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
   width: 50%;
   max-width: 600px;
 }
@@ -43,7 +43,7 @@
   width: 100%;
   padding: 15px;
   border: solid 1px #ccc;
-  border-radius: 12px;
+  border-radius: 8px;
   font-size: 16px;
 }
 
@@ -53,25 +53,36 @@
   padding-top: 20px;
 }
 
-.edit-btn,
-.save-btn,
-.delete-btn {
+.edit-btn {
   padding: 12px 25px;
   border: none;
-  background-color: #3fa0ca;
+  background-color: #4cb2c2;
   color: white;
-  border-radius: 12px;
+  border-radius: 8px;
   font-size: 16px;
   transition: 0.2s;
 }
 
-.edit-btn:hover,
-.save-btn:hover,
-.delete-btn:hover {
-  cursor: pointer;
-  background-color: #327d9b;
+.save-btn {
+  background-color: #4cc283;
 }
 
+.save-btn:hover {
+  background-color: #46b378;
+}
+
+.delete-btn {
+  background-color: #c24c49;
+}
+
+.edit-btn:hover {
+  cursor: pointer;
+  background-color: #49abba;
+}
+
+.delete-btn:hover {
+  background-color: #b84846;
+}
 .close-btn {
   position: absolute;
   top: 10px;
@@ -84,7 +95,7 @@
 
 .verified {
   border: 3px solid rgb(49, 154, 199);
-  box-shadow: 0 10px 25px rgba(0, 0, 0, 0.2);
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
 }
 
 .day-checkbox {

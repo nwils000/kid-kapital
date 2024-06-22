@@ -1,10 +1,19 @@
 .child-dashboard {
   display: grid;
-  grid-template-columns: 1fr 1fr 1fr 1fr;
-  grid-template-rows: 1fr 1fr 1fr;
+  grid-template-columns: repeat(4, 1fr);
+  grid-template-rows: auto auto auto;
   gap: 20px;
   padding: 20px;
-  height: calc(100vh - 6rem);
+}
+
+@media screen and (min-width: 1305px) {
+  .child-dashboard {
+    max-height: calc(100vh - 6rem);
+  }
+}
+
+.child-dashboard .family-heading {
+  text-align: center;
 }
 
 .child-dashboard-header {
@@ -20,6 +29,7 @@
   grid-row: 1 / -1;
   background-color: #f8f8f8;
   padding: 20px;
+  border-radius: 8px;
   display: flex;
   flex-direction: column;
   align-items: center;
@@ -27,21 +37,62 @@
 
 .responsibilities {
   grid-column: 4 / 5;
-  grid-row: 1 / 4;
-  background-color: #f0f0f0;
+  grid-row: 1 / 3;
   padding: 20px;
+  width: 24rem;
+  text-align: right;
 }
 
 .wallet {
   grid-column: 1 / 2;
   grid-row: 1 / 3;
-  background-color: #f0f0f0;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
   padding: 20px;
+}
+
+.wallet-details div {
+  text-align: center;
 }
 
 .family-name {
   margin-bottom: 0;
 }
 
-.invitation-code {
+@media (max-width: 1305px) {
+  .child-dashboard {
+    display: flex;
+    flex-direction: column-reverse;
+    align-items: center;
+  }
+
+  .child-dashboard .family-members {
+    background-color: transparent;
+  }
+
+  .child-dashboard-header,
+  .family-members,
+  .responsibilities,
+  .wallet {
+    width: 100%;
+    grid-column: unset;
+    grid-row: unset;
+  }
+}
+
+@media (max-width: 1024px) {
+  .family-members,
+  .responsibilities,
+  .wallet {
+    order: 0;
+  }
+}
+
+@media (max-width: 768px) {
+  .family-members,
+  .responsibilities,
+  .wallet {
+    padding: 15px;
+  }
 }

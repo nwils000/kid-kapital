@@ -75,7 +75,7 @@ export default function Finances() {
                   style={{
                     marginLeft: 7,
                     fontSize: '1.2rem',
-                    color: '#3fa0ca',
+                    color: '#4CB2C2',
                   }}
                 />
               </>
@@ -130,7 +130,7 @@ export default function Finances() {
             style={{
               marginLeft: 7,
               fontSize: '1.2rem',
-              color: '#3fa0ca',
+              color: '#4CB2C2',
             }}
           />
         </div>

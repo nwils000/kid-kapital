@@ -44,7 +44,7 @@ a {
   font-weight: 400;
   position: relative;
   transition: 300ms;
-  color: #3fa0ca;
+  color: #4CC283;
 }
 
 a::before {
@@ -82,11 +82,30 @@ button {
   padding: 10px 20px;
   border: none;
   color: white;
-  background-color: #3fa0ca;
+  background-color: #4cc283;
   transition: 0.5s;
   border-radius: 8px;
 }
 
 button:hover {
-  background-color: #3590b5;
+  background-color: #46B378;
+}
+
+.dots-bubble {
+  text-align: center;
+  margin-top: 6px;
+  background-color: #fff;
+  border-radius: 50rem;
+  padding: 10px 20px;
+  display: inline-block;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+}
+
+.dots-bubble::before {
+  content: '• • •';
+  position: relative;
+  top: 2px;
+  font-size: 24px;
+  color: #4cc283;
+  line-height: 0;
 }
