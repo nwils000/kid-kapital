@@ -58,45 +58,59 @@ export default function ChildFinancialAccounts() {
   return (
     <div>
       <ChildDashboardNavbar />
-      <h2>Child Component</h2>
-      <div>
+      <h1 style={{ fontSize: '2rem', textAlign: 'center', paddingBottom: 20 }}>
+        Savings & Investments
+      </h1>
+      <div className="investment-section">
         <h3>Invest Money</h3>
         <p>Total Money: {main.state.profile.total_money}</p>
-        Account Id
-        <input
-          type="number"
-          placeholder="Account ID"
-          value={accountId}
-          onChange={(e) => setAccountId(parseInt(e.target.value))}
-        />
-        Account Amount
-        <input
-          type="number"
-          placeholder="Amount"
-          value={amount}
-          onChange={(e) => setAmount(parseFloat(e.target.value))}
-        />
-        <button onClick={handleInvestMoney}>Invest</button>
+        <div className="investment-input-group">
+          <label htmlFor="account-id">Account Id</label>
+          <input
+            id="account-id"
+            className="investment-input"
+            type="number"
+            placeholder="Account ID"
+            value={accountId}
+            onChange={(e) => setAccountId(parseInt(e.target.value))}
+          />
+        </div>
+        <div className="investment-input-group">
+          <label htmlFor="account-amount">Account Amount</label>
+          <input
+            id="account-amount"
+            className="investment-input"
+            type="number"
+            placeholder="Amount"
+            value={amount}
+            onChange={(e) => setAmount(parseFloat(e.target.value))}
+          />
+        </div>
+        <button className="button" onClick={handleInvestMoney}>
+          Invest
+        </button>
       </div>
-      <div>
+
+      <div className="investment-section">
         <h3>Your Investments</h3>
-        <ul>
+        <ul className="investment-list">
           {investments.map((investment) => (
-            <div key={investment.id}>
-              <li>
-                ID: {investment.id} - Amount Invested:{' '}
-                {investment.amount_invested} - Returns: {investment.returns}
-                <button onClick={() => handleCashOut(investment.id)}>
-                  Cash Out
-                </button>
-              </li>
-            </div>
+            <li key={investment.id}>
+              ID: {investment.id} - Amount Invested:{' '}
+              {investment.amount_invested} - Returns: {investment.returns}
+              <button
+                className="button"
+                onClick={() => handleCashOut(investment.id)}
+              >
+                Cash Out
+              </button>
+            </li>
           ))}
         </ul>
       </div>
-      <div>
-        <h3>Existing Accounts</h3>
-        <ul>
+      <div className="existing-accounts-section">
+        <h3 style={{ textAlign: 'center' }}>Available Accounts</h3>
+        <ul style={{ marginTop: 0 }}>
           {accounts.map((account) => (
             <li key={account.id}>
               <div
@@ -111,6 +125,16 @@ export default function ChildFinancialAccounts() {
                 }}
               >
                 <h3 style={{ marginBottom: '10px' }}>Account Details</h3>
+                <div
+                  style={{
+                    display: 'flex',
+                    alignItems: 'center',
+                    gap: '0.5rem',
+                    marginBottom: '10px',
+                  }}
+                >
+                  Account ID: {account.id}
+                </div>
                 <div
                   style={{
                     display: 'flex',

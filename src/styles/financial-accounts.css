@@ -7,6 +7,71 @@
   margin: 20px;
 }
 
+.investment-section {
+  padding: 20px;
+  background-color: white;
+  border-radius: 8px;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+  margin: auto;
+  margin-bottom: 20px;
+  max-width: 30rem;
+}
+
+.existing-accounts-section {
+  max-width: 30rem;
+  margin: auto;
+}
+
+.investment-section h3 {
+  margin-bottom: 10px;
+}
+
+.investment-input-group {
+  margin: 10px 0;
+  display: flex;
+  flex-direction: column;
+}
+
+.investment-input-group label {
+  font-weight: bold;
+  margin-bottom: 5px;
+}
+
+.investment-input {
+  padding: 8px;
+  border: 1px solid #ccc;
+  border-radius: 4px;
+  margin-bottom: 10px;
+}
+
+.button {
+  background-color: #4cc283;
+  color: white;
+  padding: 10px 20px;
+  border: none;
+  border-radius: 4px;
+  margin-top: 20px;
+  cursor: pointer;
+  transition: background-color 0.3s;
+}
+
+.button:hover {
+  background-color: #46b378;
+}
+
+.investment-list {
+  list-style: none;
+}
+
+.investment-list li {
+  padding: 0;
+  border-bottom: 1px solid #eee;
+}
+
+.investment-list li:last-child {
+  border-bottom: none;
+}
+
 .title {
   text-align: center;
 }
