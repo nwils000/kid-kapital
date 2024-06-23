@@ -29,8 +29,22 @@ export default function ParentFinancialAccounts() {
   const [day, setDay] = useState(1);
   const [potentialGain, setPotentialGain] = useState(6);
   const [potentialLoss, setPotentialLoss] = useState(3);
+  const [year, setYear] = useState(new Date().getFullYear());
 
-  const monthDays = [31, 28, 31, 30, 31, 30, 31, 31, 30, 31, 30, 31];
+  const [monthDays, setMonthDays] = useState([
+    31, 28, 31, 30, 31, 30, 31, 31, 30, 31, 30, 31,
+  ]);
+
+  const isLeapYear = (year) => {
+    return (year % 4 === 0 && year % 100 !== 0) || year % 400 === 0;
+  };
+
+  useEffect(() => {
+    const newMonthDays = [...monthDays];
+    newMonthDays[1] = isLeapYear(year) ? 29 : 28;
+    setMonthDays(newMonthDays);
+  }, [year]);
+
   const monthNames = [
     'January',
     'February',
@@ -53,6 +67,7 @@ export default function ParentFinancialAccounts() {
   const fetchAccounts = async () => {
     const response = await viewAvailableAccounts({ main });
     setAccounts(response);
+    console.log('AVAILABLE ACCOUNTS', response);
   };
 
   useEffect(() => {
@@ -67,13 +82,21 @@ export default function ParentFinancialAccounts() {
 
   const handleMonthChange = (e) => {
     const newMonth = parseInt(e.target.value);
+    const maxDays = monthDays[newMonth - 1];
     setMonth(newMonth);
-    const newDayOfYear = dateToDayOfYear(newMonth, day);
+    if (day > maxDays) {
+      setDay(maxDays);
+    }
+    const newDayOfYear = dateToDayOfYear(newMonth, Math.min(day, maxDays));
     setInterestDay(newDayOfYear);
   };
 
   const handleDayChange = (e) => {
     const newDay = parseInt(e.target.value);
+    const maxDays = monthDays[month - 1];
+    if (newDay > maxDays) {
+      return;
+    }
     setDay(newDay);
     const newDayOfYear = dateToDayOfYear(month, newDay);
     setInterestDay(newDayOfYear);
@@ -146,6 +169,14 @@ export default function ParentFinancialAccounts() {
     setShowCreateForm(!showCreateForm);
     setEditMode(false);
   };
+
+  function getDayOfYear(dayNum) {
+    const yearStart = new Date(new Date().getFullYear(), 0, 1);
+
+    const date = new Date(yearStart.setDate(dayNum));
+
+    return date.toLocaleDateString('en-US', { month: 'long', day: 'numeric' });
+  }
 
   const weekDays = [
     'Sunday',
@@ -446,13 +477,82 @@ export default function ParentFinancialAccounts() {
                 <div
                   style={{
                     display: 'flex',
-                    gap: '.5rem',
-                    alignItems: 'center',
+                    flexDirection: 'column',
+                    justifyContent: 'space-between',
+                    padding: '20px',
+                    border: '1px solid #ccc',
+                    borderRadius: '5px',
+                    marginBottom: '20px',
                   }}
                 >
-                  ID: {account.id} - {account.account_type} -{' '}
-                  {account.interest_rate}% - {account.interest_day}{' '}
-                  {account.interest_period_type}
+                  <h3 style={{ marginBottom: '10px' }}>Account Details</h3>
+                  <div
+                    style={{
+                      display: 'flex',
+                      alignItems: 'center',
+                      gap: '0.5rem',
+                      marginBottom: '10px',
+                    }}
+                  >
+                    Account Type: {account.account_type}
+                  </div>
+
+                  <div
+                    style={{
+                      display: 'flex',
+                      alignItems: 'center',
+                      gap: '0.5rem',
+                      marginBottom: '10px',
+                    }}
+                  >
+                    Interest Period Type: {account.interest_period_type}
+                  </div>
+                  <div
+                    style={{
+                      display: 'flex',
+                      alignItems: 'center',
+                      gap: '0.5rem',
+                      marginBottom: '10px',
+                    }}
+                  >
+                    Interest Day of the Year:{' '}
+                    {getDayOfYear(account.interest_day)}
+                  </div>
+                  <div
+                    style={{
+                      display: 'flex',
+                      alignItems: 'center',
+                      gap: '0.5rem',
+                      marginBottom: '10px',
+                    }}
+                  >
+                    Interest Rate: {account.interest_rate}%
+                  </div>
+                  {account.account_type === 'Investment' && (
+                    <>
+                      <div
+                        style={{
+                          display: 'flex',
+                          alignItems: 'center',
+                          gap: '0.5rem',
+                          marginBottom: '10px',
+                        }}
+                      >
+                        Potential Gain: {account.potential_gain}%
+                      </div>
+                      <div
+                        style={{
+                          display: 'flex',
+                          alignItems: 'center',
+                          gap: '0.5rem',
+                          marginBottom: '10px',
+                        }}
+                      >
+                        Potential Loss: {account.potential_loss}%
+                      </div>
+                    </>
+                  )}
+
                   <div
                     style={{
                       display: 'flex',
