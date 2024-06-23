@@ -139,9 +139,18 @@
   justify-content: space-between;
   align-items: center;
 }
+.total-money {
+  font-size: 1.5rem;
+}
 
 .family-store .modal-body {
   margin-top: 20px;
+}
+
+.request-new-item {
+  position: absolute;
+  right: 20px;
+  top: 10px;
 }
 
 @media (max-width: 768px) {
@@ -149,6 +158,17 @@
     display: grid;
     grid-template-columns: repeat(1, 1fr);
     gap: 20px;
+  }
+
+  .request-new-item {
+    position: absolute;
+    right: 40px;
+    top: 10px;
+  }
+
+  .total-money {
+    font-size: 1rem;
+    text-align: center;
   }
 
   .family-store .store-layout {

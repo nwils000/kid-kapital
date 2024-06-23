@@ -62,24 +62,72 @@ export default function Wallet() {
   }, [main.state.profile]);
 
   return (
-    <div className="wallet">
-      <h2>Wallet Overview</h2>
-      <div className="wallet-details">
-        <div>
-          <label>Last Allowance Period Earnings:</label>
-          <span>${allowanceDetails.lastPeriodEarnings.toFixed(2)}</span>
+    <div
+      style={{
+        maxWidth: '600px',
+        margin: 'auto',
+        padding: '20px',
+      }}
+    >
+      <h2 style={{ textAlign: 'center' }}>Wallet</h2>
+      <div
+        style={{
+          padding: '10px',
+          backgroundColor: '#F8F9FA',
+          borderRadius: '8px',
+        }}
+      >
+        <div
+          style={{
+            margin: '10px 0',
+            alignItems: 'center',
+            display: 'flex',
+            gap: '3rem',
+            justifyContent: 'space-between',
+          }}
+        >
+          <label style={{ fontWeight: 'bold' }}>
+            Last Allowance Period Earnings:
+          </label>
+          <span style={{ color: '#333' }}>
+            ${allowanceDetails.lastPeriodEarnings.toFixed(2)}
+          </span>
         </div>
-        <div>
-          <label>Current Balance:</label>
-          <span>${allowanceDetails.currentBalance.toFixed(2)}</span>
+        <div
+          style={{
+            margin: '10px 0',
+            display: 'flex',
+            justifyContent: 'space-between',
+          }}
+        >
+          <label style={{ fontWeight: 'bold' }}>Current Balance:</label>
+          <span style={{ color: '#333' }}>
+            ${allowanceDetails.currentBalance.toFixed(2)}
+          </span>
         </div>
-        <div>
-          <label>Savings:</label>
-          <span>${allowanceDetails.savings.toFixed(2)}</span>
+        <div
+          style={{
+            margin: '10px 0',
+            display: 'flex',
+            justifyContent: 'space-between',
+          }}
+        >
+          <label style={{ fontWeight: 'bold' }}>Savings:</label>
+          <span style={{ color: '#333' }}>
+            ${allowanceDetails.savings.toFixed(2)}
+          </span>
         </div>
-        <div>
-          <label>Total Money:</label>
-          <span>${allowanceDetails.totalMoney.toFixed(2)}</span>
+        <div
+          style={{
+            margin: '10px 0',
+            display: 'flex',
+            justifyContent: 'space-between',
+          }}
+        >
+          <label style={{ fontWeight: 'bold' }}>Total Money:</label>
+          <span style={{ color: '#333' }}>
+            ${allowanceDetails.totalMoney.toFixed(2)}
+          </span>
         </div>
       </div>
     </div>

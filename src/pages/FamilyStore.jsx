@@ -78,9 +78,6 @@ function FamilyStore() {
         Family Store
       </h1>
       <div className="family-store">
-        {!main.state.profile.parent && (
-          <p>Total Money: ${main.state.profile.total_money}</p>
-        )}
         <div className="store-layout">
           {main.state.profile.parent && (
             <div className="sidebar left">
@@ -119,8 +116,16 @@ function FamilyStore() {
             </div>
           )}
           <div className="store-items" style={{ position: 'relative' }}>
+            {!main.state.profile.parent && (
+              <p
+                className="total-money"
+                style={{ position: 'relative', top: 45 }}
+              >
+                Total Money: ${main.state.profile.total_money}
+              </p>
+            )}
             <button
-              style={{ position: 'absolute', right: 20, top: 10 }}
+              className="request-new-item"
               onClick={() => openItemModal(null)}
             >
               {main.state.profile.parent ? 'Add New Item' : 'Request New Item'}

@@ -63,7 +63,7 @@ export default function ChildFinancialAccounts() {
       </h1>
       <div className="investment-section">
         <h3>Invest Money</h3>
-        <p>Total Money: {main.state.profile.total_money}</p>
+        <p>Total Money: ${main.state.profile.total_money}</p>
         <div className="investment-input-group">
           <label htmlFor="account-id">Account Id</label>
           <input
