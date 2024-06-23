@@ -43,6 +43,18 @@ export default function ChildFinancialAccounts() {
     await cashOut({ main, investmentId });
   };
 
+  const getDayOfYear = (dayNum) => {
+    const date = new Date(new Date().getFullYear(), 0);
+    date.setDate(dayNum);
+    return date.toLocaleDateString('en-US', { month: 'long', day: 'numeric' });
+  };
+
+  const getDayOfWeek = (dayNum) => {
+    const date = new Date(new Date().getFullYear(), 0);
+    date.setDate(dayNum);
+    return date.toLocaleDateString('en-US', { weekday: 'long' });
+  };
+
   return (
     <div>
       <ChildDashboardNavbar />
@@ -55,14 +67,14 @@ export default function ChildFinancialAccounts() {
           type="number"
           placeholder="Account ID"
           value={accountId}
-          onChange={(e) => setAccountId(e.target.value)}
+          onChange={(e) => setAccountId(parseInt(e.target.value))}
         />
         Account Amount
         <input
           type="number"
           placeholder="Amount"
           value={amount}
-          onChange={(e) => setAmount(e.target.value)}
+          onChange={(e) => setAmount(parseFloat(e.target.value))}
         />
         <button onClick={handleInvestMoney}>Invest</button>
       </div>
@@ -73,11 +85,11 @@ export default function ChildFinancialAccounts() {
             <div key={investment.id}>
               <li>
                 ID: {investment.id} - Amount Invested:{' '}
-                {investment.amount_invested} - Returns {investment.returns}
+                {investment.amount_invested} - Returns: {investment.returns}
+                <button onClick={() => handleCashOut(investment.id)}>
+                  Cash Out
+                </button>
               </li>
-              <button onClick={() => handleCashOut(investment.id)}>
-                Cash Out
-              </button>
             </div>
           ))}
         </ul>
@@ -87,9 +99,92 @@ export default function ChildFinancialAccounts() {
         <ul>
           {accounts.map((account) => (
             <li key={account.id}>
-              ID: {account.id} - {account.account_type} -{' '}
-              {account.interest_rate}% - {account.interest_day}{' '}
-              {account.interest_period_type}{' '}
+              <div
+                style={{
+                  display: 'flex',
+                  flexDirection: 'column',
+                  justifyContent: 'space-between',
+                  padding: '20px',
+                  border: '1px solid #ccc',
+                  borderRadius: '5px',
+                  marginBottom: '20px',
+                }}
+              >
+                <h3 style={{ marginBottom: '10px' }}>Account Details</h3>
+                <div
+                  style={{
+                    display: 'flex',
+                    alignItems: 'center',
+                    gap: '0.5rem',
+                    marginBottom: '10px',
+                  }}
+                >
+                  Account Type: {account.account_type}
+                </div>
+                <div
+                  style={{
+                    display: 'flex',
+                    alignItems: 'center',
+                    gap: '0.5rem',
+                    marginBottom: '10px',
+                  }}
+                >
+                  Interest Period Type: {account.interest_period_type}
+                </div>
+                <div
+                  style={{
+                    display: 'flex',
+                    alignItems: 'center',
+                    gap: '0.5rem',
+                    marginBottom: '10px',
+                  }}
+                >
+                  {account.account_type === 'Savings' ? (
+                    <p style={{ margin: 0 }}>Interest Day:</p>
+                  ) : (
+                    <p style={{ margin: 0 }}>Cash-out Day:</p>
+                  )}
+                  {account.interest_period_type === 'Weekly'
+                    ? getDayOfWeek(account.interest_day)
+                    : account.interest_period_type === 'Monthly'
+                    ? account.interest_day
+                    : getDayOfYear(account.interest_day)}
+                </div>
+                <div
+                  style={{
+                    display: 'flex',
+                    alignItems: 'center',
+                    gap: '0.5rem',
+                    marginBottom: '10px',
+                  }}
+                >
+                  Interest Rate: {account.interest_rate}%
+                </div>
+                {account.account_type === 'Investment' && (
+                  <>
+                    <div
+                      style={{
+                        display: 'flex',
+                        alignItems: 'center',
+                        gap: '0.5rem',
+                        marginBottom: '10px',
+                      }}
+                    >
+                      Potential Gain: {account.potential_gain}%
+                    </div>
+                    <div
+                      style={{
+                        display: 'flex',
+                        alignItems: 'center',
+                        gap: '0.5rem',
+                        marginBottom: '10px',
+                      }}
+                    >
+                      Potential Loss: {account.potential_loss}%
+                    </div>
+                  </>
+                )}
+              </div>
             </li>
           ))}
         </ul>

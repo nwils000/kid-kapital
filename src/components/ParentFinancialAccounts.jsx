@@ -178,6 +178,12 @@ export default function ParentFinancialAccounts() {
     return date.toLocaleDateString('en-US', { month: 'long', day: 'numeric' });
   }
 
+  const getDayOfWeek = (dayNum) => {
+    const date = new Date(new Date().getFullYear(), 0);
+    date.setDate(dayNum);
+    return date.toLocaleDateString('en-US', { weekday: 'long' });
+  };
+
   const weekDays = [
     'Sunday',
     'Monday',
@@ -344,136 +350,153 @@ export default function ParentFinancialAccounts() {
             Create a new account
           </button>
         )}
-        {editMode && (
-          <div className="form-section">
-            <div style={{ display: 'flex', justifyContent: 'space-between' }}>
-              <h3>Update Account</h3>
-              <div
-                className="cancel-edit hover"
-                onClick={() => setEditMode(false)}
-              >
-                X
-              </div>
-            </div>
-            <label>Account Type (e.g., Savings, Investment)</label>
-            <select
-              className="input-text"
-              value={accountType}
-              onChange={handleAccountTypeChange}
-            >
-              <option value="Savings">Savings</option>
-              <option value="Investment">Investment</option>
-            </select>
-            {accountType === 'Savings' && (
-              <>
-                <label>Interest Rate (%)</label>
-                <input
-                  min={0}
-                  className="input-number"
-                  type="number"
-                  placeholder="Interest Rate"
-                  value={interestRate}
-                  onChange={(e) => setInterestRate(parseFloat(e.target.value))}
-                />
-              </>
-            )}
-            {accountType === 'Investment' && (
-              <>
-                <label>Potential Gain (%)</label>
-                <input
-                  className="input-number"
-                  type="number"
-                  placeholder="Enter potential gain"
-                  min="0"
-                  value={potentialGain}
-                  onChange={(e) => setPotentialGain(parseFloat(e.target.value))}
-                />
 
-                <label>Potential Loss (%)</label>
-                <input
-                  className="input-number"
-                  type="number"
-                  placeholder="Enter potential loss"
-                  min="0"
-                  value={potentialLoss}
-                  onChange={(e) => setPotentialLoss(parseFloat(e.target.value))}
-                />
-              </>
-            )}
-            <label>Interest Period</label>
-            <select
-              className="select-input"
-              value={interestPeriodType}
-              onChange={(e) => setInterestPeriodType(e.target.value)}
-            >
-              <option value="Weekly">Weekly</option>
-              <option value="Monthly">Monthly</option>
-              <option value="Yearly">Yearly</option>
-            </select>
-            <label>Interest Day</label>
-            {interestPeriodType === 'Weekly' && (
-              <select
-                className="input-number"
-                value={weekDays[interestDay]}
-                onChange={(e) =>
-                  setInterestDay(weekDays.indexOf(e.target.value))
-                }
-              >
-                {weekDays.map((weekDay) => (
-                  <option key={weekDay} value={weekDay}>
-                    {weekDay}
-                  </option>
-                ))}
-              </select>
-            )}
-            {interestPeriodType === 'Monthly' && (
-              <input
-                className="input-number"
-                type="number"
-                min="1"
-                max="31"
-                placeholder="Day of the month"
-                value={interestDay}
-                onChange={(e) => setInterestDay(parseInt(e.target.value))}
-                required
-              />
-            )}
-            {interestPeriodType === 'Yearly' && (
-              <>
-                <label>Month</label>
-                <select
-                  className="input-number"
-                  value={month}
-                  onChange={handleMonthChange}
-                >
-                  {monthNames.map((name, index) => (
-                    <option key={name} value={index + 1}>
-                      {name}
-                    </option>
-                  ))}
-                </select>
-                <label>Day</label>
-                <input
-                  className="input-number"
-                  type="number"
-                  min="1"
-                  max={monthDays[month - 1]}
-                  value={day}
-                  onChange={handleDayChange}
-                  required
-                />
-              </>
-            )}
-            <button className="button-update" onClick={handleUpdateAccount}>
-              Update Account
-            </button>
-          </div>
-        )}
         <div className="account-list">
           <h3 style={{ paddingBottom: 0 }}>Existing Accounts: </h3>
           <ul style={{ marginTop: 0 }}>
             {accounts.map((account) => (
               <li key={account.id}>
+                {editMode && (
+                  <div className="form-section">
+                    <div
+                      style={{
+                        display: 'flex',
+                        justifyContent: 'space-between',
+                      }}
+                    >
+                      <h3>Update Account</h3>
+                      <div
+                        className="cancel-edit hover"
+                        onClick={() => setEditMode(false)}
+                      >
+                        X
+                      </div>
+                    </div>
+                    <label>Account Type (e.g., Savings, Investment)</label>
+                    <select
+                      className="input-text"
+                      value={accountType}
+                      onChange={handleAccountTypeChange}
+                    >
+                      <option value="Savings">Savings</option>
+                      <option value="Investment">Investment</option>
+                    </select>
+                    {accountType === 'Savings' && (
+                      <>
+                        <label>Interest Rate (%)</label>
+                        <input
+                          min={0}
+                          className="input-number"
+                          type="number"
+                          placeholder="Interest Rate"
+                          value={interestRate}
+                          onChange={(e) =>
+                            setInterestRate(parseFloat(e.target.value))
+                          }
+                        />
+                      </>
+                    )}
+                    {accountType === 'Investment' && (
+                      <>
+                        <label>Potential Gain (%)</label>
+                        <input
+                          className="input-number"
+                          type="number"
+                          placeholder="Enter potential gain"
+                          min="0"
+                          value={potentialGain}
+                          onChange={(e) =>
+                            setPotentialGain(parseFloat(e.target.value))
+                          }
+                        />
+
+                        <label>Potential Loss (%)</label>
+                        <input
+                          className="input-number"
+                          type="number"
+                          placeholder="Enter potential loss"
+                          min="0"
+                          value={potentialLoss}
+                          onChange={(e) =>
+                            setPotentialLoss(parseFloat(e.target.value))
+                          }
+                        />
+                      </>
+                    )}
+                    <label>Interest Period</label>
+                    <select
+                      className="select-input"
+                      value={interestPeriodType}
+                      onChange={(e) => setInterestPeriodType(e.target.value)}
+                    >
+                      <option value="Weekly">Weekly</option>
+                      <option value="Monthly">Monthly</option>
+                      <option value="Yearly">Yearly</option>
+                    </select>
+                    <label>Interest Day</label>
+                    {interestPeriodType === 'Weekly' && (
+                      <select
+                        className="input-number"
+                        value={weekDays[interestDay]}
+                        onChange={(e) =>
+                          setInterestDay(weekDays.indexOf(e.target.value))
+                        }
+                      >
+                        {weekDays.map((weekDay) => (
+                          <option key={weekDay} value={weekDay}>
+                            {weekDay}
+                          </option>
+                        ))}
+                      </select>
+                    )}
+                    {interestPeriodType === 'Monthly' && (
+                      <input
+                        className="input-number"
+                        type="number"
+                        min="1"
+                        max="31"
+                        placeholder="Day of the month"
+                        value={interestDay}
+                        onChange={(e) =>
+                          setInterestDay(parseInt(e.target.value))
+                        }
+                        required
+                      />
+                    )}
+                    {interestPeriodType === 'Yearly' && (
+                      <>
+                        <label>Month</label>
+                        <select
+                          className="input-number"
+                          value={month}
+                          onChange={handleMonthChange}
+                        >
+                          {monthNames.map((name, index) => (
+                            <option key={name} value={index + 1}>
+                              {name}
+                            </option>
+                          ))}
+                        </select>
+                        <label>Day</label>
+                        <input
+                          className="input-number"
+                          type="number"
+                          min="1"
+                          max={monthDays[month - 1]}
+                          value={day}
+                          onChange={handleDayChange}
+                          required
+                        />
+                      </>
+                    )}
+                    <button
+                      className="button-update"
+                      onClick={handleUpdateAccount}
+                    >
+                      Update Account
+                    </button>
+                  </div>
+                )}
                 <div
                   style={{
                     display: 'flex',
@@ -515,8 +538,16 @@ export default function ParentFinancialAccounts() {
                       marginBottom: '10px',
                     }}
                   >
-                    Interest Day of the Year:{' '}
-                    {getDayOfYear(account.interest_day)}
+                    {account.account_type === 'Savings' ? (
+                      <p style={{ margin: 0 }}>Interest Day:</p>
+                    ) : (
+                      <p style={{ margin: 0 }}>Cash-out Day:</p>
+                    )}
+                    {account.interest_period_type === 'Weekly'
+                      ? getDayOfWeek(account.interest_day)
+                      : account.interest_period_type === 'Monthly'
+                      ? account.interest_day
+                      : getDayOfYear(account.interest_day)}
                   </div>
                   <div
                     style={{
