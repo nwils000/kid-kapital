@@ -107,3 +107,12 @@
 .day-checkbox input[type='checkbox'] {
   margin-right: 5px;
 }
+
+@media screen and (max-width: 508px) {
+  .modal-body {
+    display: flex;
+    flex-direction: column;
+    gap: 20px;
+    align-items: center;
+  }
+}

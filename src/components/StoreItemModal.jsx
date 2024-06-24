@@ -1,5 +1,6 @@
 import React, { useState, useEffect, useContext } from 'react';
 import { MainContext } from '../context/context';
+import { MdAttachMoney } from 'react-icons/md';
 
 function StoreItemModal({
   showItemModal,
@@ -69,17 +70,21 @@ function StoreItemModal({
             onChange={(e) => setName(e.target.value)}
             placeholder="Item Name"
           />
-          <input
-            style={{
-              padding: '5px 10px',
-              borderRadius: '8px',
-              border: '1px solid #ccc',
-            }}
-            type="number"
-            value={price}
-            onChange={(e) => setPrice(e.target.value)}
-            placeholder="Price"
-          />
+          <div style={{ display: 'flex', width: '100%' }}>
+            <span style={{ fontWeight: 700 }}>$</span>
+            <input
+              style={{
+                padding: '5px 10px',
+                borderRadius: '8px',
+                border: '1px solid #ccc',
+                width: '100%',
+              }}
+              type="number"
+              value={price}
+              onChange={(e) => setPrice(e.target.value)}
+              placeholder="Price"
+            />
+          </div>
           <button onClick={handleSubmit}>Save</button>
           <button className="delete-btn" onClick={handleDelete}>
             Delete

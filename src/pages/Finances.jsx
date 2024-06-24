@@ -95,7 +95,7 @@ export default function Finances() {
                 alignItems: 'center',
               }}
             >
-              $
+              ${' '}
               {!editMode ? (
                 <>
                   {rewardValue}
