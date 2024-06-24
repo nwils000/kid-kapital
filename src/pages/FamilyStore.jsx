@@ -118,7 +118,10 @@ function FamilyStore() {
                 )}
               </ul>
               {items.filter((item) => !item.approved).length > 5 && (
-                <div style={{ margin: 'auto' }} className="dots-bubble"></div>
+                <div
+                  style={{ margin: 'auto', marginTop: 20 }}
+                  className="dots-bubble"
+                ></div>
               )}
             </div>
           )}
