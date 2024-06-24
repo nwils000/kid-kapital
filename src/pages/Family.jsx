@@ -62,7 +62,11 @@ export default function FamilyManager() {
           <p className="loading">Loading...</p>
         ) : (
           <div className="table-responsive">
-            <h3 style={{}}></h3>
+            <p style={{ textAlign: 'center' }}>
+              The numbers displayed for completed tasks and difficulty points
+              represent data collected from the last allowance payment date to
+              today.
+            </p>
             <table>
               <thead>
                 <tr>
