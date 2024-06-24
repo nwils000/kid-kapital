@@ -304,7 +304,7 @@ function EditResponsibilityModal({
               </select>
               {repeatOptions()}
 
-              {repeatType !== 'none' && !currentResponsibility.single ? (
+              {repeatType !== 'none' ? (
                 <div>
                   <button
                     className="delete-btn"
