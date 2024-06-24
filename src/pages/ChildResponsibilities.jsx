@@ -304,6 +304,11 @@ function ChildResponsibilities() {
             ) : (
               <li>No upcoming responsibilities</li>
             )}
+            {Object.values(responsibilities)
+              .flat()
+              .filter((resp) => {
+                return !resp.completed;
+              }).length > 5 && <div className="dots-bubble"></div>}
           </ul>
         </div>
         <div className="responsibilities-container">
