@@ -407,7 +407,7 @@ function EditResponsibilityModal({
                   >
                     Complete
                   </button>
-                  {!currentResponsibility.single && (
+                  {/* {!currentResponsibility.single && (
                     <button
                       style={{ marginLeft: 0, marginBottom: 0 }}
                       className="complete-btn"
@@ -418,7 +418,7 @@ function EditResponsibilityModal({
                     >
                       Complete series
                     </button>
-                  )}
+                  )} */}
                 </>
               )}
               {(!currentResponsibility.verified ||
