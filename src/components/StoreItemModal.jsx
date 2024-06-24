@@ -64,6 +64,7 @@ function StoreItemModal({
               padding: '5px 10px',
               borderRadius: '8px',
               border: '1px solid #ccc',
+              width: '100%',
             }}
             type="text"
             value={name}
