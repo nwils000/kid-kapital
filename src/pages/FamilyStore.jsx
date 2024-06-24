@@ -116,6 +116,9 @@ function FamilyStore() {
                   </li>
                 )}
               </ul>
+              {items.filter((item) => !item.approved).length > 5 && (
+                <div className="dots-bubble"></div>
+              )}
             </div>
           )}
           <div className="store-items" style={{ position: 'relative' }}>
