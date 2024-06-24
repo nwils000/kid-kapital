@@ -164,25 +164,30 @@ function ApproveResponsibilityModal({
 
   const repeatOptions = () => {
     return repeatType === 'weekly' ? (
-      [
-        'Monday',
-        'Tuesday',
-        'Wednesday',
-        'Thursday',
-        'Friday',
-        'Saturday',
-        'Sunday',
-      ].map((day) => (
-        <label key={day} className="day-checkbox">
-          <input
-            type="checkbox"
-            value={day}
-            checked={repeatDetails.includes(day)}
-            onChange={handleRepeatDetailsChange}
-          />
-          {day}
-        </label>
-      ))
+      <div>
+        <p style={{ textAlign: 'center' }}>
+          Ensure correct days are checked based on repeat details
+        </p>
+        {[
+          'Monday',
+          'Tuesday',
+          'Wednesday',
+          'Thursday',
+          'Friday',
+          'Saturday',
+          'Sunday',
+        ].map((day) => (
+          <label key={day} className="day-checkbox">
+            <input
+              type="checkbox"
+              value={day}
+              checked={repeatDetails.includes(day)}
+              onChange={handleRepeatDetailsChange}
+            />
+            {day}
+          </label>
+        ))}
+      </div>
     ) : repeatType === 'monthly' ? (
       <div
         style={{ display: 'flex', flexWrap: 'wrap', justifyContent: 'center' }}
@@ -203,25 +208,37 @@ function ApproveResponsibilityModal({
   };
 
   function formatRepeatDays(currentResponsibility) {
+    const repeatType = currentResponsibility.series.repeat_type;
     const repeatDays = currentResponsibility.series.repeat_days.split(',');
-    const dayMap = {
-      Sunday: 'Sun',
-      Monday: 'Mon',
-      Tuesday: 'Tue',
-      Wednesday: 'Wed',
-      Thursday: 'Thu',
-      Friday: 'Fri',
-      Saturday: 'Sat',
-    };
 
-    const mappedDays = repeatDays.map((day) => dayMap[day]);
+    if (repeatType === 'monthly') {
+      return repeatDays.join(', ');
+    } else if (repeatType === 'weekly') {
+      const dayMap = {
+        Sunday: 'Sun',
+        Monday: 'Mon',
+        Tuesday: 'Tue',
+        Wednesday: 'Wed',
+        Thursday: 'Thu',
+        Friday: 'Fri',
+        Saturday: 'Sat',
+      };
 
-    const weekOrder = ['Sun', 'Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat'];
-    mappedDays.sort((a, b) => weekOrder.indexOf(a) - weekOrder.indexOf(b));
+      const mappedDays = repeatDays.map((day) => dayMap[day]);
 
-    const formattedDays = mappedDays.join(', ');
+      const weekOrder = ['Sun', 'Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat'];
+      mappedDays.sort((a, b) => weekOrder.indexOf(a) - weekOrder.indexOf(b));
 
-    return formattedDays;
+      const formattedDays = mappedDays.join(', ');
+
+      return formattedDays;
+    }
+
+    return '';
+  }
+
+  function capitalizeFirstLetter(string) {
+    return string.charAt(0).toUpperCase() + string.slice(1);
   }
 
   function capitalizeFirstLetter(string) {
@@ -242,15 +259,7 @@ function ApproveResponsibilityModal({
         <p style={{ textAlign: 'center', color: '#1DA1F2' }}>
           Awaiting Your Approval...
         </p>
-        <button
-          className="close-btn"
-          onClick={() => {
-            setShowApproveModal(false);
-            setIsEditing(false);
-          }}
-        >
-          X
-        </button>
+
         <div className="modal-body">
           {capitalizeFirstLetter(currentResponsibility.series.repeat_type) ===
           'None'
@@ -303,33 +312,64 @@ function ApproveResponsibilityModal({
               </select>
               {repeatOptions()}
               {repeatType === 'none' ? (
-                <button
-                  className="save-btn"
-                  onClick={() => {
-                    setApproved(true);
-                    handleSave();
-                  }}
-                >
-                  Save changes & approve
-                </button>
+                <>
+                  <button
+                    className="save-btn"
+                    onClick={() => {
+                      setApproved(true);
+                      handleSave();
+                    }}
+                  >
+                    Save changes & approve
+                  </button>
+                  <button
+                    className="delete-btn"
+                    onClick={() => handleDelete(false)}
+                  >
+                    Delete this
+                  </button>
+                </>
               ) : (
-                <button
-                  className="save-btn"
-                  onClick={() => {
-                    setApprovedSeries(true);
-                    handleSave();
-                  }}
-                >
-                  Save changes & approve series
-                </button>
+                <>
+                  {' '}
+                  <button
+                    className="save-btn"
+                    onClick={() => {
+                      setApprovedSeries(true);
+                      handleSave();
+                    }}
+                  >
+                    Save changes & approve series
+                  </button>
+                  <button
+                    className="delete-btn"
+                    onClick={() => handleDelete(false)}
+                  >
+                    Delete this
+                  </button>
+                  <button
+                    className="delete-btn"
+                    onClick={() => handleDelete(true)}
+                  >
+                    Delete series
+                  </button>
+                </>
               )}
             </>
           ) : (
             <>
-              <h3>{title}</h3>
-              <p>{description}</p>
+              <div>
+                <h3>{title}</h3>
+                <p>{description}</p>
+              </div>
               <p>{difficultyString}</p>
-              <button className="edit-btn" onClick={() => setIsEditing(true)}>
+              <button
+                className="edit-btn"
+                onClick={() => {
+                  setIsEditing(true);
+                  setRepeatType(currentResponsibility.series.repeat_type);
+                }}
+              >
                 <FiEdit /> Edit
               </button>
               {currentResponsibility.single && (
@@ -365,15 +405,6 @@ function ApproveResponsibilityModal({
                   </button>
                 </>
               )}
-              <button
-                className="delete-btn"
-                onClick={() => handleDelete(false)}
-              >
-                Delete this
-              </button>
-              <button className="delete-btn" onClick={() => handleDelete(true)}>
-                Delete series
-              </button>
             </>
           )}
         </div>

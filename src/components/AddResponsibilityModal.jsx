@@ -24,25 +24,29 @@ function AddResponsibilityModal({
   const repeatOptions = () => {
     switch (repeatType) {
       case 'weekly':
-        return [
-          'Monday',
-          'Tuesday',
-          'Wednesday',
-          'Thursday',
-          'Friday',
-          'Saturday',
-          'Sunday',
-        ].map((day) => (
-          <label key={day} className="day-checkbox">
-            <input
-              type="checkbox"
-              value={day}
-              checked={repeatDetails.includes(day)}
-              onChange={handleRepeatDetailsChange}
-            />{' '}
-            {day}
-          </label>
-        ));
+        return (
+          <div>
+            {[
+              'Monday',
+              'Tuesday',
+              'Wednesday',
+              'Thursday',
+              'Friday',
+              'Saturday',
+              'Sunday',
+            ].map((day) => (
+              <label key={day} className="day-checkbox">
+                <input
+                  type="checkbox"
+                  value={day}
+                  checked={repeatDetails.includes(day)}
+                  onChange={handleRepeatDetailsChange}
+                />{' '}
+                {day}
+              </label>
+            ))}
+          </div>
+        );
       case 'monthly':
         return (
           <div
@@ -96,12 +100,6 @@ function AddResponsibilityModal({
       onMouseDown={() => setShowAddResponsibilityModal(false)}
     >
       <div className="modal-content" onMouseDown={(e) => e.stopPropagation()}>
-        <button
-          className="close-btn"
-          onClick={() => setShowAddResponsibilityModal(false)}
-        >
-          X
-        </button>
         <div className="modal-body">
           <input
             className="title-input"

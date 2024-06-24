@@ -159,6 +159,28 @@
 }
 
 @media screen and (max-width: 476px) {
+  .financial-accounts .title {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    margin-left: 0;
+  }
+  .account-list {
+    margin: 0;
+  }
+
+  .account-list h3 {
+    text-align: center;
+  }
+
+  .financial-accounts .description {
+    color: gray;
+    font-size: 0.9em;
+    margin: 0;
+    text-align: center;
+    padding: 10px 0;
+  }
+
   .finanacial-account-header {
     margin-left: 0;
     text-align: center;

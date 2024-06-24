@@ -41,15 +41,16 @@ export default function ApproveItemModal({
     >
       <div className="modal-content" onMouseDown={(e) => e.stopPropagation()}>
         <div className="modal-header">
-          <h5>Approve Item</h5>
-          <button onClick={() => setShowApproveItemModal(false)}>Close</button>
+          <h2 style={{ textAlign: 'center' }}>Approve Item</h2>
         </div>
         <div className="modal-body">
-          <p>{name}</p>
-          <p>{price}</p>
+          <h3>{name}</h3>
+          <p>${price}</p>
           <button onClick={handleApprove}>Approve</button>
 
-          <button onClick={handleDelete}>Delete</button>
+          <button className="delete-btn" onClick={handleDelete}>
+            Delete
+          </button>
         </div>
       </div>
     </div>

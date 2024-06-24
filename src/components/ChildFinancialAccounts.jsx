@@ -62,7 +62,7 @@ export default function ChildFinancialAccounts() {
         Savings & Investments
       </h1>
       <div className="investment-section">
-        <h3>Invest Money</h3>
+        <h2 style={{ marginBottom: 10 }}>Invest Money</h2>
         <p>Total Money: ${main.state.profile.total_money}</p>
         <div className="investment-input-group">
           <label htmlFor="account-id">Account Id</label>
@@ -76,7 +76,7 @@ export default function ChildFinancialAccounts() {
           />
         </div>
         <div className="investment-input-group">
-          <label htmlFor="account-amount">Account Amount</label>
+          <label htmlFor="account-amount">Amount</label>
           <input
             id="account-amount"
             className="investment-input"
@@ -92,7 +92,7 @@ export default function ChildFinancialAccounts() {
       </div>
 
       <div className="investment-section">
-        <h3>Your Investments</h3>
+        <h2 style={{ marginBottom: 10 }}>Your Investments</h2>
         <ul className="investment-list">
           {investments.map((investment) => (
             <li key={investment.id}>
@@ -109,7 +109,7 @@ export default function ChildFinancialAccounts() {
         </ul>
       </div>
       <div className="existing-accounts-section">
-        <h3 style={{ textAlign: 'center' }}>Available Accounts</h3>
+        <h2 style={{ textAlign: 'center' }}>Available Accounts</h2>
         <ul style={{ marginTop: 0 }}>
           {accounts.map((account) => (
             <li key={account.id}>

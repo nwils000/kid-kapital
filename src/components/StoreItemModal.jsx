@@ -52,23 +52,38 @@ function StoreItemModal({
     <div className="modal-overlay" onMouseDown={() => setShowItemModal(false)}>
       <div className="modal-content" onMouseDown={(e) => e.stopPropagation()}>
         <div className="modal-header">
-          <h5>{currentItem ? 'Edit Item' : 'Add New Item'}</h5>
+          <h2 style={{ textAlign: 'center' }}>
+            {currentItem ? 'Edit Item' : 'Add New Item'}
+          </h2>
         </div>
         <div className="modal-body">
           <input
+            style={{
+              marginTop: '10px',
+              padding: '5px 10px',
+              borderRadius: '8px',
+              border: '1px solid #ccc',
+            }}
             type="text"
             value={name}
             onChange={(e) => setName(e.target.value)}
             placeholder="Item Name"
           />
           <input
+            style={{
+              padding: '5px 10px',
+              borderRadius: '8px',
+              border: '1px solid #ccc',
+            }}
             type="number"
             value={price}
             onChange={(e) => setPrice(e.target.value)}
             placeholder="Price"
           />
           <button onClick={handleSubmit}>Save</button>
-          <button onClick={handleDelete}>Delete</button>
+          <button className="delete-btn" onClick={handleDelete}>
+            Delete
+          </button>
         </div>
       </div>
     </div>

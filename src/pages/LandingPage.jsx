@@ -30,7 +30,7 @@ export default function LandingPage() {
           setVisibleSecond(true);
         }, 1000);
       }
-    }, 3000);
+    }, 2300);
     return () => {
       clearInterval(interval);
     };

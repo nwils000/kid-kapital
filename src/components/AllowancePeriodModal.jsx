@@ -50,40 +50,44 @@ function AllowancePeriodModal({
       onMouseDown={() => setShowAllowancePeriodModal(false)}
     >
       <div className="modal-content" onMouseDown={(e) => e.stopPropagation()}>
-        <button
-          className="close-btn"
-          onClick={() => setShowAllowancePeriodModal(false)}
-        >
-          X
-        </button>
-        <span>Day: </span>
-        {periodType === 'weeks' ? (
-          <select value={day} onChange={handleDayChange}>
-            {weekDays.map((weekDay) => (
-              <option key={weekDay} value={weekDays.indexOf(weekDay)}>
-                {weekDay}
-              </option>
-            ))}
+        <h2 style={{ textAlign: 'center', marginBottom: 10 }}>
+          Set Allowance Period
+        </h2>
+        <div style={{ width: 'fit-content', margin: 'auto' }}>
+          <span>Day: </span>
+          {periodType === 'weeks' ? (
+            <select value={day} onChange={handleDayChange}>
+              {weekDays.map((weekDay) => (
+                <option key={weekDay} value={weekDays.indexOf(weekDay)}>
+                  {weekDay}
+                </option>
+              ))}
+            </select>
+          ) : (
+            <input
+              type="number"
+              min="1"
+              max="31"
+              value={day}
+              onChange={handleDayChange}
+              required
+            />
+          )}
+          <label> of the </label>
+          <select
+            value={periodType}
+            onChange={(e) => setPeriodType(e.target.value)}
+          >
+            <option value="weeks">Week</option>
+            <option value="months">Month</option>
           </select>
-        ) : (
-          <input
-            type="number"
-            min="1"
-            max="31"
-            value={day}
-            onChange={handleDayChange}
-            required
-          />
-        )}
-        <label> of the </label>
-        <select
-          value={periodType}
-          onChange={(e) => setPeriodType(e.target.value)}
+        </div>
+        <button
+          style={{ width: 'fit-content', margin: 'auto', marginTop: '20px' }}
+          onClick={handleSubmit}
         >
-          <option value="weeks">Week</option>
-          <option value="months">Month</option>
-        </select>
-        <button onClick={handleSubmit}>Set Period</button>
+          Set Period
+        </button>
       </div>
     </div>
   );

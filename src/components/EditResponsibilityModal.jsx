@@ -139,25 +139,30 @@ function EditResponsibilityModal({
 
   const repeatOptions = () => {
     if (repeatType === 'weekly') {
-      return [
-        'Monday',
-        'Tuesday',
-        'Wednesday',
-        'Thursday',
-        'Friday',
-        'Saturday',
-        'Sunday',
-      ].map((day) => (
-        <label key={day} className="day-checkbox">
-          <input
-            type="checkbox"
-            value={day}
-            checked={repeatDetails.includes(day)}
-            onChange={handleRepeatDetailsChange}
-          />
-          {day}
-        </label>
-      ));
+      return (
+        <div>
+          <p>Ensure correct days are checked based on repeat details</p>
+          {[
+            'Monday',
+            'Tuesday',
+            'Wednesday',
+            'Thursday',
+            'Friday',
+            'Saturday',
+            'Sunday',
+          ].map((day) => (
+            <label key={day} className="day-checkbox">
+              <input
+                type="checkbox"
+                value={day}
+                checked={repeatDetails.includes(day)}
+                onChange={handleRepeatDetailsChange}
+              />
+              {day}
+            </label>
+          ))}
+        </div>
+      );
     } else if (repeatType === 'monthly') {
       return (
         <div
@@ -186,25 +191,37 @@ function EditResponsibilityModal({
   };
 
   function formatRepeatDays(currentResponsibility) {
+    const repeatType = currentResponsibility.series.repeat_type;
     const repeatDays = currentResponsibility.series.repeat_days.split(',');
-    const dayMap = {
-      Sunday: 'Sun',
-      Monday: 'Mon',
-      Tuesday: 'Tue',
-      Wednesday: 'Wed',
-      Thursday: 'Thu',
-      Friday: 'Fri',
-      Saturday: 'Sat',
-    };
 
-    const mappedDays = repeatDays.map((day) => dayMap[day]);
+    if (repeatType === 'monthly') {
+      return repeatDays.join(', ');
+    } else if (repeatType === 'weekly') {
+      const dayMap = {
+        Sunday: 'Sun',
+        Monday: 'Mon',
+        Tuesday: 'Tue',
+        Wednesday: 'Wed',
+        Thursday: 'Thu',
+        Friday: 'Fri',
+        Saturday: 'Sat',
+      };
 
-    const weekOrder = ['Sun', 'Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat'];
-    mappedDays.sort((a, b) => weekOrder.indexOf(a) - weekOrder.indexOf(b));
+      const mappedDays = repeatDays.map((day) => dayMap[day]);
 
-    const formattedDays = mappedDays.join(', ');
+      const weekOrder = ['Sun', 'Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat'];
+      mappedDays.sort((a, b) => weekOrder.indexOf(a) - weekOrder.indexOf(b));
 
-    return formattedDays;
+      const formattedDays = mappedDays.join(', ');
+
+      return formattedDays;
+    }
+
+    return '';
+  }
+
+  function capitalizeFirstLetter(string) {
+    return string.charAt(0).toUpperCase() + string.slice(1);
   }
 
   function capitalizeFirstLetter(string) {
@@ -233,11 +250,14 @@ function EditResponsibilityModal({
             Approved
           </p>
         )}
-        <button className="close-btn" onClick={() => setShowEditModal(false)}>
-          X
-        </button>
+
         <div className="modal-body">
-          {capitalizeFirstLetter(currentResponsibility.series.repeat_type)}:{' '}
+          {capitalizeFirstLetter(currentResponsibility.series.repeat_type) ===
+          'None'
+            ? 'Repeat: None'
+            : `${capitalizeFirstLetter(
+                currentResponsibility.series.repeat_type
+              )}: `}
           {formatRepeatDays(currentResponsibility)}
           {isEditing &&
           (!currentResponsibility.verified || main.state.profile.parent) ? (
@@ -348,9 +368,11 @@ function EditResponsibilityModal({
             </>
           ) : (
             <>
-              <h3>{title}</h3>
-              <p>{description}</p>
-              <p>{difficultyString}</p>
+              <div>
+                <h3>{title}</h3>
+                <p>{description}</p>
+              </div>
+              <p>Difficulty: {difficultyString}</p>
 
               {currentChildId === main.state.profile.id && (
                 <>
@@ -366,7 +388,7 @@ function EditResponsibilityModal({
                       setShowEditModal(false);
                     }}
                   >
-                    Completed
+                    Complete
                   </button>
                   {!currentResponsibility.single && (
                     <button
@@ -383,7 +405,13 @@ function EditResponsibilityModal({
               )}
               {(!currentResponsibility.verified ||
                 main.state.profile.parent) && (
-                <button className="edit-btn" onClick={() => setIsEditing(true)}>
+                <button
+                  className="edit-btn"
+                  onClick={() => {
+                    setIsEditing(true);
+                    setRepeatType(currentResponsibility.series.repeat_type);
+                  }}
+                >
                   <FiEdit /> Edit
                 </button>
               )}

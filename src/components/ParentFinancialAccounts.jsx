@@ -506,6 +506,7 @@ export default function ParentFinancialAccounts() {
                     border: '1px solid #ccc',
                     borderRadius: '5px',
                     marginBottom: '20px',
+                    marginLeft: '20px',
                   }}
                 >
                   <h3 style={{ marginBottom: '10px' }}>Account Details</h3>
