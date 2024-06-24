@@ -88,6 +88,7 @@ function FamilyStore() {
                 {items.filter((item) => !item.approved).length > 0 ? (
                   items
                     .filter((item) => !item.approved)
+                    .slice(0, 3)
                     .map((item) => (
                       <div
                         style={{ marginTop: 20 }}
@@ -117,7 +118,7 @@ function FamilyStore() {
                 )}
               </ul>
               {items.filter((item) => !item.approved).length > 5 && (
-                <div className="dots-bubble"></div>
+                <div style={{ margin: 'auto' }} className="dots-bubble"></div>
               )}
             </div>
           )}
