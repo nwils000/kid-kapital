@@ -93,7 +93,9 @@ export default function ChildFinancialAccounts() {
 
       <div className="investment-section">
         <h2 style={{ marginBottom: 10 }}>Your Investments</h2>
-        {investments.length <= 0 && <div>No current investments.</div>}
+        {investments.length <= 0 && (
+          <div style={{ color: 'gray' }}>No current investment</div>
+        )}
         <ul className="investment-list">
           {investments.map((investment) => (
             <li key={investment.id}>
