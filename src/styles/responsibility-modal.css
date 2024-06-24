@@ -12,6 +12,11 @@
   animation: fadeIn 0.1s ease-out;
 }
 
+.modal-overlay > div {
+  max-height: 90%;
+  overflow-y: auto;
+}
+
 @keyframes fadeIn {
   from {
     opacity: 0;
