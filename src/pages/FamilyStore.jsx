@@ -81,21 +81,16 @@ function FamilyStore() {
         <div className="store-layout">
           {main.state.profile.parent && (
             <div className="sidebar left">
-              <h2 style={{ textAlign: 'center' }}>Items to Approve</h2>
-              <ul
-                style={{
-                  display: 'flex',
-                  flexDirection: 'column',
-                  gap: 20,
-                  alignItems: 'center',
-                }}
-                className="responsibilities-list"
-              >
+              <h2 style={{ textAlign: 'center', marginBottom: 0 }}>
+                Items to Approve
+              </h2>
+              <ul style={{ marginBottom: 0 }} className="responsibilities-list">
                 {items.filter((item) => !item.approved).length > 0 ? (
                   items
                     .filter((item) => !item.approved)
                     .map((item) => (
                       <div
+                        style={{ marginTop: 20 }}
                         key={item.id}
                         className="item-card"
                         onClick={() => openApproveItemModal(item)}
