@@ -96,7 +96,6 @@ li:last-child {
   margin: 10px;
   padding: 10px 20px;
   cursor: pointer;
-  background-color: #4cc283;
   border: none;
   border-radius: 8px;
   color: white;
@@ -191,23 +190,6 @@ li:last-child {
   font-size: 0.9rem;
   font-weight: 400;
   color: #666;
-}
-
-.responsibilities-container .delete-button {
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  font-size: 1.2rem;
-  background: none;
-  border: none;
-  cursor: pointer;
-  color: black;
-}
-
-.responsibilities-container .delete-button:hover {
-  background: #4cc283;
-  color: white;
-  transition: 0.3s;
 }
 
 .main-content {
