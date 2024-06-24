@@ -44,6 +44,11 @@
   border-radius: 100rem;
 }
 
+.signup .joining-one:hover,
+.signup .new-family-hub:hover {
+  background-color: #46b378;
+}
+
 .signup input {
   height: 3.2rem;
   width: 30rem;
@@ -111,6 +116,10 @@
   border-radius: 100rem;
   margin-top: 1rem;
   border: none;
+}
+
+.signup .signup-button:hover {
+  background-color: #46b378;
 }
 
 .signup-input-wrapper {

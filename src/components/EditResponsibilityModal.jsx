@@ -309,10 +309,12 @@ function EditResponsibilityModal({
                   <button
                     className="delete-btn"
                     onClick={() => handleDelete(false)}
+                    style={{ marginBottom: 10 }}
                   >
                     Delete this
                   </button>
                   <button
+                    style={{ marginBottom: 10 }}
                     className="delete-btn"
                     onClick={() => handleDelete(true)}
                   >
@@ -325,36 +327,50 @@ function EditResponsibilityModal({
               ) : repeatType !== 'none' && currentResponsibility.single ? (
                 <div>
                   <button
+                    className="edit-btn"
+                    style={{ marginBottom: 10 }}
+                    onClick={handleEditTheSeries}
+                  >
+                    Save changes
+                  </button>
+                  <button
                     className="delete-btn"
                     onClick={() => handleDelete(false)}
                   >
                     Delete
                   </button>
-                  <button className="edit-btn" onClick={handleEditTheSeries}>
-                    Save changes
-                  </button>
                 </div>
               ) : repeatType === 'none' && !currentResponsibility.single ? (
                 <div>
                   <button
+                    style={{ marginBottom: 10 }}
+                    className="edit-btn"
+                    onClick={handleSubmit}
+                  >
+                    Save changes
+                  </button>
+                  <button
+                    style={{ marginBottom: 10 }}
                     className="delete-btn"
                     onClick={() => handleDelete(false)}
                   >
                     Delete this
                   </button>
                   <button
+                    style={{ marginBottom: 10 }}
                     className="delete-btn"
                     onClick={() => handleDelete(true)}
                   >
                     Delete series
                   </button>
-                  <button className="edit-btn" onClick={handleSubmit}>
-                    Save changes
-                  </button>
                 </div>
               ) : (
                 <div>
-                  <button className="save-btn" onClick={handleSubmit}>
+                  <button
+                    className="save-btn"
+                    style={{ marginBottom: 10 }}
+                    onClick={handleSubmit}
+                  >
                     Save changes
                   </button>
                   <button

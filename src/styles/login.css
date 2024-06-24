@@ -72,6 +72,7 @@
 
 .login .login-button:hover {
   cursor: pointer;
+  background-color: #46b378;
 }
 
 .login-input-wrapper {
