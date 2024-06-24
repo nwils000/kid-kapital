@@ -378,6 +378,7 @@ function EditResponsibilityModal({
                 <>
                   {' '}
                   <button
+                    style={{ marginLeft: 0 }}
                     className="complete-btn"
                     onClick={() => {
                       completeResponsibility({
@@ -392,6 +393,7 @@ function EditResponsibilityModal({
                   </button>
                   {!currentResponsibility.single && (
                     <button
+                      style={{ marginLeft: 0 }}
                       className="complete-btn"
                       onClick={() => {
                         completeResponsibilitySeries();
@@ -406,6 +408,7 @@ function EditResponsibilityModal({
               {(!currentResponsibility.verified ||
                 main.state.profile.parent) && (
                 <button
+                  style={{ marginLeft: 0 }}
                   className="edit-btn"
                   onClick={() => {
                     setIsEditing(true);
