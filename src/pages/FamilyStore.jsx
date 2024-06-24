@@ -82,7 +82,15 @@ function FamilyStore() {
           {main.state.profile.parent && (
             <div className="sidebar left">
               <h2 style={{ textAlign: 'center' }}>Items to Approve</h2>
-              <ul className="responsibilities-list">
+              <ul
+                style={{
+                  display: 'flex',
+                  flexDirection: 'column',
+                  gap: 20,
+                  alignItems: 'center',
+                }}
+                className="responsibilities-list"
+              >
                 {items.filter((item) => !item.approved).length > 0 ? (
                   items
                     .filter((item) => !item.approved)
