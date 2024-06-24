@@ -42,6 +42,8 @@ export const mainReducer = (state, action) => {
         familyStoreItems: action.familyStoreItems,
       };
       break;
+    case 'LOGOUT':
+      localStorage.removeItem('STATE');
     default:
       return state;
   }

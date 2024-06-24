@@ -1,9 +1,11 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useContext } from 'react';
 import LandingNavbar from '../layout/LandingNavbar';
 import '../styles/landing-page.css';
 import '../styles/navbar.css';
+import { MainContext } from '../context/context';
 
 export default function LandingPage() {
+  const { main } = useContext(MainContext);
   const [phraseIndex, setPhraseIndex] = useState(0);
   const [visibleFirst, setVisibleFirst] = useState(true);
   const [visibleSecond, setVisibleSecond] = useState(true);
@@ -12,6 +14,12 @@ export default function LandingPage() {
     { first: 'Earn', second: 'Together' },
     { first: 'Save', second: 'Forever' },
   ];
+
+  useEffect(() => {
+    main.dispatch({
+      type: 'LOGOUT',
+    });
+  }, []);
 
   useEffect(() => {
     const interval = setInterval(() => {
