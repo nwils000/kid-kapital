@@ -25,7 +25,6 @@ export default function FamilyManager() {
         console.log('Family data:', data.family.members);
       } catch (error) {
         console.error('Failed to fetch family data:', error);
-        const navigate = useNavigate();
       } finally {
         setLoading(false);
       }
@@ -62,60 +61,54 @@ export default function FamilyManager() {
         {loading ? (
           <p className="loading">Loading...</p>
         ) : (
-          <>
-            <p style={{ textAlign: 'center', color: 'grey', fontSize: '1rem' }}>
-              *The tasks and points displayed are from the last allowance date
-              up to today.*
-            </p>
-            <div className="table-responsive">
-              <table>
-                <thead>
-                  <tr>
-                    <th>Name</th>
-                    <th>Completed Tasks</th>
-                    <th>Total Difficulty Points</th>
-                    <th>Total Money</th>
+          <div className="table-responsive">
+            <table>
+              <thead>
+                <tr>
+                  <th>Name</th>
+                  <th>Completed Tasks</th>
+                  <th>Total Difficulty Points</th>
+                  <th>Total Money</th>
+                </tr>
+              </thead>
+              <tbody>
+                {familyData.map((member) => (
+                  <tr
+                    key={member.id}
+                    onClick={() => navigateToChild(member.id)}
+                    className="hover"
+                  >
+                    <td>{member.first_name}</td>
+                    <td>
+                      {
+                        member.responsibilities.filter(
+                          (resp) =>
+                            resp.completed &&
+                            (!lastAllowanceDate ||
+                              new Date(resp.date) >=
+                                new Date(lastAllowanceDate)) &&
+                            new Date(resp.date) < new Date()
+                        ).length
+                      }
+                    </td>
+                    <td>
+                      {member.responsibilities
+                        .filter(
+                          (resp) =>
+                            resp.completed &&
+                            (!lastAllowanceDate ||
+                              new Date(resp.date) >=
+                                new Date(lastAllowanceDate)) &&
+                            new Date(resp.date) < new Date()
+                        )
+                        .reduce((total, resp) => total + resp.difficulty, 0)}
+                    </td>
+                    <td>{member.total_money}</td>
                   </tr>
-                </thead>
-                <tbody>
-                  {familyData.map((member) => (
-                    <tr
-                      key={member.id}
-                      onClick={() => navigateToChild(member.id)}
-                      className="hover"
-                    >
-                      <td>{member.first_name}</td>
-                      <td>
-                        {
-                          member.responsibilities.filter(
-                            (resp) =>
-                              resp.completed &&
-                              (!lastAllowanceDate ||
-                                new Date(resp.date) >=
-                                  new Date(lastAllowanceDate)) &&
-                              new Date(resp.date) < new Date()
-                          ).length
-                        }
-                      </td>
-                      <td>
-                        {member.responsibilities
-                          .filter(
-                            (resp) =>
-                              resp.completed &&
-                              (!lastAllowanceDate ||
-                                new Date(resp.date) >=
-                                  new Date(lastAllowanceDate)) &&
-                              new Date(resp.date) < new Date()
-                          )
-                          .reduce((total, resp) => total + resp.difficulty, 0)}
-                      </td>
-                      <td>{member.total_money}</td>
-                    </tr>
-                  ))}
-                </tbody>
-              </table>
-            </div>
-          </>
+                ))}
+              </tbody>
+            </table>
+          </div>
         )}
         <button
           onClick={() => navigate('/add-family-member')}

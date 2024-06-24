@@ -2,6 +2,7 @@ import React, { useState } from 'react';
 import '../styles/navbar.css';
 import { Link } from 'react-router-dom';
 import { FaHome, FaStore, FaTasks, FaBars, FaTimes } from 'react-icons/fa';
+import { IoExit } from 'react-icons/io5';
 import { GiTakeMyMoney, GiPayMoney } from 'react-icons/gi';
 
 export default function ChildNavbar() {
@@ -15,7 +16,7 @@ export default function ChildNavbar() {
     <div>
       <div className="navbar-wrapper">
         <div className="navbar">
-          <Link to="/" className="nav-item">
+          <Link to="/child-dashboard" className="nav-item">
             <div className="logo-wrapper">
               <GiTakeMyMoney className="logo-icon" />
               <span className="logo-text">Kid Kapital</span>
@@ -59,6 +60,12 @@ export default function ChildNavbar() {
               <div className="icon-wrapper">
                 <FaTasks />
                 <span>My Responsibilities</span>
+              </div>
+            </Link>
+            <Link className="nav-link" to="/" onClick={toggleMenu}>
+              <div className="icon-wrapper">
+                <IoExit />
+                <span>Logout</span>
               </div>
             </Link>
           </div>

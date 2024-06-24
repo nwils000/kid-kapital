@@ -79,7 +79,7 @@ function EditResponsibilityModal({
     if (deleteSeries) {
       console.log(currentResponsibility);
       await deleteResponsibilitySeries({
-        seriesId: currentResponsibility.series,
+        seriesId: currentResponsibility.series.id,
         main,
       });
       setIsEditing(false);
@@ -99,7 +99,7 @@ function EditResponsibilityModal({
       alert('You have to select days for this responsibility to repeat');
     } else {
       await editResponsibilitySeries({
-        seriesId: currentResponsibility.series,
+        seriesId: currentResponsibility.series.id,
         main,
         title,
         startDate: currentResponsibility.startDate,
@@ -130,7 +130,7 @@ function EditResponsibilityModal({
       completeWholeSeries({
         main,
         profileId: currentChildId,
-        seriesId: currentResponsibility.series,
+        seriesId: currentResponsibility.series.id,
       });
     } catch (error) {
       console.error(error);
@@ -185,6 +185,32 @@ function EditResponsibilityModal({
     return null;
   };
 
+  function formatRepeatDays(currentResponsibility) {
+    const repeatDays = currentResponsibility.series.repeat_days.split(',');
+    const dayMap = {
+      Sunday: 'Sun',
+      Monday: 'Mon',
+      Tuesday: 'Tue',
+      Wednesday: 'Wed',
+      Thursday: 'Thu',
+      Friday: 'Fri',
+      Saturday: 'Sat',
+    };
+
+    const mappedDays = repeatDays.map((day) => dayMap[day]);
+
+    const weekOrder = ['Sun', 'Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat'];
+    mappedDays.sort((a, b) => weekOrder.indexOf(a) - weekOrder.indexOf(b));
+
+    const formattedDays = mappedDays.join(', ');
+
+    return formattedDays;
+  }
+
+  function capitalizeFirstLetter(string) {
+    return string.charAt(0).toUpperCase() + string.slice(1);
+  }
+
   if (!showEditModal) return null;
 
   const modalClass = currentResponsibility.verified
@@ -211,6 +237,8 @@ function EditResponsibilityModal({
           X
         </button>
         <div className="modal-body">
+          {capitalizeFirstLetter(currentResponsibility.series.repeat_type)}:{' '}
+          {formatRepeatDays(currentResponsibility)}
           {isEditing &&
           (!currentResponsibility.verified || main.state.profile.parent) ? (
             <>

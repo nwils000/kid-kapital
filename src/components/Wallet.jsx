@@ -48,7 +48,16 @@ export default function Wallet() {
     const updateAllowanceDetails = () => {
       const earnings = calculateLastPeriodEarnings();
       const total_money = main.state.profile.total_money;
-      const savings = main.state.profile.savings || 0;
+      const savings =
+        main.state.profile.investments &&
+        main.state.profile.investments.length > 0
+          ? main.state.profile.investments.reduce((total, investment) => {
+              const amountInvested =
+                parseFloat(investment.amount_invested) || 0;
+              const returns = parseFloat(investment.returns) || 0;
+              return total + amountInvested + returns;
+            }, 0)
+          : 0.0;
 
       setAllowanceDetails({
         lastPeriodEarnings: earnings,

@@ -8,6 +8,7 @@ import {
   FaBars,
   FaTimes,
 } from 'react-icons/fa';
+import { IoExit } from 'react-icons/io5';
 import { GiTakeMyMoney, GiPayMoney } from 'react-icons/gi';
 
 export default function ParentNavbar() {
@@ -21,7 +22,7 @@ export default function ParentNavbar() {
     <div>
       <div className="navbar-wrapper">
         <div className="navbar">
-          <Link to="/" className="nav-item">
+          <Link to="/parent-dashboard" className="nav-item">
             <div className="logo-wrapper">
               <GiTakeMyMoney className="logo-icon" />
               <span className="logo-text">Kid Kapital</span>
@@ -67,6 +68,12 @@ export default function ParentNavbar() {
               <div className="icon-wrapper">
                 <FaTasks />
                 <span>My Responsibilities</span>
+              </div>
+            </Link>
+            <Link className="nav-link" to="/" onClick={toggleMenu}>
+              <div className="icon-wrapper">
+                <IoExit />
+                <span>Logout</span>
               </div>
             </Link>
           </div>
