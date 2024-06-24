@@ -117,7 +117,7 @@ function FamilyStore() {
                   </li>
                 )}
               </ul>
-              {items.filter((item) => !item.approved).length > 5 && (
+              {items.filter((item) => !item.approved).length > 3 && (
                 <div
                   style={{
                     display: 'flex',
