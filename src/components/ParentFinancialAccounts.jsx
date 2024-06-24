@@ -553,16 +553,18 @@ export default function ParentFinancialAccounts() {
                       ? account.interest_day
                       : getDayOfYear(account.interest_day)}
                   </div>
-                  <div
-                    style={{
-                      display: 'flex',
-                      alignItems: 'center',
-                      gap: '0.5rem',
-                      marginBottom: '10px',
-                    }}
-                  >
-                    Interest Rate: {account.interest_rate}%
-                  </div>
+                  {account.account_type === 'Savings' && (
+                    <div
+                      style={{
+                        display: 'flex',
+                        alignItems: 'center',
+                        gap: '0.5rem',
+                        marginBottom: '10px',
+                      }}
+                    >
+                      Interest Rate: {account.interest_rate}%
+                    </div>
+                  )}
                   {account.account_type === 'Investment' && (
                     <>
                       <div
