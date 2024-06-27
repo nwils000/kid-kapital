@@ -22,7 +22,6 @@ export default function FamilyManager() {
           main,
         });
         setFamilyData(data.family.members);
-        console.log('Family data:', data.family.members);
       } catch (error) {
         console.error('Failed to fetch family data:', error);
       } finally {
@@ -33,7 +32,6 @@ export default function FamilyManager() {
   }, []);
 
   const navigateToChild = (childId) => {
-    console.log('CHILDID', childId);
     main.dispatch({
       type: 'SET_CHILD_IM_SEEINGS_ID',
       childImSeeingsId: childId,

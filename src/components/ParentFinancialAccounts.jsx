@@ -67,7 +67,6 @@ export default function ParentFinancialAccounts() {
   const fetchAccounts = async () => {
     const response = await viewAvailableAccounts({ main });
     setAccounts(response);
-    console.log('AVAILABLE ACCOUNTS', response);
   };
 
   useEffect(() => {
@@ -135,7 +134,6 @@ export default function ParentFinancialAccounts() {
 
   const handleAccountTypeChange = (e) => {
     setAccountType(e.target.value);
-    console.log('Account type changed to:', e.target.value);
   };
 
   const handleDeleteAccount = async (id) => {

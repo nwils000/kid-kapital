@@ -32,7 +32,6 @@ function Responsibilities() {
         let allResponsibilities = {};
 
         fetchedResponsibilities.data.forEach((element) => {
-          console.log('THE ELEMENT', element);
           if (!allResponsibilities[element.date]) {
             allResponsibilities[element.date] = [];
           }
@@ -50,7 +49,6 @@ function Responsibilities() {
             date: element.date,
           });
         });
-        console.log('AFASFSFA', allResponsibilities);
 
         setResponsibilities(allResponsibilities);
       } catch (e) {
@@ -63,9 +61,7 @@ function Responsibilities() {
     getResponsibilities();
   }, [main.state.profile]);
 
-  useEffect(() => {
-    console.log('IN RESPONSIBILITIES', currentResponsibility);
-  }, [currentResponsibility]);
+  useEffect(() => {}, [currentResponsibility]);
 
   function getSunday(d) {
     const date = new Date(d);
@@ -112,16 +108,7 @@ function Responsibilities() {
 
   async function addResponsibility({ title, description, difficulty, repeat }) {
     const formattedDate = formatDate(selectedDay);
-    console.log('RIGHT HERE', {
-      main,
-      title,
-      description,
-      difficulty,
-      verified: main.state.profile.parent ? true : false,
-      profileId: main.state.profile.id,
-      date: formattedDate,
-      repeat,
-    });
+
     try {
       let newResponsibility = await createResponsibility({
         main,

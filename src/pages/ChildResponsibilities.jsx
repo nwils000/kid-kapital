@@ -32,10 +32,8 @@ function ChildResponsibilities() {
         const fetchedResponsibilities =
           main.state.childImSeeingsResponsibilities;
         let allResponsibilities = {};
-        console.log('AFASFASFSAFSA', fetchedResponsibilities);
 
         fetchedResponsibilities.forEach((element) => {
-          console.log('THE ELEMENT', element);
           if (!allResponsibilities[element.date]) {
             allResponsibilities[element.date] = [];
           }
@@ -53,7 +51,6 @@ function ChildResponsibilities() {
             date: element.date,
           });
         });
-        console.log('AFASFSFA', allResponsibilities);
 
         setResponsibilities(allResponsibilities);
       } catch (e) {
@@ -66,12 +63,10 @@ function ChildResponsibilities() {
   }, [main.state.childImSeeingsResponsibilities]);
 
   useEffect(() => {
-    console.log('IN CHILDRESPONSIBILITIES', currentResponsibility);
   }, [currentResponsibility]);
 
   useEffect(() => {
     fetchChildResponsibilities({ main, childId: main.state.childImSeeingsId });
-    console.log();
   }, []);
 
   function getSunday(d) {

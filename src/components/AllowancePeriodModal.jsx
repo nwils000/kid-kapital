@@ -34,7 +34,6 @@ function AllowancePeriodModal({
   };
 
   const handleSubmit = () => {
-    console.log('Submitted', periodType, day);
     setTheAllowancePeriod({
       periodType: periodType === 'weeks' ? 'Weekly' : 'Monthly',
       allowanceDay: day,

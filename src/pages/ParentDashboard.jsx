@@ -83,7 +83,6 @@ export default function ParentDashboard() {
     }
   }
   useEffect(() => {
-    console.log('IN DASHBOARD', currentResponsibility);
   }, [currentResponsibility]);
 
   return (

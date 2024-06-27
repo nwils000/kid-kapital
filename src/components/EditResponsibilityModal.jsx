@@ -32,9 +32,7 @@ function EditResponsibilityModal({
   const [repeatDetails, setRepeatDetails] = useState([]);
   const [difficultyString, setDifficultyString] = useState('');
 
-  useEffect(() => {
-    console.log(currentResponsibility);
-  }, [currentResponsibility]);
+  useEffect(() => {}, [currentResponsibility]);
 
   useEffect(() => {
     if (showEditModal) {
@@ -77,7 +75,6 @@ function EditResponsibilityModal({
 
   const handleDelete = async (deleteSeries = false) => {
     if (deleteSeries) {
-      console.log(currentResponsibility);
       await deleteResponsibilitySeries({
         seriesId: currentResponsibility.series.id,
         main,

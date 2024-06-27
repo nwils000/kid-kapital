@@ -32,7 +32,6 @@ export default function Finances() {
 
   const handleUpdateDifficultyPoint = async () => {
     try {
-      console.log('HI');
       await updateDifficultyPointValue({ main, price: rewardValue });
     } catch (e) {
       console.error(e);

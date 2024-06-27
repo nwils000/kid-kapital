@@ -34,7 +34,6 @@ function ApproveResponsibilityModal({
 
   useEffect(() => {
     if (showApproveModal) {
-      console.log('CURRENT RESP', currentResponsibility);
       setDifficulty(currentResponsibility.difficulty);
       setTitle(currentResponsibility.title);
       setDescription(currentResponsibility.description);
@@ -49,7 +48,6 @@ function ApproveResponsibilityModal({
   }, [approved]);
 
   useEffect(() => {
-    console.log('APPROVED SERIES', approvedSeries);
     handleSave();
   }, [approvedSeries]);
 
@@ -67,7 +65,6 @@ function ApproveResponsibilityModal({
   };
 
   const handleSave = async () => {
-    console.log('SAVING', approvedSeries);
     if (approvedSeries && justApprove) {
       await approveWholeSeries({
         profile: currentResponsibility.profile,
@@ -90,7 +87,6 @@ function ApproveResponsibilityModal({
       return;
     }
     if (repeatType !== 'none' && approvedSeries) {
-      console.log('NOT NONE');
       let editedResponsibility = await approveWholeSeries({
         profile: currentResponsibility.profile,
         id: currentResponsibility.id,
@@ -110,8 +106,6 @@ function ApproveResponsibilityModal({
       setIsEditing(false);
     }
     if (repeatType === 'none' && approved) {
-      console.log('NONE', currentResponsibility, approved);
-
       let editedResponsibility = await approveResponsibility({
         id: currentResponsibility.id,
         title,
@@ -122,15 +116,12 @@ function ApproveResponsibilityModal({
       });
       setCurrentResponsibility(editedResponsibility.data);
       setIsEditing(false);
-      console.log('NONE', editedResponsibility);
     }
     if (approved) {
-      console.log('ASDHASJD');
       setApproved(false);
       setShowApproveModal(false);
     }
     if (approvedSeries) {
-      console.log('zzzzzzzzzzzzzzzz');
       setApprovedSeries(false);
       setShowApproveModal(false);
     }
@@ -396,7 +387,6 @@ function ApproveResponsibilityModal({
                   <button
                     className="complete-btn"
                     onClick={() => {
-                      console.log('HI');
                       setJustApprove(true);
                       setApprovedSeries(true);
                     }}

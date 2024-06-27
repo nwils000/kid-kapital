@@ -11,8 +11,6 @@ export default function Wallet() {
   });
 
   useEffect(() => {
-    console.log('Profile State on Mount:', main.state.profile);
-
     const calculateLastPeriodEarnings = () => {
       if (!main.state.profile.family.last_allowance_date) {
         return 0;
@@ -61,7 +59,7 @@ export default function Wallet() {
 
       setAllowanceDetails({
         lastPeriodEarnings: earnings,
-        currentBalance: total_money - savings,
+        currentBalance: total_money + savings,
         savings: savings,
         totalMoney: total_money,
       });
