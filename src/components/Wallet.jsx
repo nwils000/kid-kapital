@@ -59,9 +59,9 @@ export default function Wallet() {
 
       setAllowanceDetails({
         lastPeriodEarnings: earnings,
-        currentBalance: total_money + savings,
+        currentBalance: total_money,
         savings: savings,
-        totalMoney: total_money,
+        totalMoney: total_money + savings,
       });
     };
 
